@@ -2,6 +2,7 @@
 using EternalStore.DataAccess.Interfaces;
 using EternalStore.Domain.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace EternalStore.DataAccess.Repositories
 {
@@ -15,7 +16,7 @@ namespace EternalStore.DataAccess.Repositories
 
         public IRepository<Product> Products => productRepository ?? (productRepository = new ProductRepository(dbContext));
 
-        public void SaveAsync() => dbContext.SaveChangesAsync();
+        public async Task SaveAsync() => await dbContext.SaveChangesAsync();
 
         public virtual void Dispose(bool disposing)
         {

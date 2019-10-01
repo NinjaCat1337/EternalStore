@@ -1,18 +1,16 @@
 ﻿using EternalStore.ApplicationLogic.DTO;
-using EternalStore.Domain.Models;
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EternalStore.ApplicationLogic.Interfaces
 {
     public interface IProductService
     {
-        void InsertProduct(ProductDTO productDto);
-        void ModifyProduct(ProductDTO productDto);
-        void EliminateProduct(int id);
+        Task InsertProduct(ProductDTO productDto);
+        Task ModifyProduct(ProductDTO productDto);
+        Task EliminateProduct(int id);
         ProductDTO GetProduct(int id);
         IEnumerable<ProductDTO> GetAllProducts();
-        IEnumerable<ProductDTO> GetProductsBy(Func<Product, bool> predicate);
         void Dispose();
     }
 }

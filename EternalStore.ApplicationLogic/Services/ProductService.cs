@@ -1,11 +1,11 @@
 ﻿using EternalStore.ApplicationLogic.DTO;
 using EternalStore.ApplicationLogic.Helpers;
+using EternalStore.ApplicationLogic.Infrastructure;
 using EternalStore.ApplicationLogic.Interfaces;
 using EternalStore.DataAccess.Interfaces;
 using EternalStore.DataAccess.Repositories;
-using EternalStore.Domain.Models;
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EternalStore.ApplicationLogic.Services
 {
@@ -13,21 +13,42 @@ namespace EternalStore.ApplicationLogic.Services
     {
         private IUnitOfWork Database { get; set; }
 
-        public ProductService(string connectionString) =>
-            Database = new UnitOfWork(connectionString);
+        public ProductService(string connectionString) => Database = new UnitOfWork(connectionString);
 
-        public void InsertProduct(ProductDTO productDto) => Database.Products.Insert(ApplicationLogicMapper.FromProductDtoToProduct(productDto));
+        public async Task InsertProduct(ProductDTO productDto)
+        {
+            Database.Products.Insert(ApplicationLogicMapper.FromProductDtoToProduct(productDto));
+            await Database.SaveAsync();
+        }
 
-        public void ModifyProduct(ProductDTO productDto) => Database.Products.Modify(ApplicationLogicMapper.FromProductDtoToProduct(productDto));
+        public async Task ModifyProduct(ProductDTO productDto)
+        {
+            if (Database.Products.Get(productDto.ProductId) == null)
+                throw new ValidationException("Item not found.", "Product");
 
-        public void EliminateProduct(int id) => Database.Products.Eliminate(id);
+            Database.Products.Modify(ApplicationLogicMapper.FromProductDtoToProduct(productDto));
+            await Database.SaveAsync();
+        }
 
-        public ProductDTO GetProduct(int id) => ApplicationLogicMapper.FromProductToProductDto(Database.Products.Get(id));
+        public async Task EliminateProduct(int id)
+        {
+            if (Database.Products.Get(id) == null)
+                throw new ValidationException("Item not found.", "Product");
+
+            Database.Products.Eliminate(id);
+            await Database.SaveAsync();
+        }
+
+        public ProductDTO GetProduct(int id)
+        {
+            var product = Database.Products.Get(id);
+            if (product == null)
+                throw new ValidationException("Item not found.", "Product");
+
+            return ApplicationLogicMapper.FromProductToProductDto(product);
+        }
 
         public IEnumerable<ProductDTO> GetAllProducts() => ApplicationLogicMapper.FromProductsToProductsDto(Database.Products.GetAll());
-
-        public IEnumerable<ProductDTO> GetProductsBy(Func<Product, bool> predicate) =>
-            ApplicationLogicMapper.FromProductsToProductsDto(Database.Products.GetBy(predicate));
 
         public void Dispose() => Database.Dispose();
     }

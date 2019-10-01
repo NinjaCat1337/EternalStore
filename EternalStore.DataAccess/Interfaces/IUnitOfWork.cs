@@ -1,5 +1,6 @@
 ﻿using EternalStore.Domain.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace EternalStore.DataAccess.Interfaces
 {
@@ -7,6 +8,6 @@ namespace EternalStore.DataAccess.Interfaces
     {
         IRepository<Product> Products { get; }
 
-        void SaveAsync();
+        Task SaveAsync();
     }
 }
