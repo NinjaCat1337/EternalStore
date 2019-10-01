@@ -1,7 +1,6 @@
 ﻿using EternalStore.DataAccess.EntityFramework;
 using EternalStore.DataAccess.Interfaces;
 using EternalStore.Domain.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace EternalStore.DataAccess.Repositories
@@ -12,7 +11,7 @@ namespace EternalStore.DataAccess.Repositories
         private ProductRepository productRepository;
         private bool disposed;
 
-        public UnitOfWork(DbContextOptions options) => dbContext = new EternalStoreDbContext(options);
+        public UnitOfWork(string connectionString) => dbContext = new EternalStoreDbContext(connectionString);
 
         public IRepository<Product> Products => productRepository ?? (productRepository = new ProductRepository(dbContext));
 

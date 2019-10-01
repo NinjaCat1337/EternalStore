@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using EternalStore.ApplicationLogic.Interfaces;
+using EternalStore.ApplicationLogic.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -18,8 +20,8 @@ namespace EternalStore.Web
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddTransient<IProductService>(ps => new ProductService(connection));
 
-            //services.AddDbContext<DataContext>(options => options.UseSqlServer(connection));
             services.AddMvc();
         }
 
@@ -32,7 +34,7 @@ namespace EternalStore.Web
 
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                await context.Response.WriteAsync("Zdarova Banditi");
             });
         }
     }
