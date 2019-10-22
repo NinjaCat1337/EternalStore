@@ -1,9 +1,9 @@
 ﻿using EternalStore.ApplicationLogic.DTO;
 using EternalStore.ApplicationLogic.Helpers;
-using EternalStore.ApplicationLogic.Infrastructure;
 using EternalStore.ApplicationLogic.Interfaces;
 using EternalStore.DataAccess.Interfaces;
 using EternalStore.DataAccess.Repositories;
+using EternalStore.Infrastructure.Exceptions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EternalStore.ApplicationLogic.Infrastructure
+namespace EternalStore.Infrastructure.Exceptions
 {
     public class ValidationException : Exception
     {

@@ -21,7 +21,6 @@ namespace EternalStore.Web
         {
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddTransient<IProductService>(ps => new ProductService(connection));
-
             services.AddMvc();
         }
 

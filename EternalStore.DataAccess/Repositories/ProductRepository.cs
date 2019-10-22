@@ -1,6 +1,6 @@
 ﻿using EternalStore.DataAccess.EntityFramework;
 using EternalStore.DataAccess.Interfaces;
-using EternalStore.Domain.Models;
+using EternalStore.Domain.ProductManagement;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace EternalStore.DataAccess.Repositories
     {
         private readonly EternalStoreDbContext dbContext;
 
-        public ProductRepository(EternalStoreDbContext dataContext) => this.dbContext = dataContext;
+        public ProductRepository(EternalStoreDbContext dbContext) => this.dbContext = dbContext;
 
         public IEnumerable<Product> GetAll() => dbContext.Products;
 

@@ -1,4 +1,5 @@
-﻿using EternalStore.Domain.Models;
+﻿using EternalStore.Domain.OrderManagement;
+using EternalStore.Domain.ProductManagement;
 using Microsoft.EntityFrameworkCore;
 
 namespace EternalStore.DataAccess.EntityFramework
@@ -7,6 +8,8 @@ namespace EternalStore.DataAccess.EntityFramework
     {
         private string ConnectionString { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public EternalStoreDbContext(string connectionString)
         {

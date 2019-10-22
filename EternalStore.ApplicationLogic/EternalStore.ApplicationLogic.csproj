@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EternalStore.DataAccess\EternalStore.DataAccess.csproj" />
     <ProjectReference Include="..\EternalStore.Domain\EternalStore.Domain.csproj" />
+    <ProjectReference Include="..\EternalStore.Infrastructure\EternalStore.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

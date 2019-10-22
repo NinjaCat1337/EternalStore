@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EternalStore.Domain", "Eter
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EternalStore.ApplicationLogic", "EternalStore.ApplicationLogic\EternalStore.ApplicationLogic.csproj", "{FD5BE848-8290-4B4F-AE5E-35F48200550B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EternalStore.Infrastructure", "EternalStore.Infrastructure\EternalStore.Infrastructure.csproj", "{B7A71A38-6D89-4435-9217-D4E2A0287AF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{FD5BE848-8290-4B4F-AE5E-35F48200550B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD5BE848-8290-4B4F-AE5E-35F48200550B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD5BE848-8290-4B4F-AE5E-35F48200550B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7A71A38-6D89-4435-9217-D4E2A0287AF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7A71A38-6D89-4435-9217-D4E2A0287AF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7A71A38-6D89-4435-9217-D4E2A0287AF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7A71A38-6D89-4435-9217-D4E2A0287AF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
