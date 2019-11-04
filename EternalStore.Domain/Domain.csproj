@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RootNamespace>EternalStore.Domain</RootNamespace>
+    <AssemblyName>EternalStore.Domain</AssemblyName>
   </PropertyGroup>
 
 </Project>

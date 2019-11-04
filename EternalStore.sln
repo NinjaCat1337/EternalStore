@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EternalStore.DataAccess", "EternalStore.DataAccess\EternalStore.DataAccess.csproj", "{562848EB-DBFD-4607-954B-6081E6B6AD02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "EternalStore.DataAccess\DataAccess.csproj", "{562848EB-DBFD-4607-954B-6081E6B6AD02}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EternalStore.Web", "EternalStore.Web\EternalStore.Web.csproj", "{DC2C1EB5-DF39-4B5A-BFB3-FF7BA7494F93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "EternalStore.Web\Api.csproj", "{DC2C1EB5-DF39-4B5A-BFB3-FF7BA7494F93}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EternalStore.Domain", "EternalStore.Domain\EternalStore.Domain.csproj", "{8BAA2F4F-5689-4BFA-97D0-1D874FFE1EA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "EternalStore.Domain\Domain.csproj", "{8BAA2F4F-5689-4BFA-97D0-1D874FFE1EA6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EternalStore.ApplicationLogic", "EternalStore.ApplicationLogic\EternalStore.ApplicationLogic.csproj", "{FD5BE848-8290-4B4F-AE5E-35F48200550B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EternalStore.Infrastructure", "EternalStore.Infrastructure\EternalStore.Infrastructure.csproj", "{B7A71A38-6D89-4435-9217-D4E2A0287AF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationLogic", "EternalStore.ApplicationLogic\ApplicationLogic.csproj", "{FD5BE848-8290-4B4F-AE5E-35F48200550B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +33,6 @@ Global
 		{FD5BE848-8290-4B4F-AE5E-35F48200550B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD5BE848-8290-4B4F-AE5E-35F48200550B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD5BE848-8290-4B4F-AE5E-35F48200550B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B7A71A38-6D89-4435-9217-D4E2A0287AF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7A71A38-6D89-4435-9217-D4E2A0287AF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7A71A38-6D89-4435-9217-D4E2A0287AF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7A71A38-6D89-4435-9217-D4E2A0287AF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

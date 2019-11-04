@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace EternalStore.Web
+namespace EternalStore.Api
 {
     public class Program
     {

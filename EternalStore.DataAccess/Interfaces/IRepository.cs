@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EternalStore.DataAccess.Interfaces
 {
@@ -11,5 +12,6 @@ namespace EternalStore.DataAccess.Interfaces
         void Eliminate(int id);
         T Get(int id);
         IEnumerable<T> GetBy(Func<T, bool> predicate);
+        Task SaveChangesAsync();
     }
 }

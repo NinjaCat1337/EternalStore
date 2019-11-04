@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AssemblyName>EternalStore.ApplicationLogic</AssemblyName>
+    <RootNamespace>EternalStore.ApplicationLogic</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EternalStore.DataAccess\DataAccess.csproj" />
+    <ProjectReference Include="..\EternalStore.Domain\Domain.csproj" />
+  </ItemGroup>
+
+</Project>
