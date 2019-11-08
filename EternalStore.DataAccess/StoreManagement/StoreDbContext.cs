@@ -1,4 +1,5 @@
-﻿using EternalStore.Domain.StoreManagement;
+﻿using EternalStore.DataAccess.StoreManagement.Configuration;
+using EternalStore.Domain.StoreManagement;
 using Microsoft.EntityFrameworkCore;
 
 namespace EternalStore.DataAccess.StoreManagement
@@ -8,6 +9,7 @@ namespace EternalStore.DataAccess.StoreManagement
         private string ConnectionString { get; set; }
 
         public DbSet<Category> Categories { get; set; }
+        //private DbSet<Product> Products { get; set; }
 
         public StoreDbContext(string connectionString)
         {
@@ -17,5 +19,11 @@ namespace EternalStore.DataAccess.StoreManagement
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
             optionsBuilder.UseSqlServer(ConnectionString);
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+        }
     }
 }

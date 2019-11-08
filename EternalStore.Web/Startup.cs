@@ -6,7 +6,6 @@ using EternalStore.ApplicationLogic.UserManagement;
 using EternalStore.ApplicationLogic.UserManagement.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,14 +16,18 @@ namespace EternalStore.Api
     {
         public IConfiguration Configuration { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IHostEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appSettings.json");
+            Configuration = builder.Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = Configuration.GetConnectionString("DefaultConnection");
+
             services.AddTransient<IStoreManager>(sm => new StoreManager(connection));
             services.AddTransient<IUserManager>(um => new UserManager(connection));
             services.AddTransient<IOrderManager>(om => new OrderManager(connection));
@@ -38,10 +41,11 @@ namespace EternalStore.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Zdarova Banditi");
-            });
+            app.UseRouting();
+            //app.Run(async (context) =>
+            //{
+            //    await context.Response.WriteAsync("Zdarova Banditi");
+            //});
         }
     }
 }

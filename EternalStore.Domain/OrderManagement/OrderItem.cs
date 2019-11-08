@@ -4,8 +4,12 @@ namespace EternalStore.Domain.OrderManagement
 {
     public class OrderItem : Entity
     {
-        public string Name { get; set; }
-        public int Qty { get; set; }
+        public string Name { get; protected set; }
+        public int Qty { get; protected set; }
+
+        public int OrderId { get; protected set; }
+        public virtual Order Order { get; protected set; }
+
 
         protected OrderItem() { }
 

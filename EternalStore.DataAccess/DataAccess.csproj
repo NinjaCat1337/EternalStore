@@ -13,8 +13,27 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20191108063632_usersTest.cs" />
+    <Compile Remove="Migrations\20191108063632_usersTest.Designer.cs" />
+    <Compile Remove="Migrations\20191108064515_usersTest.cs" />
+    <Compile Remove="Migrations\20191108064515_usersTest.Designer.cs" />
+    <Compile Remove="Migrations\20191108065149_usersTest.cs" />
+    <Compile Remove="Migrations\20191108065149_usersTest.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>

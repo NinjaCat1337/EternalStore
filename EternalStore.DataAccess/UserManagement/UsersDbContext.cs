@@ -1,4 +1,5 @@
-﻿using EternalStore.Domain.UserManagement;
+﻿using EternalStore.DataAccess.UserManagement.Configurations;
+using EternalStore.Domain.UserManagement;
 using Microsoft.EntityFrameworkCore;
 
 namespace EternalStore.DataAccess.UserManagement
@@ -17,5 +18,13 @@ namespace EternalStore.DataAccess.UserManagement
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
             optionsBuilder.UseSqlServer(ConnectionString);
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserInformationConfiguration());
+            modelBuilder.ApplyConfiguration(new UserAddressConfiguration());
+            modelBuilder.ApplyConfiguration(new UserNumberConfiguration());
+        }
     }
 }

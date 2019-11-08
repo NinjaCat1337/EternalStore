@@ -1,4 +1,5 @@
-﻿using EternalStore.Domain.OrderManagement;
+﻿using EternalStore.DataAccess.OrderManagement.Configuration;
+using EternalStore.Domain.OrderManagement;
 using Microsoft.EntityFrameworkCore;
 
 namespace EternalStore.DataAccess.OrderManagement
@@ -17,5 +18,11 @@ namespace EternalStore.DataAccess.OrderManagement
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
             optionsBuilder.UseSqlServer(ConnectionString);
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
+        }
     }
 }
