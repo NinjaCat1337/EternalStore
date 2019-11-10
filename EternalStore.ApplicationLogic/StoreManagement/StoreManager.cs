@@ -2,6 +2,7 @@
 using EternalStore.DataAccess.StoreManagement.Repositories;
 using EternalStore.Domain.StoreManagement;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EternalStore.ApplicationLogic.StoreManagement
@@ -20,6 +21,11 @@ namespace EternalStore.ApplicationLogic.StoreManagement
                 throw new Exception("Category not found.");
 
             return category;
+        }
+
+        public IEnumerable<Category> GetAllCategories()
+        {
+            return storeRepository.GetAll();
         }
 
         public async Task CreateCategory(string name)

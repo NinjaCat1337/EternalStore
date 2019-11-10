@@ -6,19 +6,18 @@ namespace EternalStore.DataAccess.StoreManagement
 {
     public sealed class StoreDbContext : DbContext
     {
-        private string ConnectionString { get; set; }
+        private readonly string connectionString;
 
         public DbSet<Category> Categories { get; set; }
-        //private DbSet<Product> Products { get; set; }
 
         public StoreDbContext(string connectionString)
         {
-            ConnectionString = connectionString;
+            this.connectionString = connectionString;
             Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-            optionsBuilder.UseSqlServer(ConnectionString);
+            optionsBuilder.UseSqlServer(connectionString);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

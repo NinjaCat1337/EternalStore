@@ -6,18 +6,18 @@ namespace EternalStore.DataAccess.OrderManagement
 {
     public sealed class OrdersDbContext : DbContext
     {
-        private string ConnectionString { get; set; }
+        private readonly string connectionString;
 
         public DbSet<Order> Orders { get; set; }
 
         public OrdersDbContext(string connectionString)
         {
-            ConnectionString = connectionString;
+            this.connectionString = connectionString;
             Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-            optionsBuilder.UseSqlServer(ConnectionString);
+            optionsBuilder.UseSqlServer(connectionString);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

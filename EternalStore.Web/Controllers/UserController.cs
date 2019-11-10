@@ -1,5 +1,7 @@
-﻿using EternalStore.ApplicationLogic.UserManagement.Interfaces;
+﻿using EternalStore.ApplicationLogic.UserManagement.DTO;
+using EternalStore.ApplicationLogic.UserManagement.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace EternalStore.Api.Controllers
@@ -14,6 +16,26 @@ namespace EternalStore.Api.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            var user = new UserDTO
+            {
+                Login = " ",
+                Password = "1111",
+                UserInformation = new UserInformationDTO
+                {
+                    FirstName = "Al",
+                    LastName = "Bl",
+                    Email = "mail"
+                }
+            };
+            try
+            {
+                userManager.Register(user);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
             return new string[] { "value1", "value2" };
         }
 

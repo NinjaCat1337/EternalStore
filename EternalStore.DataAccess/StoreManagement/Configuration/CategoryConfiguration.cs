@@ -17,8 +17,7 @@ namespace EternalStore.DataAccess.StoreManagement.Configuration
 
             builder.Property(p => p.Name)
                 .HasColumnName("name")
-                .HasColumnType("nvarchar")
-                .HasMaxLength(50)
+                .HasColumnType("nvarchar(50)")
                 .IsRequired();
 
             builder.Property(p => p.IsEnabled)
@@ -31,8 +30,7 @@ namespace EternalStore.DataAccess.StoreManagement.Configuration
 
             builder.HasMany(c => c.Products)
                 .WithOne(p => p.Category)
-                .HasForeignKey("idCategory")
-                .OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey("idCategory");
         }
     }
 }

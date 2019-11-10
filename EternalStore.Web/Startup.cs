@@ -41,11 +41,16 @@ namespace EternalStore.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
+
             app.UseRouting();
-            //app.Run(async (context) =>
-            //{
-            //    await context.Response.WriteAsync("Zdarova Banditi");
-            //});
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

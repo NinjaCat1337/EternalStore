@@ -17,19 +17,22 @@ namespace EternalStore.DataAccess.StoreManagement.Configuration
 
             builder.Property(p => p.Name)
                 .HasColumnName("name")
-                .HasColumnType("nvarchar")
-                .HasMaxLength(50)
+                .HasColumnType("nvarchar(50)")
                 .IsRequired();
 
             builder.Property(p => p.Description)
                 .HasColumnName("description")
-                .HasColumnType("nvarchar")
-                .HasMaxLength(1500)
+                .HasColumnType("nvarchar(1500)")
                 .IsRequired();
 
             builder.Property(p => p.Price)
                 .HasColumnName("price")
                 .HasColumnType("decimal")
+                .IsRequired();
+
+            builder.Property(p => p.IdCategory)
+                .HasColumnName("idCategory")
+                .HasColumnType("int")
                 .IsRequired();
         }
     }

@@ -9,12 +9,12 @@ namespace EternalStore.Domain.StoreManagement
         public string Description { get; protected set; }
         public decimal Price { get; protected set; }
 
-        public int CategoryId { get; protected set; }
+        public int IdCategory { get; protected set; }
         public virtual Category Category { get; protected set; }
 
         protected Product() { }
 
-        internal static Product Insert(string name, string description, decimal price, Category category)
+        internal static Product Insert(Category category, string name, string description, decimal price)
         {
             Validate(name, description, price);
 
@@ -23,7 +23,7 @@ namespace EternalStore.Domain.StoreManagement
                 Name = name,
                 Description = description,
                 Price = price,
-                CategoryId = category.Id
+                IdCategory = category.Id
             };
         }
 

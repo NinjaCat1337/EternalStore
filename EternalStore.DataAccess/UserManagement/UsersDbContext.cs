@@ -6,18 +6,18 @@ namespace EternalStore.DataAccess.UserManagement
 {
     public sealed class UsersDbContext : DbContext
     {
-        private string ConnectionString { get; set; }
+        private readonly string connectionString;
 
         public DbSet<User> Users { get; set; }
 
         public UsersDbContext(string connectionString)
         {
-            ConnectionString = connectionString;
+            this.connectionString = connectionString;
             Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-            optionsBuilder.UseSqlServer(ConnectionString);
+            optionsBuilder.UseSqlServer(connectionString);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

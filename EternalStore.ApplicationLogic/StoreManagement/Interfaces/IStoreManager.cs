@@ -1,10 +1,13 @@
-﻿using System;
+﻿using EternalStore.Domain.StoreManagement;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EternalStore.ApplicationLogic.StoreManagement.Interfaces
 {
     public interface IStoreManager : IDisposable
     {
+        IEnumerable<Category> GetAllCategories();
         Task CreateCategory(string name);
         Task UpdateCategory(int id, string name);
         Task DisableCategory(int id);
