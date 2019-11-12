@@ -21,7 +21,8 @@ namespace Api.Controllers
             var name = cat.FirstOrDefault()?.Name;
             //storeManager.CreateCategory("Beer");
             //storeManager.AddProduct(1, "Bud", "Light 0.5L", 24);
-            storeManager.EditProduct(1, 0, "Bud 0.5L", "Light", 20);
+            storeManager.EditProduct(1, 1002, "Bud 0.5L", "Light", 20);
+            //storeManager.RemoveProduct(1, 1002);
             return new string[] { name };
         }
 

@@ -12,8 +12,8 @@ namespace EternalStore.ApplicationLogic.StoreManagement.Interfaces
         Task UpdateCategory(int id, string name);
         Task DisableCategory(int id);
         Task EnableCategory(int id);
-        Task AddProduct(int categoryId, string name, string description, decimal price);
-        Task EditProduct(int categoryId, int productId, string name, string description, decimal price);
-        Task RemoveProduct(int categoryId, int productId);
+        Task AddProduct(int idCategory, string name, string description, decimal price);
+        Task EditProduct(int idCategory, int idProduct, string name, string description, decimal price);
+        Task RemoveProduct(int idCategory, int idProduct);
     }
 }

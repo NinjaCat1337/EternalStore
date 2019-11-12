@@ -2,7 +2,7 @@
 using EternalStore.ApplicationLogic.OrderManagement.Interfaces;
 using EternalStore.DataAccess.OrderManagement.Repositories;
 using EternalStore.Domain.OrderManagement;
-using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EternalStore.ApplicationLogic.OrderManagement
@@ -12,16 +12,6 @@ namespace EternalStore.ApplicationLogic.OrderManagement
         private readonly OrderRepository orderRepository;
 
         public OrderManager(string connectionString) => orderRepository ??= new OrderRepository(connectionString);
-
-        private Order GetOrder(int id)
-        {
-            var order = orderRepository.Get(id);
-
-            if (order == null)
-                throw new Exception("Order not found.");
-
-            return order;
-        }
 
         public async Task CreateOrder(OrderDTO orderDTO)
         {
@@ -35,28 +25,10 @@ namespace EternalStore.ApplicationLogic.OrderManagement
             await orderRepository.SaveChangesAsync();
         }
 
-        public async Task ChangeAddress(int id, string address)
+        public async Task ModifyOrder(OrderDTO orderDTO)
         {
-            var order = GetOrder(id);
-            order.ChangeAddress(address);
-            orderRepository.Modify(order);
-
-            await orderRepository.SaveChangesAsync();
-        }
-
-        public async Task ChangeNumber(int id, string number)
-        {
-            var order = GetOrder(id);
-            order.ChangeNumber(number);
-            orderRepository.Modify(order);
-
-            await orderRepository.SaveChangesAsync();
-        }
-
-        public async Task ChangeDeliveryDate(int id, DateTime deliveryDate)
-        {
-            var order = GetOrder(id);
-            order.ChangeDeliveryDate(deliveryDate);
+            var order = orderRepository.Get(orderDTO.Id);
+            order.Modify(orderDTO.DeliveryDate, orderDTO.CustomerAddress, orderDTO.CustomerNumber, orderDTO.AdditionalInformation);
             orderRepository.Modify(order);
 
             await orderRepository.SaveChangesAsync();
@@ -64,7 +36,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement
 
         public async Task SetApproved(int id)
         {
-            var order = GetOrder(id);
+            var order = orderRepository.Get(id);
             order.SetApproved();
             orderRepository.Modify(order);
 
@@ -73,18 +45,27 @@ namespace EternalStore.ApplicationLogic.OrderManagement
 
         public async Task SetDelivered(int id)
         {
-            var order = GetOrder(id);
+            var order = orderRepository.Get(id);
             order.SetDelivered();
             orderRepository.Modify(order);
 
             await orderRepository.SaveChangesAsync();
         }
 
-        public async Task RemoveOrderItem(int orderId, int orderItemId)
+        public async Task AddOrderItem(int idOrder, string name, int qty)
         {
-            var order = GetOrder(orderId);
-            order.RemoveOrderItem(orderItemId);
-            orderRepository.Modify(order);
+            var category = orderRepository.Get(idOrder);
+            category.AddOrderItem(name, qty);
+            orderRepository.Modify(category);
+
+            await orderRepository.SaveChangesAsync();
+        }
+
+        public async Task RemoveOrderItem(int idOrder, int idOrderItem)
+        {
+            var order = orderRepository.Get(idOrder);
+            var orderItem = order.OrderItems.FirstOrDefault(oi => oi.Id == idOrderItem);
+            orderRepository.Eliminate(orderItem);
 
             await orderRepository.SaveChangesAsync();
         }

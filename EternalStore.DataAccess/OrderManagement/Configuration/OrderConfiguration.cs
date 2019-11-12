@@ -17,8 +17,7 @@ namespace EternalStore.DataAccess.OrderManagement.Configuration
 
             builder.Property(p => p.IsApproved)
                 .HasColumnName("isApproved")
-                .HasColumnType("nvarchar")
-                .HasMaxLength(50)
+                .HasColumnType("bit")
                 .IsRequired();
 
             builder.Property(p => p.OrderDate)
@@ -33,20 +32,17 @@ namespace EternalStore.DataAccess.OrderManagement.Configuration
 
             builder.Property(p => p.CustomerNumber)
                 .HasColumnName("customerNumber")
-                .HasColumnType("nvarchar")
-                .HasMaxLength(30)
+                .HasColumnType("nvarchar(30)")
                 .IsRequired();
 
             builder.Property(p => p.CustomerAddress)
                 .HasColumnName("customerAddress")
-                .HasColumnType("nvarchar")
-                .HasMaxLength(100)
+                .HasColumnType("nvarchar(100)")
                 .IsRequired();
 
             builder.Property(p => p.AdditionalInformation)
                 .HasColumnName("additionalInformation")
-                .HasColumnType("nvarchar")
-                .HasMaxLength(100)
+                .HasColumnType("nvarchar(100)")
                 .IsRequired(false);
 
             builder.Property(p => p.IsDelivered)

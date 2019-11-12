@@ -1,8 +1,8 @@
 ﻿using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
 using EternalStore.DataAccess.StoreManagement.Repositories;
 using EternalStore.Domain.StoreManagement;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EternalStore.ApplicationLogic.StoreManagement
@@ -13,20 +13,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public StoreManager(string connectionString) => storeRepository ??= new StoreRepository(connectionString);
 
-        private Category GetCategory(int id)
-        {
-            var category = storeRepository.Get(id);
-
-            if (category == null)
-                throw new Exception("Category not found.");
-
-            return category;
-        }
-
-        public IEnumerable<Category> GetAllCategories()
-        {
-            return storeRepository.GetAll();
-        }
+        public IEnumerable<Category> GetAllCategories() => storeRepository.GetAll();
 
         public async Task CreateCategory(string name)
         {
@@ -37,7 +24,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public async Task UpdateCategory(int id, string name)
         {
-            var category = GetCategory(id);
+            var category = storeRepository.Get(id);
             category.Modify(name);
             storeRepository.Modify(category);
 
@@ -46,7 +33,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public async Task DisableCategory(int id)
         {
-            var category = GetCategory(id);
+            var category = storeRepository.Get(id);
             category.Disable();
             storeRepository.Modify(category);
 
@@ -55,36 +42,39 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public async Task EnableCategory(int id)
         {
-            var category = GetCategory(id);
+            var category = storeRepository.Get(id);
             category.Enable();
             storeRepository.Modify(category);
 
             await storeRepository.SaveChangesAsync();
         }
 
-        public async Task AddProduct(int categoryId, string name, string description, decimal price)
+        public async Task AddProduct(int idCategory, string name, string description, decimal price)
         {
-            var category = GetCategory(categoryId);
+            var category = storeRepository.Get(idCategory);
             category.AddProduct(name, description, price);
             storeRepository.Modify(category);
 
             await storeRepository.SaveChangesAsync();
         }
 
-        public async Task EditProduct(int categoryId, int productId, string name, string description, decimal price)
+        public async Task EditProduct(int idCategory, int idProduct, string name, string description, decimal price)
         {
-            var category = GetCategory(categoryId);
-            category.EditProduct(productId, name, description, price);
-            storeRepository.Modify(category);
+            var category = storeRepository.Get(idCategory);
+            category.EditProduct(idProduct, name, description, price);
+            var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
+            storeRepository.Modify(product);
 
             await storeRepository.SaveChangesAsync();
         }
 
-        public async Task RemoveProduct(int categoryId, int productId)
+        public async Task RemoveProduct(int idCategory, int idProduct)
         {
-            var category = GetCategory(categoryId);
-            category.RemoveProduct(productId);
-            storeRepository.Modify(category);
+            var category = storeRepository.Get(idCategory);
+            var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
+
+            if (product != null)
+                storeRepository.Eliminate(product);
 
             await storeRepository.SaveChangesAsync();
         }

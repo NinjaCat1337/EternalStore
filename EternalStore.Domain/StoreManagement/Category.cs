@@ -36,24 +36,14 @@ namespace EternalStore.Domain.StoreManagement
         public void AddProduct(string name, string description, decimal price) =>
             products.Add(Product.Insert(this, name, description, price));
 
-        public void EditProduct(int productId, string name, string description, decimal price)
+        public void EditProduct(int idProduct, string name, string description, decimal price)
         {
-            var product = products.FirstOrDefault(p => p.Id == productId);
+            var product = products.FirstOrDefault(p => p.Id == idProduct);
 
             if (product == null)
                 throw new Exception("Product not found.");
 
             product.Modify(name, description, price);
-        }
-
-        public void RemoveProduct(int productId)
-        {
-            var product = products.FirstOrDefault(p => p.Id == productId);
-
-            if (product == null)
-                throw new Exception("Product not found.");
-
-            products.Remove(product);
         }
 
         private static void Validate(string name)

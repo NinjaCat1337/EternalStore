@@ -30,10 +30,9 @@ namespace EternalStore.DataAccess.StoreManagement.Configuration
                 .HasColumnType("decimal")
                 .IsRequired();
 
-            builder.Property(p => p.IdCategory)
-                .HasColumnName("idCategory")
-                .HasColumnType("int")
-                .IsRequired();
+            builder.HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey("idCategory");
         }
     }
 }

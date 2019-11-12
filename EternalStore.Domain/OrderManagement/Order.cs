@@ -32,25 +32,38 @@ namespace EternalStore.Domain.OrderManagement
                 IsDelivered = false
             };
 
-        public void ChangeAddress(string customerAddress) => CustomerAddress = customerAddress;
+        public void Modify(DateTime deliveryDate, string customerAddress, string customerNumber, string additionalInformation)
+        {
+            Validate(deliveryDate, customerNumber, customerAddress, additionalInformation);
 
-        public void ChangeNumber(string customerNumber) => CustomerNumber = customerNumber;
-
-        public void ChangeDeliveryDate(DateTime deliveryDate) => DeliveryDate = deliveryDate;
+            DeliveryDate = deliveryDate;
+            CustomerAddress = customerAddress;
+            CustomerNumber = customerNumber;
+            AdditionalInformation = additionalInformation;
+        }
 
         public void SetApproved() => IsApproved = true;
 
         public void SetDelivered() => IsDelivered = true;
 
-        public void AddOrderItem(string name, int qty) => orderItems.Add(OrderItem.Insert(name, qty));
+        public void AddOrderItem(string name, int qty) => orderItems.Add(OrderItem.Insert(this, name, qty));
 
-        public void RemoveOrderItem(int orderItemId)
+        private static void Validate(DateTime deliveryDate, string customerNumber, string customerAddress, string additionalInformation)
         {
-            var orderItem = orderItems.FirstOrDefault(oi => oi.Id == orderItemId);
+            if (deliveryDate == null || deliveryDate > DateTime.Now)
+                throw new Exception("Wrong delivery date.");
 
-            if (orderItem == null) throw new Exception("Order Item not found.");
+            if (string.IsNullOrWhiteSpace(customerNumber) || customerNumber.Length > 30)
+                throw new Exception("Wrong number.");
 
-            orderItems.Remove(orderItem);
+            if (customerAddress.Length > 100)
+                throw new Exception("Address is too long.");
+
+            if (string.IsNullOrWhiteSpace(customerAddress))
+                throw new Exception("Address can't be empty.");
+
+            if (additionalInformation.Length > 100)
+                throw new Exception("Additional information is too long.");
         }
     }
 }

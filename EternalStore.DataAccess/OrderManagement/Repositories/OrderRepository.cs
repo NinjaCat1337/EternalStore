@@ -15,24 +15,73 @@ namespace EternalStore.DataAccess.OrderManagement.Repositories
 
         public OrderRepository(string connectionString) => dbContext = new OrdersDbContext(connectionString);
 
+        /// <summary>
+        /// Get all orders.
+        /// </summary>
+        /// <returns>IEnumerable collection of Orders.</returns>
         public IEnumerable<Order> GetAll() => dbContext.Orders;
 
+        /// <summary>
+        /// Get by predicate.
+        /// </summary>
+        /// <param name="predicate">Predicate.</param>
+        /// <returns></returns>
         public IEnumerable<Order> GetBy(Func<Order, bool> predicate) => dbContext.Orders.Where(predicate).ToList();
 
+        /// <summary>
+        /// Create Order in database.
+        /// </summary>
+        /// <param name="order">Order Entity</param>
         public void Insert(Order order) => dbContext.Orders.Add(order);
 
-        public void Modify(Order order) => dbContext.Entry(order).State = EntityState.Modified;
-
-        public Order Get(int id) => dbContext.Orders.Find(id);
-
-        public void Eliminate(int id)
+        /// <summary>
+        /// Update Order in database.
+        /// </summary>
+        /// <param name="item">Should be an Order type.</param>
+        public void Modify(object item)
         {
-            var order = dbContext.Orders.Find(id);
-
-            if (order != null) dbContext.Orders.Remove(order);
+            if (item as Order != null)
+                dbContext.Entry(item).State = EntityState.Modified;
         }
 
+        /// <summary>
+        /// Get Order from database by Id.
+        /// </summary>
+        /// <param name="id">Id Order</param>
+        /// <returns></returns>
+        public Order Get(int id)
+        {
+            var order = dbContext.Orders.Include(o => o.OrderItems).FirstOrDefault(o => o.Id == id);
+
+            if (order == null)
+                throw new Exception("Order not found.");
+
+            return order;
+        }
+
+        /// <summary>
+        /// Delete Order or OrderItem from database.
+        /// </summary>
+        /// <param name="item">Should be an Order or OrderItem type.</param>
+        public void Eliminate(object item)
+        {
+            if (item as OrderItem != null || item as Order != null)
+                dbContext.Entry(item).State = EntityState.Modified;
+        }
+
+        /// <summary>
+        /// Save changes in database.
+        /// </summary>
         public async Task SaveChangesAsync() => await dbContext.SaveChangesAsync();
+
+        /// <summary>
+        /// Close connection with database.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         private void Dispose(bool disposing)
         {
@@ -40,12 +89,6 @@ namespace EternalStore.DataAccess.OrderManagement.Repositories
             if (disposing) dbContext.Dispose();
 
             disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         ~OrderRepository() => Dispose(false);

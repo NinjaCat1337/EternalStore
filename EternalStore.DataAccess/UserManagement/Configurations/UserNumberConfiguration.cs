@@ -17,8 +17,7 @@ namespace EternalStore.DataAccess.UserManagement.Configurations
 
             builder.Property(p => p.Number)
                 .HasColumnName("number")
-                .HasColumnType("nvarchar")
-                .HasMaxLength(30)
+                .HasColumnType("nvarchar(30)")
                 .IsRequired();
         }
     }

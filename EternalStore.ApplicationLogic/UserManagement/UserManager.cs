@@ -2,7 +2,6 @@
 using EternalStore.ApplicationLogic.UserManagement.Interfaces;
 using EternalStore.DataAccess.UserManagement.Repositories;
 using EternalStore.Domain.UserManagement;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,24 +14,20 @@ namespace EternalStore.ApplicationLogic.UserManagement
 
         public UserManager(string connectionString) => userRepository ??= new UserRepository(connectionString);
 
-        private User FindUser(int id)
-        {
-            var user = userRepository.Get(id);
-
-            if (user == null)
-                throw new Exception("User not found.");
-
-            return user;
-        }
-
         public async Task Register(UserDTO userDTO)
         {
             var user = User.Insert(userDTO.Login, PasswordHashing.GetMd5Hash(userDTO.Password), userDTO.UserInformation.FirstName,
                 userDTO.UserInformation.LastName, userDTO.UserInformation.Email);
 
-            foreach (var userAddress in user.UserAddresses) { user.AddAddress(userAddress.Address); }
+            foreach (var userAddress in user.UserAddresses)
+            {
+                user.AddAddress(userAddress.Address);
+            }
 
-            foreach (var userNumber in user.UserNumbers) { user.AddNumber(userNumber.Number); }
+            foreach (var userNumber in user.UserNumbers)
+            {
+                user.AddNumber(userNumber.Number);
+            }
 
             userRepository.Insert(user);
 
@@ -48,69 +43,71 @@ namespace EternalStore.ApplicationLogic.UserManagement
             return user.Password == PasswordHashing.GetMd5Hash(userDTO.Password);
         }
 
-        public async Task AddAddresses(int userId, IEnumerable<UserAddressDTO> userAddressesDTO)
+        public async Task AddAddresses(int idUser, IEnumerable<UserAddressDTO> userAddressesDTO)
         {
-            var user = FindUser(userId);
+            var user = userRepository.Get(idUser);
 
-            foreach (var userAddress in userAddressesDTO) { user.AddAddress(userAddress.Address); }
+            foreach (var userAddress in userAddressesDTO)
+            {
+                user.AddAddress(userAddress.Address);
+            }
 
             userRepository.Modify(user);
 
             await userRepository.SaveChangesAsync();
         }
 
-        public async Task RemoveAddress(int userId, int userAddressId)
+        public async Task RemoveAddress(int idUser, int idUserAddress)
         {
-            var user = FindUser(userId);
-            user.RemoveAddress(userAddressId);
+            userRepository.Eliminate(userRepository.Get(idUser).UserAddresses.FirstOrDefault(ua => ua.Id == idUserAddress));
+
+            await userRepository.SaveChangesAsync();
+        }
+
+        public async Task AddNumbers(int idUser, IEnumerable<UserNumberDTO> userNumbersDTO)
+        {
+            var user = userRepository.Get(idUser);
+
+            foreach (var userNumber in userNumbersDTO)
+            {
+                user.AddNumber(userNumber.Number);
+            }
+
             userRepository.Modify(user);
 
             await userRepository.SaveChangesAsync();
         }
 
-        public async Task AddNumbers(int userId, IEnumerable<UserNumberDTO> userNumbersDTO)
+        public async Task RemoveNumber(int idUser, int idUserNumber)
         {
-            var user = FindUser(userId);
-
-            foreach (var userNumber in userNumbersDTO) { user.AddNumber(userNumber.Number); }
-
-            userRepository.Modify(user);
+            userRepository.Eliminate(userRepository.Get(idUser).UserNumbers.FirstOrDefault(un => un.Id == idUserNumber));
 
             await userRepository.SaveChangesAsync();
         }
 
-        public async Task RemoveNumber(int userId, int userNumberId)
+        public async Task Rename(int idUser, string login)
         {
-            var user = FindUser(userId);
-            user.RemoveNumber(userNumberId);
-            userRepository.Modify(user);
-
-            await userRepository.SaveChangesAsync();
-        }
-
-        public async Task Rename(int id, string login)
-        {
-            var user = FindUser(id);
+            var user = userRepository.Get(idUser);
             user.Rename(login);
             userRepository.Modify(user);
 
             await userRepository.SaveChangesAsync();
         }
 
-        public async Task ChangePassword(int id, string password)
+        public async Task ChangePassword(int idUser, string password)
         {
-            var user = FindUser(id);
+            var user = userRepository.Get(idUser);
             user.ModifyPassword(PasswordHashing.GetMd5Hash(password));
             userRepository.Modify(user);
 
             await userRepository.SaveChangesAsync();
         }
 
-        public async Task ModifyUserInformation(int id, string firstName, string lastName, string email)
+        public async Task ModifyUserInformation(int idUser, string firstName, string lastName, string email)
         {
-            var user = FindUser(id);
+            var user = userRepository.Get(idUser);
             user.ModifyUserInformation(firstName, lastName, email);
-            userRepository.Modify(user);
+            userRepository.Modify(user.UserInformation);
 
             await userRepository.SaveChangesAsync();
         }

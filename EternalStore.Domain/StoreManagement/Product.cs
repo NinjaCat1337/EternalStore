@@ -8,8 +8,6 @@ namespace EternalStore.Domain.StoreManagement
         public string Name { get; protected set; }
         public string Description { get; protected set; }
         public decimal Price { get; protected set; }
-
-        public int IdCategory { get; protected set; }
         public virtual Category Category { get; protected set; }
 
         protected Product() { }
@@ -23,7 +21,7 @@ namespace EternalStore.Domain.StoreManagement
                 Name = name,
                 Description = description,
                 Price = price,
-                IdCategory = category.Id
+                Category = category
             };
         }
 

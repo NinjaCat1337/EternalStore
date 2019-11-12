@@ -9,10 +9,10 @@ namespace EternalStore.ApplicationLogic.UserManagement.Interfaces
     {
         Task Register(UserDTO userDTO);
         bool Login(UserDTO userDTO);
-        Task AddAddresses(int userId, IEnumerable<UserAddressDTO> userAddressesDTO);
-        Task RemoveAddress(int userId, int userAddressId);
-        Task AddNumbers(int userId, IEnumerable<UserNumberDTO> userNumbersDTO);
-        Task RemoveNumber(int userId, int userNumberId);
+        Task AddAddresses(int idUser, IEnumerable<UserAddressDTO> userAddressesDTO);
+        Task RemoveAddress(int idUser, int idUserAddress);
+        Task AddNumbers(int idUser, IEnumerable<UserNumberDTO> userNumbersDTO);
+        Task RemoveNumber(int idUser, int idUserNumber);
         Task Rename(int id, string login);
         Task ChangePassword(int id, string password);
         Task ModifyUserInformation(int id, string firstName, string lastName, string email);

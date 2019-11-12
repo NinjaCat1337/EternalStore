@@ -17,8 +17,7 @@ namespace EternalStore.DataAccess.UserManagement.Configurations
 
             builder.Property(p => p.Address)
                 .HasColumnName("address")
-                .HasColumnType("nvarchar")
-                .HasMaxLength(100)
+                .HasColumnType("nvarchar(100)")
                 .IsRequired();
         }
     }

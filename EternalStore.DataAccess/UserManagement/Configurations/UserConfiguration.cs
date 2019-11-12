@@ -17,14 +17,12 @@ namespace EternalStore.DataAccess.UserManagement.Configurations
 
             builder.Property(p => p.Login)
                 .HasColumnName("login")
-                .HasColumnType("varchar")
-                .HasMaxLength(50)
+                .HasColumnType("varchar(50)")
                 .IsRequired();
 
             builder.Property(p => p.Password)
                 .HasColumnName("password")
-                .HasColumnType("nvarchar")
-                .HasMaxLength(200)
+                .HasColumnType("nvarchar(100)")
                 .IsRequired();
 
             builder.Property(p => p.RegistrationDate)

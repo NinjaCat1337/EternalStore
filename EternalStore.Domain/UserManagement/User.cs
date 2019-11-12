@@ -20,16 +20,25 @@ namespace EternalStore.Domain.UserManagement
 
         protected User() { }
 
-        public static User Insert(string login, string password, string firstName, string lastName, string email) =>
-            new User
+        public static User Insert(string login, string password, string firstName, string lastName, string email)
+        {
+            Validate(login);
+
+            return new User
             {
                 Login = login,
                 Password = password,
                 RegistrationDate = DateTime.Now,
                 UserInformation = UserInformation.Insert(firstName, lastName, email)
             };
+        }
 
-        public void Rename(string login) => Login = login;
+        public void Rename(string login)
+        {
+            Validate(login);
+
+            Login = login;
+        }
 
         public void ModifyPassword(string password) => Password = password;
 
@@ -38,24 +47,15 @@ namespace EternalStore.Domain.UserManagement
 
         public void AddAddress(string address) => userAddresses.Add(UserAddress.Insert(this, address));
 
-        public void RemoveAddress(int userAddressId)
-        {
-            var userAddress = userAddresses.FirstOrDefault(ua => ua.Id == userAddressId);
-
-            if (userAddress == null) throw new Exception("User Address not found.");
-
-            userAddresses.Remove(userAddresses.FirstOrDefault(ua => ua.Id == userAddressId));
-        }
-
         public void AddNumber(string number) => userNumbers.Add(UserNumber.Insert(this, number));
 
-        public void RemoveNumber(int userNumberId)
+        private static void Validate(string login)
         {
-            var userNumber = userNumbers.FirstOrDefault(un => un.Id == userNumberId);
+            if (string.IsNullOrWhiteSpace(login))
+                throw new Exception("Login can't be empty.");
 
-            if (userNumber == null) throw new Exception("User Number not found.");
-
-            userNumbers.Remove(userNumber);
+            if (login.Length > 50)
+                throw new Exception("Login is too long.");
         }
     }
 }

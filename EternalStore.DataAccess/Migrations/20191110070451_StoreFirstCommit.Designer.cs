@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EternalStore.DataAccess.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20191110034108_StoreReset")]
-    partial class StoreReset
+    [Migration("20191110070451_StoreFirstCommit")]
+    partial class StoreFirstCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,13 +45,11 @@ namespace EternalStore.DataAccess.Migrations
 
             modelBuilder.Entity("EternalStore.Domain.StoreManagement.Product", b =>
                 {
-                    b.Property<int>("IdCategory")
-                        .HasColumnName("idCategory")
-                        .HasColumnType("int");
-
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnName("idProduct")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -68,10 +66,9 @@ namespace EternalStore.DataAccess.Migrations
                         .HasColumnType("decimal");
 
                     b.Property<int?>("idCategory")
-                        .HasColumnName("Product_idCategory")
                         .HasColumnType("int");
 
-                    b.HasKey("IdCategory", "Id");
+                    b.HasKey("Id");
 
                     b.HasIndex("idCategory");
 

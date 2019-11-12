@@ -43,13 +43,11 @@ namespace EternalStore.DataAccess.Migrations
 
             modelBuilder.Entity("EternalStore.Domain.StoreManagement.Product", b =>
                 {
-                    b.Property<int>("IdCategory")
-                        .HasColumnName("idCategory")
-                        .HasColumnType("int");
-
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnName("idProduct")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -66,12 +64,9 @@ namespace EternalStore.DataAccess.Migrations
                         .HasColumnType("decimal");
 
                     b.Property<int?>("idCategory")
-                        .HasColumnName("Product_idCategory")
                         .HasColumnType("int");
 
-                    b.HasKey("IdCategory", "Id");
-
-                    b.HasAlternateKey("Id");
+                    b.HasKey("Id");
 
                     b.HasIndex("idCategory");
 
