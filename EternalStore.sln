@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "EternalStore.DataAccess\DataAccess.csproj", "{562848EB-DBFD-4607-954B-6081E6B6AD02}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "EternalStore.Web\Api.csproj", "{DC2C1EB5-DF39-4B5A-BFB3-FF7BA7494F93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "EternalStore.Api\Api.csproj", "{DC2C1EB5-DF39-4B5A-BFB3-FF7BA7494F93}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "EternalStore.Domain\Domain.csproj", "{8BAA2F4F-5689-4BFA-97D0-1D874FFE1EA6}"
 EndProject
