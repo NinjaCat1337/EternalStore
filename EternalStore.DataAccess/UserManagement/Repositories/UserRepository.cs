@@ -19,29 +19,36 @@ namespace EternalStore.DataAccess.UserManagement.Repositories
         /// Get all Users from database.
         /// </summary>
         /// <returns>IEnumerable collection of Users.</returns>
-        public IEnumerable<User> GetAll() => dbContext.Users;
+        public async Task<IEnumerable<User>> GetAll() => await dbContext.Users.ToListAsync();
 
         /// <summary>
         /// Get User by predicate from database.
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns>User entity.</returns>
-        public IEnumerable<User> GetBy(Func<User, bool> predicate) => dbContext.Users.Where(predicate).ToList();
+        public async Task<IEnumerable<User>> GetBy(Func<User, bool> predicate)
+        {
+            var result = await dbContext.Users.ToListAsync();
+            return result.Where(predicate);
+        }
 
         /// <summary>
         /// Add User to database.
         /// </summary>
         /// <param name="user">User entity.</param>
-        public void Insert(User user) => dbContext.Users.Add(user);
+        public async Task Insert(User user) => await dbContext.Users.AddAsync(user);
 
         /// <summary>
         /// Modify User/UserInformation/UserAddress/UserNumber in database.
         /// </summary>
-        /// <param name="item">Should be User/UserInformation/UserAddress/UserNumber type.</param>
+        /// <param name="item">Should be User/UserInformation type.</param>
         public void Modify(object item)
         {
-            if (item as User != null || item as UserInformation != null || item as UserAddress != null || item as UserNumber != null)
+            if (item as User != null || item as UserInformation != null)
                 dbContext.Entry(item).State = EntityState.Modified;
+
+            else
+                throw new Exception("Wrong type.");
         }
 
         /// <summary>
@@ -49,13 +56,13 @@ namespace EternalStore.DataAccess.UserManagement.Repositories
         /// </summary>
         /// <param name="id">Id user.</param>
         /// <returns>User entity.</returns>
-        public User Get(int id)
+        public async Task<User> Get(int id)
         {
-            var user = dbContext.Users
+            var user = await dbContext.Users
                 .Include(u => u.UserInformation)
                 .Include(u => u.UserAddresses)
                 .Include(u => u.UserNumbers)
-                .FirstOrDefault(c => c.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (user == null)
                 throw new Exception("User not found.");
@@ -71,6 +78,9 @@ namespace EternalStore.DataAccess.UserManagement.Repositories
         {
             if (item as User != null || item as UserAddress != null || item as UserNumber != null)
                 dbContext.Entry(item).State = EntityState.Deleted;
+
+            else
+                throw new Exception("Wrong type.");
         }
 
         /// <summary>

@@ -1,14 +1,14 @@
-﻿using EternalStore.ApplicationLogic.OrderManagement;
-using EternalStore.ApplicationLogic.OrderManagement.Interfaces;
-using EternalStore.ApplicationLogic.StoreManagement;
-using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
-using EternalStore.ApplicationLogic.UserManagement;
-using EternalStore.ApplicationLogic.UserManagement.Interfaces;
+﻿using EternalStore.Api.Installers;
+using EternalStore.Api.Options;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+
 
 namespace EternalStore.Api
 {
@@ -26,12 +26,7 @@ namespace EternalStore.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = Configuration.GetConnectionString("DefaultConnection");
-
-            services.AddTransient<IStoreManager>(sm => new StoreManager(connection));
-            services.AddTransient<IUserManager>(um => new UserManager(connection));
-            services.AddTransient<IOrderManager>(om => new OrderManager(connection));
-            services.AddMvc();
+            services.InstallServicesInAssembly(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,11 +36,30 @@ namespace EternalStore.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseExceptionHandler(a => a.Run(async context =>
+            {
+                var feature = context.Features.Get<IExceptionHandlerPathFeature>();
+                var exception = feature.Error;
+
+                var result = JsonConvert.SerializeObject(new { error = exception.Message });
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(result);
+            }));
+
+            var swaggerOptions = new SwaggerOptions();
+            Configuration.Bind(nameof(swaggerOptions), swaggerOptions);
+            app.UseSwagger();
+            app.UseSwaggerUI(option =>
+            {
+                option.SwaggerEndpoint(swaggerOptions.UIEndPoint, swaggerOptions.Description);
+                option.RoutePrefix = string.Empty;
+            });
+
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseRouting();
-
-            app.UseAuthorization();
+            app.UseCors(Configuration["CorsHeaderName"]);
 
             app.UseEndpoints(endpoints =>
             {

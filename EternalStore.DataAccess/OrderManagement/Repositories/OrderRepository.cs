@@ -19,20 +19,21 @@ namespace EternalStore.DataAccess.OrderManagement.Repositories
         /// Get all orders.
         /// </summary>
         /// <returns>IEnumerable collection of Orders.</returns>
-        public IEnumerable<Order> GetAll() => dbContext.Orders;
+        public async Task<IEnumerable<Order>> GetAll() => await dbContext.Orders.ToListAsync();
 
         /// <summary>
         /// Get by predicate.
         /// </summary>
         /// <param name="predicate">Predicate.</param>
         /// <returns></returns>
-        public IEnumerable<Order> GetBy(Func<Order, bool> predicate) => dbContext.Orders.Where(predicate).ToList();
+        public async Task<IEnumerable<Order>> GetBy(Func<Order, bool> predicate) =>
+            await dbContext.Orders.Where(predicate).AsQueryable().ToListAsync();
 
         /// <summary>
         /// Create Order in database.
         /// </summary>
         /// <param name="order">Order Entity</param>
-        public void Insert(Order order) => dbContext.Orders.Add(order);
+        public async Task Insert(Order order) => await dbContext.Orders.AddAsync(order);
 
         /// <summary>
         /// Update Order in database.
@@ -42,6 +43,9 @@ namespace EternalStore.DataAccess.OrderManagement.Repositories
         {
             if (item as Order != null)
                 dbContext.Entry(item).State = EntityState.Modified;
+
+            else
+                throw new Exception("Wrong type.");
         }
 
         /// <summary>
@@ -49,9 +53,9 @@ namespace EternalStore.DataAccess.OrderManagement.Repositories
         /// </summary>
         /// <param name="id">Id Order</param>
         /// <returns></returns>
-        public Order Get(int id)
+        public async Task<Order> Get(int id)
         {
-            var order = dbContext.Orders.Include(o => o.OrderItems).FirstOrDefault(o => o.Id == id);
+            var order = await dbContext.Orders.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)
                 throw new Exception("Order not found.");
@@ -67,6 +71,9 @@ namespace EternalStore.DataAccess.OrderManagement.Repositories
         {
             if (item as OrderItem != null || item as Order != null)
                 dbContext.Entry(item).State = EntityState.Modified;
+
+            else
+                throw new Exception("Wrong type.");
         }
 
         /// <summary>

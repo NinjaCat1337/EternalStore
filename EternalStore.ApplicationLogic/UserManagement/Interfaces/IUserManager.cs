@@ -7,8 +7,8 @@ namespace EternalStore.ApplicationLogic.UserManagement.Interfaces
 {
     public interface IUserManager : IDisposable
     {
-        Task Register(UserDTO userDTO);
-        bool Login(UserDTO userDTO);
+        Task<AuthenticationResult> Register(string login, string password, string firstName, string lastName, string email);
+        Task<AuthenticationResult> Login(string login, string password);
         Task AddAddresses(int idUser, IEnumerable<UserAddressDTO> userAddressesDTO);
         Task RemoveAddress(int idUser, int idUserAddress);
         Task AddNumbers(int idUser, IEnumerable<UserNumberDTO> userNumbersDTO);

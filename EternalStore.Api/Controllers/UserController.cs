@@ -1,69 +1,54 @@
-﻿using EternalStore.ApplicationLogic.UserManagement.DTO;
+﻿using EternalStore.Api.Contracts.User.Requests;
+using EternalStore.Api.Contracts.User.Responses;
 using EternalStore.ApplicationLogic.UserManagement.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EternalStore.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/")]
     public class UserController : Controller
     {
         private readonly IUserManager userManager;
         public UserController(IUserManager userManager) => this.userManager = userManager;
 
         // GET: api/<controller>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody]UserRegistrationRequest request)
         {
-            var user = new UserDTO
+            var authResponse = await userManager.Register(request.Login, request.Password, request.FirstName, request.LastName, request.Email);
+
+            if (!authResponse.Success)
             {
-                Login = " ",
-                Password = "1111",
-                UserInformation = new UserInformationDTO
+                return BadRequest(new AuthorizationFailedResponse
                 {
-                    FirstName = "Al",
-                    LastName = "Bl",
-                    Email = "mail"
-                }
-            };
-            try
-            {
-                userManager.Register(user);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
+                    Errors = authResponse.Errors
+                });
             }
 
-            return new string[] { "value1", "value2" };
+            return Ok(new AuthorizationSuccessResponse
+            {
+                Token = authResponse.Token
+            });
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody]UserLoginRequest request)
         {
-            return "value";
-        }
+            var authResponse = await userManager.Login(request.Login, request.Password);
 
-        // POST api/<controller>
-        [HttpPost]
-        public void Post()
-        {
+            if (!authResponse.Success)
+            {
+                return BadRequest(new AuthorizationFailedResponse
+                {
+                    Errors = authResponse.Errors
+                });
+            }
 
-        }
-
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-
-        }
-
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok(new AuthorizationSuccessResponse
+            {
+                Token = authResponse.Token
+            });
         }
     }
 }
