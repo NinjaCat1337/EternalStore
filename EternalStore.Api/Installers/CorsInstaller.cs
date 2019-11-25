@@ -12,7 +12,9 @@ namespace EternalStore.Api.Installers
                 options.AddPolicy(configuration["CorsHeaderName"],
                     builder =>
                     {
-                        builder.WithOrigins(configuration["AllowedOrigins:EternalStore.Client"]);
+                        builder.WithOrigins(configuration["AllowedOrigins:EternalStore.Client"])
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
                     });
             });
         }

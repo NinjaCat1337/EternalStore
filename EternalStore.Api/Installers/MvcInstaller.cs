@@ -1,11 +1,14 @@
 ﻿using EternalStore.Api.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
+
 
 namespace EternalStore.Api.Installers
 {
@@ -13,6 +16,10 @@ namespace EternalStore.Api.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddMvc(option => option.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
             var jwtSettings = new JwtSettings();
             configuration.Bind(nameof(jwtSettings), jwtSettings);
             services.AddSingleton(jwtSettings);
@@ -35,8 +42,6 @@ namespace EternalStore.Api.Installers
                     ValidateLifetime = true
                 };
             });
-
-            services.AddMvc();
 
             services.AddSwaggerGen(c =>
             {

@@ -1,5 +1,6 @@
 ﻿using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace EternalStore.Api.Controllers
 {
@@ -31,15 +32,24 @@ namespace EternalStore.Api.Controllers
         //}
 
         [HttpGet("categories", Name = "GetCategories")]
-        public IActionResult Get() =>
-            Ok(storeManager.GetCategories());
+        public async Task<IActionResult> Get()
+        {
+            var categories = await storeManager.GetCategories();
+            return Ok(categories);
+        }
 
         [HttpGet("categories/{idCategory}/products", Name = "GetProductsForCategory")]
-        public IActionResult Get(int idCategory) =>
-            Ok(storeManager.GetProductsForCategory(idCategory));
+        public async Task<IActionResult> Get(int idCategory)
+        {
+            var productsForCategory = await storeManager.GetProductsForCategory(idCategory);
+            return Ok(productsForCategory);
+        }
 
         [HttpGet("categories/{idCategory}/products/{idProduct}", Name = "GetProduct")]
-        public IActionResult Get(int idCategory, int idProduct) =>
-            Ok(storeManager.GetProduct(idCategory, idProduct));
+        public async Task<IActionResult> Get(int idCategory, int idProduct)
+        {
+            var product = await storeManager.GetProduct(idCategory, idProduct);
+            return Ok(product);
+        }
     }
 }
