@@ -3,5 +3,6 @@
     public class AuthorizationSuccessResponse
     {
         public string Token { get; set; }
+        public int ExpiresInMinutes { get; set; }
     }
 }

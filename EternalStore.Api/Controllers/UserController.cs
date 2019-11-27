@@ -16,19 +16,21 @@ namespace EternalStore.Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]UserRegistrationRequest request)
         {
-            var authResponse = await userManager.Register(request.Login, request.Password, request.FirstName, request.LastName, request.Email);
+            var registrationResponse = await userManager
+                .Register(request.Login, request.Password, request.FirstName, request.LastName, request.Email);
 
-            if (!authResponse.Success)
+            if (!registrationResponse.Success)
             {
-                return BadRequest(new AuthorizationFailedResponse
+                return BadRequest(new RegistrationFailedResponse
                 {
-                    Errors = authResponse.Errors
+                    Success = false,
+                    Errors = registrationResponse.Errors
                 });
             }
 
-            return Ok(new AuthorizationSuccessResponse
+            return Ok(new RegistrationSuccessResponse
             {
-                Token = authResponse.Token
+                Success = true
             });
         }
 
@@ -47,7 +49,8 @@ namespace EternalStore.Api.Controllers
 
             return Ok(new AuthorizationSuccessResponse
             {
-                Token = authResponse.Token
+                Token = authResponse.Token,
+                ExpiresInMinutes = authResponse.ExpiresInMinutes
             });
         }
     }

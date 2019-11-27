@@ -24,17 +24,18 @@ namespace EternalStore.ApplicationLogic.UserManagement
             this.apiKey = apiKey;
         }
 
-        public async Task<AuthenticationResult> Register(string login, string password, string firstName, string lastName, string email)
+        public async Task<RegistrationResult> Register(string login, string password, string firstName, string lastName, string email)
         {
             if (userRepository.GetBy(u => u.Login == login).Result.Any())
-                return new AuthenticationResult
+                return new RegistrationResult
                 {
                     Success = false,
                     Errors = new[] { "User with same login already exists." }
                 };
 
+
             if (password.Length < 6)
-                return new AuthenticationResult
+                return new RegistrationResult
                 {
                     Success = false,
                     Errors = new[] { "Password should contains more than 6 symbols." }
@@ -48,16 +49,12 @@ namespace EternalStore.ApplicationLogic.UserManagement
             }
             catch (Exception ex)
             {
-                return new AuthenticationResult
-                {
-                    Success = false,
-                    Errors = new[] { ex.Message }
-                };
+                throw new Exception(ex.Message);
             }
 
             await userRepository.SaveChangesAsync();
 
-            return GenerateAuthenticationResultForUser(login);
+            return new RegistrationResult { Success = true };
         }
 
         public async Task<AuthenticationResult> Login(string login, string password)
@@ -170,7 +167,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
                     new Claim(JwtRegisteredClaimNames.Sub, login),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
-                Expires = DateTime.Now.AddHours(2),
+                Expires = DateTime.Now.AddHours(4),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -178,7 +175,8 @@ namespace EternalStore.ApplicationLogic.UserManagement
             return new AuthenticationResult
             {
                 Success = true,
-                Token = tokenHandler.WriteToken(token)
+                Token = tokenHandler.WriteToken(token),
+                ExpiresInMinutes = 240
             };
         }
 

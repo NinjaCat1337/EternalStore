@@ -2,11 +2,9 @@
 
 namespace EternalStore.ApplicationLogic.UserManagement.DTO
 {
-    public class AuthenticationResult
+    public class RegistrationResult
     {
         public bool Success { get; set; }
-        public string Token { get; set; }
-        public int ExpiresInMinutes { get; set; }
         public IEnumerable<string> Errors { get; set; }
     }
 }
