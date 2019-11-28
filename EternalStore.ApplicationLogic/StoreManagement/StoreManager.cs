@@ -19,14 +19,16 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         public async Task<CategoryDTO> GetCategoryAsync(int idCategory)
         {
             var category = await storeRepository.Get(idCategory);
-            var test = StoreMapper.FromCategoryToCategoryDTO(category);
-
-            return test;
+            return StoreMapper.FromCategoryToCategoryDTO(category);
         }
 
         public async Task CreateCategoryAsync(string name)
         {
-            await storeRepository.Insert(Category.Insert(name));
+            var category = await storeRepository.GetBy(c => c.Name == name);
+            if (!category.Any())
+                await storeRepository.Insert(Category.Insert(name));
+            else
+                throw new Exception("Category with same name already exists.");
 
             await storeRepository.SaveChangesAsync();
         }
