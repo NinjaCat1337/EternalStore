@@ -1,5 +1,4 @@
 ﻿using EternalStore.Api.Contracts.Store.Requests;
-using EternalStore.Api.Extensions;
 using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -8,7 +7,7 @@ namespace EternalStore.Api.Controllers
 {
     [Route("api/[controller]/")]
     [ApiController]
-    public class StoreController : ApiController
+    public class StoreController : ControllerBase
     {
         private readonly IStoreManager storeManager;
 
