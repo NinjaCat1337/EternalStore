@@ -42,10 +42,17 @@ namespace EternalStore.Api.Controllers
             return Ok();
         }
 
-        [HttpDelete("categories/{idCategory}", Name = "DeleteCategory")]
+        [HttpDelete("categories/{idCategory}", Name = "EnableDisableCategory")]
         public async Task<IActionResult> Delete(int idCategory)
         {
-            await storeManager.DisableCategoryAsync(idCategory);
+            var category = await storeManager.GetCategoryAsync(idCategory);
+
+            if (category.IsEnabled)
+                await storeManager.DisableCategoryAsync(idCategory);
+
+            if (!category.IsEnabled)
+                await storeManager.EnableCategoryAsync(idCategory);
+
             return Ok();
         }
 

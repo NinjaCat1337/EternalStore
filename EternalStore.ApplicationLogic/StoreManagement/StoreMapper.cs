@@ -11,7 +11,8 @@ namespace EternalStore.ApplicationLogic.StoreManagement
             categories.Select(category => new CategoryDTO
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                IsEnabled = category.IsEnabled
             }).ToList();
 
         public static IEnumerable<ProductDTO> FromProductsToProductsDTO(IEnumerable<Product> products) =>
@@ -38,7 +39,8 @@ namespace EternalStore.ApplicationLogic.StoreManagement
             new CategoryDTO
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                IsEnabled = category.IsEnabled
             };
     }
 }

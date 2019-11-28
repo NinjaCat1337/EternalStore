@@ -84,8 +84,10 @@ namespace EternalStore.ApplicationLogic.StoreManagement
             var category = await storeRepository.Get(idCategory);
             var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
 
-            if (product != null)
-                storeRepository.Eliminate(product);
+            if (product == null)
+                throw new Exception("Product not found.");
+
+            storeRepository.Eliminate(product);
 
             await storeRepository.SaveChangesAsync();
         }
