@@ -1,4 +1,6 @@
-﻿using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
+﻿using EternalStore.Api.Contracts.Store.Requests;
+using EternalStore.Api.Extensions;
+using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -6,50 +8,80 @@ namespace EternalStore.Api.Controllers
 {
     [Route("api/[controller]/")]
     [ApiController]
-    public class StoreController : ControllerBase
+    public class StoreController : ApiController
     {
         private readonly IStoreManager storeManager;
 
         public StoreController(IStoreManager storeManager) => this.storeManager = storeManager;
 
-        // GET: api/Store
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    var cat = storeManager.GetCategories();
-        //    var name = cat.FirstOrDefault()?.Name;
-        //    //storeManager.CreateCategory("Beer");
-        //    //storeManager.AddProduct(1, "Bud", "Light 0.5L", 24);
-        //    //storeManager.EditProduct(1, 1002, "Bud 0.5L", "Light", 20);
-        //    //storeManager.RemoveProduct(1, 1002);
-        //    return new string[] { name };
-        //}
-
-        //[HttpGet]
-        //public IEnumerable<CategoryDTO> Get()
-        //{
-        //    return storeManager.GetCategories();
-        //}
-
         [HttpGet("categories", Name = "GetCategories")]
         public async Task<IActionResult> Get()
         {
-            var categories = await storeManager.GetCategories();
+            var categories = await storeManager.GetCategoriesAsync();
             return Ok(categories);
         }
 
-        [HttpGet("categories/{idCategory}/products", Name = "GetProductsForCategory")]
+        [HttpGet("categories/{idCategory}", Name = "GetCategory")]
         public async Task<IActionResult> Get(int idCategory)
         {
-            var productsForCategory = await storeManager.GetProductsForCategory(idCategory);
+            var category = await storeManager.GetCategoryAsync(idCategory);
+            return Ok(category);
+        }
+
+        [HttpPost("categories", Name = "AddCategory")]
+        public async Task<IActionResult> Post([FromBody] CategoryCreationRequest request)
+        {
+            await storeManager.CreateCategoryAsync(request.Name);
+            return Ok();
+        }
+
+        [HttpPut("categories/{idCategory}", Name = "EditCategory")]
+        public async Task<IActionResult> Put([FromBody] CategoryModificationRequest request)
+        {
+            await storeManager.UpdateCategoryAsync(request.IdCategory, request.Name);
+            return Ok();
+        }
+
+        [HttpDelete("categories/{idCategory}", Name = "DeleteCategory")]
+        public async Task<IActionResult> Delete(int idCategory)
+        {
+            await storeManager.DisableCategoryAsync(idCategory);
+            return Ok();
+        }
+
+        [HttpGet("categories/{idCategory}/products", Name = "GetProductsForCategory")]
+        public async Task<IActionResult> GetProductsForCategory(int idCategory)
+        {
+            var productsForCategory = await storeManager.GetProductsForCategoryAsync(idCategory);
             return Ok(productsForCategory);
         }
 
         [HttpGet("categories/{idCategory}/products/{idProduct}", Name = "GetProduct")]
         public async Task<IActionResult> Get(int idCategory, int idProduct)
         {
-            var product = await storeManager.GetProduct(idCategory, idProduct);
+            var product = await storeManager.GetProductAsync(idCategory, idProduct);
             return Ok(product);
+        }
+
+        [HttpPost("categories/{idCategory}/products", Name = "AddProduct")]
+        public async Task<IActionResult> Post([FromBody] ProductCreationRequest request)
+        {
+            await storeManager.AddProductAsync(request.IdCategory, request.Name, request.Description, request.Price);
+            return Ok();
+        }
+
+        [HttpPut("categories/{idCategory}/products/{idProduct}", Name = "EditProduct")]
+        public async Task<IActionResult> Put([FromBody] ProductModificationRequest request)
+        {
+            await storeManager.EditProductAsync(request.IdCategory, request.IdProduct, request.Name, request.Description, request.Price);
+            return Ok();
+        }
+
+        [HttpDelete("categories/{idCategory}/products/{idProduct}", Name = "RemoveProduct")]
+        public async Task<IActionResult> Delete(int idCategory, int idProduct)
+        {
+            await storeManager.RemoveProductAsync(idCategory, idProduct);
+            return Ok();
         }
     }
 }

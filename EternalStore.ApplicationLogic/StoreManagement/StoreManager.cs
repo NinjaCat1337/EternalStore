@@ -16,14 +16,22 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         public StoreManager(string connectionString) =>
             storeRepository ??= new StoreRepository(connectionString);
 
-        public async Task CreateCategory(string name)
+        public async Task<CategoryDTO> GetCategoryAsync(int idCategory)
+        {
+            var category = await storeRepository.Get(idCategory);
+            var test = StoreMapper.FromCategoryToCategoryDTO(category);
+
+            return test;
+        }
+
+        public async Task CreateCategoryAsync(string name)
         {
             await storeRepository.Insert(Category.Insert(name));
 
             await storeRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateCategory(int id, string name)
+        public async Task UpdateCategoryAsync(int id, string name)
         {
             var category = await storeRepository.Get(id);
             category.Modify(name);
@@ -32,7 +40,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
             await storeRepository.SaveChangesAsync();
         }
 
-        public async Task DisableCategory(int id)
+        public async Task DisableCategoryAsync(int id)
         {
             var category = await storeRepository.Get(id);
             category.Disable();
@@ -41,7 +49,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
             await storeRepository.SaveChangesAsync();
         }
 
-        public async Task EnableCategory(int id)
+        public async Task EnableCategoryAsync(int id)
         {
             var category = await storeRepository.Get(id);
             category.Enable();
@@ -50,7 +58,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
             await storeRepository.SaveChangesAsync();
         }
 
-        public async Task AddProduct(int idCategory, string name, string description, decimal price)
+        public async Task AddProductAsync(int idCategory, string name, string description, decimal price)
         {
             var category = await storeRepository.Get(idCategory);
             category.AddProduct(name, description, price);
@@ -59,7 +67,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
             await storeRepository.SaveChangesAsync();
         }
 
-        public async Task EditProduct(int idCategory, int idProduct, string name, string description, decimal price)
+        public async Task EditProductAsync(int idCategory, int idProduct, string name, string description, decimal price)
         {
             var category = await storeRepository.Get(idCategory);
             category.EditProduct(idProduct, name, description, price);
@@ -69,7 +77,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
             await storeRepository.SaveChangesAsync();
         }
 
-        public async Task RemoveProduct(int idCategory, int idProduct)
+        public async Task RemoveProductAsync(int idCategory, int idProduct)
         {
             var category = await storeRepository.Get(idCategory);
             var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
@@ -80,19 +88,19 @@ namespace EternalStore.ApplicationLogic.StoreManagement
             await storeRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<CategoryDTO>> GetCategories()
+        public async Task<IEnumerable<CategoryDTO>> GetCategoriesAsync()
         {
             var categories = await storeRepository.GetAll();
             return StoreMapper.FromCategoriesToCategoriesDTO(categories);
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetProductsForCategory(int idCategory)
+        public async Task<IEnumerable<ProductDTO>> GetProductsForCategoryAsync(int idCategory)
         {
             var category = await storeRepository.Get(idCategory);
             return StoreMapper.FromProductsToProductsDTO(category.Products);
         }
 
-        public async Task<ProductDTO> GetProduct(int idCategory, int idProduct)
+        public async Task<ProductDTO> GetProductAsync(int idCategory, int idProduct)
         {
             var category = await storeRepository.Get(idCategory);
             var product = category.Products.FirstOrDefault(p => p.Id == idProduct);

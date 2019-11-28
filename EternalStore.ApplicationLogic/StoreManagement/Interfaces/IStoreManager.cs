@@ -7,15 +7,16 @@ namespace EternalStore.ApplicationLogic.StoreManagement.Interfaces
 {
     public interface IStoreManager : IDisposable
     {
-        Task CreateCategory(string name);
-        Task UpdateCategory(int idCategory, string name);
-        Task DisableCategory(int idCategory);
-        Task EnableCategory(int idCategory);
-        Task AddProduct(int idCategory, string name, string description, decimal price);
-        Task EditProduct(int idCategory, int idProduct, string name, string description, decimal price);
-        Task RemoveProduct(int idCategory, int idProduct);
-        Task<IEnumerable<CategoryDTO>> GetCategories();
-        Task<IEnumerable<ProductDTO>> GetProductsForCategory(int idCategory);
-        Task<ProductDTO> GetProduct(int idCategory, int idProduct);
+        Task<CategoryDTO> GetCategoryAsync(int idCategory);
+        Task CreateCategoryAsync(string name);
+        Task UpdateCategoryAsync(int idCategory, string name);
+        Task DisableCategoryAsync(int idCategory);
+        Task EnableCategoryAsync(int idCategory);
+        Task AddProductAsync(int idCategory, string name, string description, decimal price);
+        Task EditProductAsync(int idCategory, int idProduct, string name, string description, decimal price);
+        Task RemoveProductAsync(int idCategory, int idProduct);
+        Task<IEnumerable<CategoryDTO>> GetCategoriesAsync();
+        Task<IEnumerable<ProductDTO>> GetProductsForCategoryAsync(int idCategory);
+        Task<ProductDTO> GetProductAsync(int idCategory, int idProduct);
     }
 }

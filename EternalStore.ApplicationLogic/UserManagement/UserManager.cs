@@ -33,7 +33,6 @@ namespace EternalStore.ApplicationLogic.UserManagement
                     Errors = new[] { "User with same login already exists." }
                 };
 
-
             if (password.Length < 6)
                 return new RegistrationResult
                 {

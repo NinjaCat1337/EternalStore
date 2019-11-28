@@ -33,5 +33,12 @@ namespace EternalStore.ApplicationLogic.StoreManagement
                 Price = product.Price,
                 IdCategory = product.Category.Id
             };
+
+        public static CategoryDTO FromCategoryToCategoryDTO(Category category) =>
+            new CategoryDTO
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
     }
 }
