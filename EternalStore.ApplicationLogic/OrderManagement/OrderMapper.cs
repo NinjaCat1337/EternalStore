@@ -30,7 +30,16 @@ namespace EternalStore.ApplicationLogic.OrderManagement
                 DeliveryDate = order.DeliveryDate,
                 OrderDate = order.OrderDate,
                 IsApproved = order.IsApproved,
-                IsDelivered = order.IsDelivered
+                IsDelivered = order.IsDelivered,
+                OrderItems = FromOrderItemsToOrderItemsDTO(order.OrderItems).ToList()
             }).ToList();
+
+        public static IEnumerable<OrderItemDTO> FromOrderItemsToOrderItemsDTO(IEnumerable<OrderItem> orderItems) =>
+            orderItems.Select(orderItem => new OrderItemDTO
+            {
+                Id = orderItem.Id,
+                Qty = orderItem.Qty,
+                IdProduct = orderItem.Product.Id
+            });
     }
 }

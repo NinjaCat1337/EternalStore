@@ -18,15 +18,15 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public async Task<CategoryDTO> GetCategoryAsync(int idCategory)
         {
-            var category = await storeRepository.Get(idCategory);
+            var category = await storeRepository.GetAsync(idCategory);
             return StoreMapper.FromCategoryToCategoryDTO(category);
         }
 
         public async Task CreateCategoryAsync(string name)
         {
-            var category = await storeRepository.GetBy(c => c.Name == name);
+            var category = await storeRepository.GetByAsync(c => c.Name == name);
             if (!category.Any())
-                await storeRepository.Insert(Category.Insert(name));
+                await storeRepository.InsertAsync(Category.Insert(name));
             else
                 throw new Exception("Category with same name already exists.");
 
@@ -35,7 +35,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public async Task UpdateCategoryAsync(int id, string name)
         {
-            var category = await storeRepository.Get(id);
+            var category = await storeRepository.GetAsync(id);
             category.Modify(name);
             storeRepository.Modify(category);
 
@@ -44,7 +44,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public async Task DisableCategoryAsync(int id)
         {
-            var category = await storeRepository.Get(id);
+            var category = await storeRepository.GetAsync(id);
             category.Disable();
             storeRepository.Modify(category);
 
@@ -53,7 +53,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public async Task EnableCategoryAsync(int id)
         {
-            var category = await storeRepository.Get(id);
+            var category = await storeRepository.GetAsync(id);
             category.Enable();
             storeRepository.Modify(category);
 
@@ -62,7 +62,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public async Task AddProductAsync(int idCategory, string name, string description, decimal price)
         {
-            var category = await storeRepository.Get(idCategory);
+            var category = await storeRepository.GetAsync(idCategory);
             category.AddProduct(name, description, price);
             storeRepository.Modify(category);
 
@@ -71,7 +71,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public async Task EditProductAsync(int idCategory, int idProduct, string name, string description, decimal price)
         {
-            var category = await storeRepository.Get(idCategory);
+            var category = await storeRepository.GetAsync(idCategory);
             category.EditProduct(idProduct, name, description, price);
             var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
             storeRepository.Modify(product);
@@ -81,7 +81,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public async Task RemoveProductAsync(int idCategory, int idProduct)
         {
-            var category = await storeRepository.Get(idCategory);
+            var category = await storeRepository.GetAsync(idCategory);
             var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
 
             if (product == null)
@@ -94,19 +94,19 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public async Task<IEnumerable<CategoryDTO>> GetCategoriesAsync()
         {
-            var categories = await storeRepository.GetAll();
+            var categories = await storeRepository.GetAllAsync();
             return StoreMapper.FromCategoriesToCategoriesDTO(categories);
         }
 
         public async Task<IEnumerable<ProductDTO>> GetProductsForCategoryAsync(int idCategory)
         {
-            var category = await storeRepository.Get(idCategory);
+            var category = await storeRepository.GetAsync(idCategory);
             return StoreMapper.FromProductsToProductsDTO(category.Products);
         }
 
         public async Task<ProductDTO> GetProductAsync(int idCategory, int idProduct)
         {
-            var category = await storeRepository.Get(idCategory);
+            var category = await storeRepository.GetAsync(idCategory);
             var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
 
             if (product == null)

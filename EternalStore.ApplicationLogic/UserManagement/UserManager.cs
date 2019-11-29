@@ -26,7 +26,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
 
         public async Task<RegistrationResult> Register(string login, string password, string firstName, string lastName, string email)
         {
-            if (userRepository.GetBy(u => u.Login == login).Result.Any())
+            if (userRepository.GetByAsync(u => u.Login == login).Result.Any())
                 return new RegistrationResult
                 {
                     Success = false,
@@ -44,7 +44,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
             {
                 var user = User.Insert(login, PasswordHashing.GetMd5Hash(password), firstName, lastName, email);
 
-                await userRepository.Insert(user);
+                await userRepository.InsertAsync(user);
             }
             catch (Exception ex)
             {
@@ -58,7 +58,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
 
         public async Task<AuthenticationResult> Login(string login, string password)
         {
-            var findUserByLogin = await userRepository.GetBy(u => u.Login == login);
+            var findUserByLogin = await userRepository.GetByAsync(u => u.Login == login);
             var user = findUserByLogin.FirstOrDefault();
 
             if (user == null)
@@ -82,7 +82,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
 
         public async Task AddAddresses(int idUser, IEnumerable<UserAddressDTO> userAddressesDTO)
         {
-            var user = await userRepository.Get(idUser);
+            var user = await userRepository.GetAsync(idUser);
 
             foreach (var userAddress in userAddressesDTO)
             {
@@ -96,7 +96,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
 
         public async Task RemoveAddress(int idUser, int idUserAddress)
         {
-            var user = await userRepository.Get(idUser);
+            var user = await userRepository.GetAsync(idUser);
             userRepository.Eliminate(user.UserAddresses.FirstOrDefault(ua => ua.Id == idUserAddress));
 
             await userRepository.SaveChangesAsync();
@@ -104,7 +104,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
 
         public async Task AddNumbers(int idUser, IEnumerable<UserNumberDTO> userNumbersDTO)
         {
-            var user = await userRepository.Get(idUser);
+            var user = await userRepository.GetAsync(idUser);
 
             foreach (var userNumber in userNumbersDTO)
             {
@@ -118,7 +118,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
 
         public async Task RemoveNumber(int idUser, int idUserNumber)
         {
-            var user = await userRepository.Get(idUser);
+            var user = await userRepository.GetAsync(idUser);
             userRepository.Eliminate(user.UserNumbers.FirstOrDefault(un => un.Id == idUserNumber));
 
             await userRepository.SaveChangesAsync();
@@ -126,7 +126,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
 
         public async Task Rename(int idUser, string login)
         {
-            var user = await userRepository.Get(idUser);
+            var user = await userRepository.GetAsync(idUser);
             user.Rename(login);
             userRepository.Modify(user);
 
@@ -135,7 +135,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
 
         public async Task ChangePassword(int idUser, string password)
         {
-            var user = await userRepository.Get(idUser);
+            var user = await userRepository.GetAsync(idUser);
             user.ModifyPassword(PasswordHashing.GetMd5Hash(password));
             userRepository.Modify(user);
 
@@ -144,7 +144,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
 
         public async Task ModifyUserInformation(int idUser, string firstName, string lastName, string email)
         {
-            var user = await userRepository.Get(idUser);
+            var user = await userRepository.GetAsync(idUser);
             user.ModifyUserInformation(firstName, lastName, email);
             userRepository.Modify(user.UserInformation);
 

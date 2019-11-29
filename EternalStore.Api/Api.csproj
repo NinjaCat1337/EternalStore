@@ -34,6 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contracts\Order\Responses\" />
+    <Folder Include="Contracts\Order\Requests\" />
     <Folder Include="Contracts\Store\Responses\" />
   </ItemGroup>
 

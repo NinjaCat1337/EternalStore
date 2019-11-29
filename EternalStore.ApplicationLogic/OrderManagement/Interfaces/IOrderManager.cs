@@ -13,7 +13,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement.Interfaces
         Task ModifyOrderAsync(OrderDTO orderDTO);
         Task SetApprovedAsync(int idOrder);
         Task SetDeliveredAsync(int idOrder);
-        Task AddOrderItemAsync(int idOrder, string name, int qty);
+        Task AddOrderItemAsync(int idOrder, int idCategory, int idProduct, int qty);
         Task RemoveOrderItemAsync(int idOrder, int idOrderItem);
     }
 }

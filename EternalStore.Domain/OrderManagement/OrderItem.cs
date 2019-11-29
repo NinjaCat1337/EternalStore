@@ -6,6 +6,7 @@ namespace EternalStore.Domain.OrderManagement
 {
     public class OrderItem : Entity
     {
+
         public virtual Product Product { get; protected set; }
         public int Qty { get; protected set; }
 
