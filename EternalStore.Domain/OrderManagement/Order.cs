@@ -1,4 +1,5 @@
 ﻿using EternalStore.Domain.Models;
+using EternalStore.Domain.StoreManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace EternalStore.Domain.OrderManagement
 
         public void SetDelivered() => IsDelivered = true;
 
-        public void AddOrderItem(string name, int qty) => orderItems.Add(OrderItem.Insert(this, name, qty));
+        public void AddOrderItem(Product product, int qty) => orderItems.Add(OrderItem.Insert(this, product, qty));
 
         private static void Validate(DateTime deliveryDate, string customerNumber, string customerAddress, string additionalInformation)
         {

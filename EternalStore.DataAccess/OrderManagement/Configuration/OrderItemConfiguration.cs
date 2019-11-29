@@ -15,10 +15,10 @@ namespace EternalStore.DataAccess.OrderManagement.Configuration
                 .HasColumnType("int")
                 .IsRequired();
 
-            builder.Property(p => p.Name)
-                .HasColumnName("name")
-                .HasColumnType("nvarchar(50)")
-                .IsRequired();
+            builder.HasOne(p => p.Product)
+                .WithMany(p => p.OrderItems)
+                .HasForeignKey("idProduct")
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(p => p.Qty)
                 .HasColumnName("qty")

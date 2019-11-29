@@ -1,5 +1,7 @@
 ﻿using EternalStore.Domain.Models;
+using EternalStore.Domain.OrderManagement;
 using System;
+using System.Collections.Generic;
 
 namespace EternalStore.Domain.StoreManagement
 {
@@ -9,6 +11,8 @@ namespace EternalStore.Domain.StoreManagement
         public string Description { get; protected set; }
         public decimal Price { get; protected set; }
         public virtual Category Category { get; protected set; }
+
+        public IEnumerable<OrderItem> OrderItems { get; set; }
 
         protected Product() { }
 

@@ -1,16 +1,19 @@
 ﻿using EternalStore.ApplicationLogic.OrderManagement.DTO;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EternalStore.ApplicationLogic.OrderManagement.Interfaces
 {
     public interface IOrderManager : IDisposable
     {
-        Task CreateOrder(OrderDTO orderDTO);
-        Task ModifyOrder(OrderDTO orderDTO);
-        Task SetApproved(int id);
-        Task SetDelivered(int id);
-        Task AddOrderItem(int idOrder, string name, int qty);
-        Task RemoveOrderItem(int idOrder, int idOrderItem);
+        Task<OrderDTO> GetOrderAsync(int idOrder);
+        Task<IEnumerable<OrderDTO>> GetAllOrdersAsync();
+        Task CreateOrderAsync(OrderDTO orderDTO);
+        Task ModifyOrderAsync(OrderDTO orderDTO);
+        Task SetApprovedAsync(int idOrder);
+        Task SetDeliveredAsync(int idOrder);
+        Task AddOrderItemAsync(int idOrder, string name, int qty);
+        Task RemoveOrderItemAsync(int idOrder, int idOrderItem);
     }
 }
