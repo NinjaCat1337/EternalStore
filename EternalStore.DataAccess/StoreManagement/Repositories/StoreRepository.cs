@@ -19,21 +19,21 @@ namespace EternalStore.DataAccess.StoreManagement.Repositories
         /// Get all categories from database.
         /// </summary>
         /// <returns>IEnumerable collection of Categories.</returns>
-        public async Task<IEnumerable<Category>> GetAll() => await dbContext.Categories.ToListAsync();
+        public async Task<IEnumerable<Category>> GetAllAsync() => await dbContext.Categories.ToListAsync();
 
         /// <summary>
         /// Get Categories by predicate from database.
         /// </summary>
         /// <param name="predicate">Predicate.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Category>> GetBy(Func<Category, bool> predicate) =>
+        public async Task<IEnumerable<Category>> GetByAsync(Func<Category, bool> predicate) =>
             await dbContext.Categories.Where(predicate).AsQueryable().ToListAsync();
 
         /// <summary>
         /// Add Category to database.
         /// </summary>
         /// <param name="category">Category entity.</param>
-        public async Task Insert(Category category) => await dbContext.Categories.AddAsync(category);
+        public async Task InsertAsync(Category category) => await dbContext.Categories.AddAsync(category);
 
         /// <summary>
         /// Update Product or Category in database.
@@ -53,7 +53,7 @@ namespace EternalStore.DataAccess.StoreManagement.Repositories
         /// </summary>
         /// <param name="id">Id Category.</param>
         /// <returns></returns>
-        public async Task<Category> Get(int id)
+        public async Task<Category> GetAsync(int id)
         {
             var category = await dbContext.Categories.Include(c => c.Products).FirstOrDefaultAsync(c => c.Id == id);
 

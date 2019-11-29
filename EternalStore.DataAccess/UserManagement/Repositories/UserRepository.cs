@@ -19,14 +19,14 @@ namespace EternalStore.DataAccess.UserManagement.Repositories
         /// Get all Users from database.
         /// </summary>
         /// <returns>IEnumerable collection of Users.</returns>
-        public async Task<IEnumerable<User>> GetAll() => await dbContext.Users.ToListAsync();
+        public async Task<IEnumerable<User>> GetAllAsync() => await dbContext.Users.ToListAsync();
 
         /// <summary>
         /// Get User by predicate from database.
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns>User entity.</returns>
-        public async Task<IEnumerable<User>> GetBy(Func<User, bool> predicate)
+        public async Task<IEnumerable<User>> GetByAsync(Func<User, bool> predicate)
         {
             var result = await dbContext.Users.ToListAsync();
             return result.Where(predicate);
@@ -36,7 +36,7 @@ namespace EternalStore.DataAccess.UserManagement.Repositories
         /// Add User to database.
         /// </summary>
         /// <param name="user">User entity.</param>
-        public async Task Insert(User user) => await dbContext.Users.AddAsync(user);
+        public async Task InsertAsync(User user) => await dbContext.Users.AddAsync(user);
 
         /// <summary>
         /// Modify User/UserInformation/UserAddress/UserNumber in database.
@@ -56,7 +56,7 @@ namespace EternalStore.DataAccess.UserManagement.Repositories
         /// </summary>
         /// <param name="id">Id user.</param>
         /// <returns>User entity.</returns>
-        public async Task<User> Get(int id)
+        public async Task<User> GetAsync(int id)
         {
             var user = await dbContext.Users
                 .Include(u => u.UserInformation)

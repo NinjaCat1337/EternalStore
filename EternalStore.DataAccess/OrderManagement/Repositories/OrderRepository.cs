@@ -19,21 +19,21 @@ namespace EternalStore.DataAccess.OrderManagement.Repositories
         /// Get all orders.
         /// </summary>
         /// <returns>IEnumerable collection of Orders.</returns>
-        public async Task<IEnumerable<Order>> GetAll() => await dbContext.Orders.ToListAsync();
+        public async Task<IEnumerable<Order>> GetAllAsync() => await dbContext.Orders.ToListAsync();
 
         /// <summary>
         /// Get by predicate.
         /// </summary>
         /// <param name="predicate">Predicate.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Order>> GetBy(Func<Order, bool> predicate) =>
+        public async Task<IEnumerable<Order>> GetByAsync(Func<Order, bool> predicate) =>
             await dbContext.Orders.Where(predicate).AsQueryable().ToListAsync();
 
         /// <summary>
         /// Create Order in database.
         /// </summary>
         /// <param name="order">Order Entity</param>
-        public async Task Insert(Order order) => await dbContext.Orders.AddAsync(order);
+        public async Task InsertAsync(Order order) => await dbContext.Orders.AddAsync(order);
 
         /// <summary>
         /// Update Order in database.
@@ -53,9 +53,12 @@ namespace EternalStore.DataAccess.OrderManagement.Repositories
         /// </summary>
         /// <param name="id">Id Order</param>
         /// <returns></returns>
-        public async Task<Order> Get(int id)
+        public async Task<Order> GetAsync(int id)
         {
-            var order = await dbContext.Orders.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
+            var order = await dbContext.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)
                 throw new Exception("Order not found.");
