@@ -30,14 +30,14 @@ namespace EternalStore.ApplicationLogic.UserManagement
                 return new RegistrationResult
                 {
                     Success = false,
-                    Errors = new[] { "User with same login already exists." }
+                    Error = "User with same login already exists."
                 };
 
             if (password.Length < 6)
                 return new RegistrationResult
                 {
                     Success = false,
-                    Errors = new[] { "Password should contains more than 6 symbols." }
+                    Error = "Password should contains more than 6 symbols."
                 };
 
             try
@@ -65,7 +65,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
                 return new AuthenticationResult
                 {
                     Success = false,
-                    Errors = new[] { "User with this login is not exist." }
+                    Error = "User with this login is not exist."
                 };
 
             if (user.Password != PasswordHashing.GetMd5Hash(password))
@@ -73,7 +73,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
                 return new AuthenticationResult
                 {
                     Success = false,
-                    Errors = new[] { "Wrong password." }
+                    Error = "Wrong password."
                 };
             }
 

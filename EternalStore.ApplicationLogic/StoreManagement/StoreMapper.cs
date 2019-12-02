@@ -10,7 +10,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         public static IEnumerable<CategoryDTO> FromCategoriesToCategoriesDTO(IEnumerable<Category> categories) =>
             categories.Select(category => new CategoryDTO
             {
-                Id = category.Id,
+                IdCategory = category.Id,
                 Name = category.Name,
                 IsEnabled = category.IsEnabled
             });
@@ -18,7 +18,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         public static IEnumerable<ProductDTO> FromProductsToProductsDTO(IEnumerable<Product> products) =>
             products.Select(product => new ProductDTO
             {
-                Id = product.Id,
+                IdProduct = product.Id,
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
@@ -28,7 +28,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         public static ProductDTO FromProductToProductDTO(Product product) =>
             new ProductDTO
             {
-                Id = product.Id,
+                IdProduct = product.Id,
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
@@ -38,7 +38,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         public static CategoryDTO FromCategoryToCategoryDTO(Category category) =>
             new CategoryDTO
             {
-                Id = category.Id,
+                IdCategory = category.Id,
                 Name = category.Name,
                 IsEnabled = category.IsEnabled
             };

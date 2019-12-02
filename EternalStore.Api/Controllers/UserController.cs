@@ -24,7 +24,7 @@ namespace EternalStore.Api.Controllers
                 return BadRequest(new RegistrationFailedResponse
                 {
                     Success = false,
-                    Errors = registrationResponse.Errors
+                    Error = registrationResponse.Error
                 });
             }
 
@@ -43,12 +43,13 @@ namespace EternalStore.Api.Controllers
             {
                 return BadRequest(new AuthorizationFailedResponse
                 {
-                    Errors = authResponse.Errors
+                    Error = authResponse.Error
                 });
             }
 
             return Ok(new AuthorizationSuccessResponse
             {
+                Success = true,
                 Token = authResponse.Token,
                 ExpiresInMinutes = authResponse.ExpiresInMinutes
             });

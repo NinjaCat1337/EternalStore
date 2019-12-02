@@ -9,6 +9,7 @@ namespace EternalStore.Domain.OrderManagement
     public class Order : Entity
     {
         public bool IsApproved { get; protected set; }
+        public string CustomerName { get; set; }
         public DateTime OrderDate { get; protected set; }
         public DateTime DeliveryDate { get; protected set; }
         public string CustomerNumber { get; protected set; }
@@ -21,10 +22,14 @@ namespace EternalStore.Domain.OrderManagement
 
         protected Order() { }
 
-        public static Order Insert(DateTime deliveryDate, string customerNumber, string customerAddress, string additionalInformation) =>
-            new Order
+        public static Order Insert(DateTime deliveryDate, string customerName, string customerNumber, string customerAddress, string additionalInformation)
+        {
+            Validate(deliveryDate, customerName, customerNumber, customerAddress, additionalInformation);
+
+            return new Order
             {
                 IsApproved = false,
+                CustomerName = customerName,
                 OrderDate = DateTime.Now,
                 DeliveryDate = deliveryDate,
                 CustomerNumber = customerNumber,
@@ -32,11 +37,13 @@ namespace EternalStore.Domain.OrderManagement
                 AdditionalInformation = additionalInformation,
                 IsDelivered = false
             };
+        }
 
-        public void Modify(DateTime deliveryDate, string customerAddress, string customerNumber, string additionalInformation)
+        public void Modify(DateTime deliveryDate, string customerName, string customerAddress, string customerNumber, string additionalInformation)
         {
-            Validate(deliveryDate, customerNumber, customerAddress, additionalInformation);
+            Validate(deliveryDate, customerName, customerNumber, customerAddress, additionalInformation);
 
+            CustomerName = customerName;
             DeliveryDate = deliveryDate;
             CustomerAddress = customerAddress;
             CustomerNumber = customerNumber;
@@ -49,9 +56,15 @@ namespace EternalStore.Domain.OrderManagement
 
         public void AddOrderItem(Product product, int qty) => orderItems.Add(OrderItem.Insert(this, product, qty));
 
-        private static void Validate(DateTime deliveryDate, string customerNumber, string customerAddress, string additionalInformation)
+        private static void Validate(DateTime deliveryDate, string customerName, string customerNumber, string customerAddress, string additionalInformation)
         {
-            if (deliveryDate == null || deliveryDate > DateTime.Now)
+            if (customerName.Length > 50)
+                throw new Exception("Customer Name is too long.");
+
+            if (string.IsNullOrWhiteSpace(customerName))
+                throw new Exception("Customer Name can't be empty.");
+
+            if (deliveryDate == null || deliveryDate < DateTime.Now)
                 throw new Exception("Wrong delivery date.");
 
             if (string.IsNullOrWhiteSpace(customerNumber) || customerNumber.Length > 30)

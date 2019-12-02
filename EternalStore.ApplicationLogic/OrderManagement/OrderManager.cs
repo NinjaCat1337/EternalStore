@@ -3,6 +3,7 @@ using EternalStore.ApplicationLogic.OrderManagement.Interfaces;
 using EternalStore.DataAccess.OrderManagement.Repositories;
 using EternalStore.DataAccess.StoreManagement.Repositories;
 using EternalStore.Domain.OrderManagement;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,28 +35,39 @@ namespace EternalStore.ApplicationLogic.OrderManagement
             return OrderMapper.FromOrdersToOrdersDTO(orders);
         }
 
-        public async Task CreateOrderAsync(OrderDTO orderDTO)
+        public async Task<int> CreateOrderAsync(OrderDTO orderDTO)
         {
-            var order = Order.Insert(orderDTO.DeliveryDate, orderDTO.CustomerNumber, orderDTO.CustomerAddress, orderDTO.AdditionalInformation);
+            var order = Order.Insert(orderDTO.DeliveryDate, orderDTO.CustomerName, orderDTO.CustomerNumber, orderDTO.CustomerAddress, orderDTO.AdditionalInformation);
             await orderRepository.InsertAsync(order);
 
-            foreach (var orderItem in orderDTO.OrderItems)
-            {
-                var category = await storeRepository.GetAsync(orderItem.IdCategory);
-                var product = category.Products.FirstOrDefault(p => p.Id == orderItem.IdProduct);
-                order.AddOrderItem(product, orderItem.Qty);
-            }
 
+            //foreach (var orderItem in orderDTO.OrderItems)
+            //{
+            //    var category = await storeRepository.GetAsync(orderItem.IdCategory);
+            //    var product = category.Products.FirstOrDefault(p => p.Id == orderItem.IdProduct);
+            //    order.AddOrderItem(product, orderItem.Qty);
+            //}
+
+            //orderRepository.Modify(order);
+
+            await orderRepository.SaveChangesAsync();
+
+            return order.Id;
+        }
+
+        public async Task UpdateOrderAsync(OrderDTO orderDTO)
+        {
+            var order = await orderRepository.GetAsync(orderDTO.Id);
+            order.Modify(orderDTO.DeliveryDate, orderDTO.CustomerName, orderDTO.CustomerAddress, orderDTO.CustomerNumber, orderDTO.AdditionalInformation);
             orderRepository.Modify(order);
 
             await orderRepository.SaveChangesAsync();
         }
 
-        public async Task ModifyOrderAsync(OrderDTO orderDTO)
+        public async Task DeleteOrderAsync(int idOrder)
         {
-            var order = await orderRepository.GetAsync(orderDTO.Id);
-            order.Modify(orderDTO.DeliveryDate, orderDTO.CustomerAddress, orderDTO.CustomerNumber, orderDTO.AdditionalInformation);
-            orderRepository.Modify(order);
+            var order = await orderRepository.GetAsync(idOrder);
+            orderRepository.Eliminate(order);
 
             await orderRepository.SaveChangesAsync();
         }
@@ -80,13 +92,21 @@ namespace EternalStore.ApplicationLogic.OrderManagement
 
         public async Task AddOrderItemAsync(int idOrder, int idCategory, int idProduct, int qty)
         {
-            var order = await orderRepository.GetAsync(idOrder);
-            var category = await storeRepository.GetAsync(idCategory);
-            var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
-            order.AddOrderItem(product, qty);
-            orderRepository.Modify(category);
+            try
+            {
+                var order = await orderRepository.GetAsync(idOrder);
+                var category = await storeRepository.GetAsync(idCategory);
+                var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
+                order.AddOrderItem(product, qty);
+                orderRepository.Modify(order);
+                await orderRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
-            await orderRepository.SaveChangesAsync();
+
         }
 
         public async Task RemoveOrderItemAsync(int idOrder, int idOrderItem)

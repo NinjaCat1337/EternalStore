@@ -41,11 +41,12 @@ namespace EternalStore.DataAccess.OrderManagement.Repositories
         /// <param name="item">Should be an Order type.</param>
         public void Modify(object item)
         {
-            if (item as Order != null)
-                dbContext.Entry(item).State = EntityState.Modified;
+            //if (item as Order != null)
+            //    dbContext.Entry(item).State = EntityState.Modified;
 
-            else
-                throw new Exception("Wrong type.");
+            //else
+            //    throw new Exception("Wrong type.");
+            dbContext.Orders.Update((Order)item);
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace EternalStore.DataAccess.OrderManagement.Repositories
         {
             var order = await dbContext.Orders
                 .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Product)
+                //.ThenInclude(oi => oi.Product)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)

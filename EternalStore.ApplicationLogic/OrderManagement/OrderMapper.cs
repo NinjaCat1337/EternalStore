@@ -11,19 +11,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement
             new OrderDTO
             {
                 Id = order.Id,
-                AdditionalInformation = order.AdditionalInformation,
-                CustomerAddress = order.CustomerAddress,
-                CustomerNumber = order.CustomerNumber,
-                DeliveryDate = order.DeliveryDate,
-                OrderDate = order.OrderDate,
-                IsApproved = order.IsApproved,
-                IsDelivered = order.IsDelivered
-            };
-
-        public static IEnumerable<OrderDTO> FromOrdersToOrdersDTO(IEnumerable<Order> orders) =>
-            orders.Select(order => new OrderDTO
-            {
-                Id = order.Id,
+                CustomerName = order.CustomerName,
                 AdditionalInformation = order.AdditionalInformation,
                 CustomerAddress = order.CustomerAddress,
                 CustomerNumber = order.CustomerNumber,
@@ -32,7 +20,22 @@ namespace EternalStore.ApplicationLogic.OrderManagement
                 IsApproved = order.IsApproved,
                 IsDelivered = order.IsDelivered,
                 OrderItems = FromOrderItemsToOrderItemsDTO(order.OrderItems).ToList()
-            }).ToList();
+            };
+
+        public static IEnumerable<OrderDTO> FromOrdersToOrdersDTO(IEnumerable<Order> orders) =>
+            orders.Select(order => new OrderDTO
+            {
+                Id = order.Id,
+                CustomerName = order.CustomerName,
+                AdditionalInformation = order.AdditionalInformation,
+                CustomerAddress = order.CustomerAddress,
+                CustomerNumber = order.CustomerNumber,
+                DeliveryDate = order.DeliveryDate,
+                OrderDate = order.OrderDate,
+                IsApproved = order.IsApproved,
+                IsDelivered = order.IsDelivered,
+                OrderItems = FromOrderItemsToOrderItemsDTO(order.OrderItems).ToList()
+            });
 
         public static IEnumerable<OrderItemDTO> FromOrderItemsToOrderItemsDTO(IEnumerable<OrderItem> orderItems) =>
             orderItems.Select(orderItem => new OrderItemDTO

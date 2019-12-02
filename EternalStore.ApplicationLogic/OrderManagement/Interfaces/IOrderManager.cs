@@ -9,8 +9,9 @@ namespace EternalStore.ApplicationLogic.OrderManagement.Interfaces
     {
         Task<OrderDTO> GetOrderAsync(int idOrder);
         Task<IEnumerable<OrderDTO>> GetAllOrdersAsync();
-        Task CreateOrderAsync(OrderDTO orderDTO);
-        Task ModifyOrderAsync(OrderDTO orderDTO);
+        Task<int> CreateOrderAsync(OrderDTO orderDTO);
+        Task UpdateOrderAsync(OrderDTO orderDTO);
+        Task DeleteOrderAsync(int idOrder);
         Task SetApprovedAsync(int idOrder);
         Task SetDeliveredAsync(int idOrder);
         Task AddOrderItemAsync(int idOrder, int idCategory, int idProduct, int qty);

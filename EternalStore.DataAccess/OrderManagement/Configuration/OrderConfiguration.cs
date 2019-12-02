@@ -30,6 +30,11 @@ namespace EternalStore.DataAccess.OrderManagement.Configuration
                 .HasColumnType("datetime2")
                 .IsRequired();
 
+            builder.Property(p => p.CustomerName)
+                .HasColumnName("customerName")
+                .HasColumnType("nvarchar(50)")
+                .IsRequired();
+
             builder.Property(p => p.CustomerNumber)
                 .HasColumnName("customerNumber")
                 .HasColumnType("nvarchar(30)")
@@ -56,7 +61,7 @@ namespace EternalStore.DataAccess.OrderManagement.Configuration
             builder.HasMany(o => o.OrderItems)
                 .WithOne(oi => oi.Order)
                 .HasForeignKey("idOrder")
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
