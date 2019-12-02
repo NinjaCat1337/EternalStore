@@ -10,7 +10,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement
         public static OrderDTO FromOrderToOrderDTO(Order order) =>
             new OrderDTO
             {
-                Id = order.Id,
+                IdOrder = order.Id,
                 CustomerName = order.CustomerName,
                 AdditionalInformation = order.AdditionalInformation,
                 CustomerAddress = order.CustomerAddress,
@@ -25,7 +25,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement
         public static IEnumerable<OrderDTO> FromOrdersToOrdersDTO(IEnumerable<Order> orders) =>
             orders.Select(order => new OrderDTO
             {
-                Id = order.Id,
+                IdOrder = order.Id,
                 CustomerName = order.CustomerName,
                 AdditionalInformation = order.AdditionalInformation,
                 CustomerAddress = order.CustomerAddress,
@@ -40,7 +40,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement
         public static IEnumerable<OrderItemDTO> FromOrderItemsToOrderItemsDTO(IEnumerable<OrderItem> orderItems) =>
             orderItems.Select(orderItem => new OrderItemDTO
             {
-                Id = orderItem.Id,
+                IdOrderItem = orderItem.Id,
                 Qty = orderItem.Qty,
                 IdProduct = orderItem.Product.Id
             });

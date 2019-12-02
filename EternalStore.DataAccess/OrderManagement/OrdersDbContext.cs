@@ -1,7 +1,6 @@
 ﻿using EternalStore.DataAccess.OrderManagement.Configuration;
 using EternalStore.DataAccess.StoreManagement.Configuration;
 using EternalStore.Domain.OrderManagement;
-using EternalStore.Domain.StoreManagement;
 using Microsoft.EntityFrameworkCore;
 
 namespace EternalStore.DataAccess.OrderManagement
@@ -11,7 +10,6 @@ namespace EternalStore.DataAccess.OrderManagement
         private readonly string connectionString;
 
         public DbSet<Order> Orders { get; set; }
-        private DbSet<Category> Categories { get; set; }
 
         public OrdersDbContext(string connectionString)
         {

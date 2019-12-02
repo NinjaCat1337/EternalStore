@@ -45,7 +45,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement
 
         public async Task UpdateOrderAsync(OrderDTO orderDTO)
         {
-            var order = await orderRepository.GetAsync(orderDTO.Id);
+            var order = await orderRepository.GetAsync(orderDTO.IdOrder);
             order.Modify(orderDTO.DeliveryDate, orderDTO.CustomerName, orderDTO.CustomerAddress, orderDTO.CustomerNumber, orderDTO.AdditionalInformation);
             orderRepository.Modify(order);
 

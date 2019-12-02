@@ -5,7 +5,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement.DTO
 {
     public class OrderDTO
     {
-        public int Id { get; set; }
+        public int IdOrder { get; set; }
         public bool IsApproved { get; set; }
         public string CustomerName { get; set; }
         public DateTime OrderDate { get; set; }

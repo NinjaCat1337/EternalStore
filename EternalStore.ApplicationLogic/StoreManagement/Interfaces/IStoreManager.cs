@@ -8,7 +8,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement.Interfaces
     public interface IStoreManager : IDisposable
     {
         Task<CategoryDTO> GetCategoryAsync(int idCategory);
-        Task CreateCategoryAsync(string name);
+        Task<int> CreateCategoryAsync(string name);
         Task UpdateCategoryAsync(int idCategory, string name);
         Task DisableCategoryAsync(int idCategory);
         Task EnableCategoryAsync(int idCategory);
