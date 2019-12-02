@@ -3,7 +3,6 @@ using EternalStore.ApplicationLogic.OrderManagement.Interfaces;
 using EternalStore.DataAccess.OrderManagement.Repositories;
 using EternalStore.DataAccess.StoreManagement.Repositories;
 using EternalStore.Domain.OrderManagement;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,17 +38,6 @@ namespace EternalStore.ApplicationLogic.OrderManagement
         {
             var order = Order.Insert(orderDTO.DeliveryDate, orderDTO.CustomerName, orderDTO.CustomerNumber, orderDTO.CustomerAddress, orderDTO.AdditionalInformation);
             await orderRepository.InsertAsync(order);
-
-
-            //foreach (var orderItem in orderDTO.OrderItems)
-            //{
-            //    var category = await storeRepository.GetAsync(orderItem.IdCategory);
-            //    var product = category.Products.FirstOrDefault(p => p.Id == orderItem.IdProduct);
-            //    order.AddOrderItem(product, orderItem.Qty);
-            //}
-
-            //orderRepository.Modify(order);
-
             await orderRepository.SaveChangesAsync();
 
             return order.Id;
@@ -92,21 +80,12 @@ namespace EternalStore.ApplicationLogic.OrderManagement
 
         public async Task AddOrderItemAsync(int idOrder, int idCategory, int idProduct, int qty)
         {
-            try
-            {
-                var order = await orderRepository.GetAsync(idOrder);
-                var category = await storeRepository.GetAsync(idCategory);
-                var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
-                order.AddOrderItem(product, qty);
-                orderRepository.Modify(order);
-                await orderRepository.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
-
+            var order = await orderRepository.GetAsync(idOrder);
+            var category = await storeRepository.GetAsync(idCategory);
+            var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
+            order.AddOrderItem(product, qty);
+            orderRepository.Modify(order);
+            await orderRepository.SaveChangesAsync();
         }
 
         public async Task RemoveOrderItemAsync(int idOrder, int idOrderItem)
