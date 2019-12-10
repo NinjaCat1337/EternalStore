@@ -27,9 +27,9 @@ namespace EternalStore.ApplicationLogic.OrderManagement
             return OrderMapper.FromOrderToOrderDTO(order);
         }
 
-        public async Task<IEnumerable<OrderDTO>> GetAllOrdersAsync()
+        public async Task<IEnumerable<OrderDTO>> GetAllOrdersAsync(int? skip, int? take, bool? ascending)
         {
-            var orders = await orderRepository.GetAllAsync();
+            var orders = await orderRepository.GetAllAsync(skip, take, ascending);
 
             return OrderMapper.FromOrdersToOrdersDTO(orders);
         }

@@ -42,7 +42,8 @@ namespace EternalStore.ApplicationLogic.OrderManagement
             {
                 IdOrderItem = orderItem.Id,
                 Qty = orderItem.Qty,
-                IdProduct = orderItem.Product.Id
+                IdProduct = orderItem.Product.Id,
+                ProductName = orderItem.Product.Name
             });
     }
 }

@@ -6,7 +6,7 @@ namespace EternalStore.DataAccess.Interfaces
 {
     public interface IRepository<T> where T : class
     {
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync(int? skip, int? take, bool? ascending);
         Task InsertAsync(T item);
         void Modify(object item);
         void Eliminate(object item);

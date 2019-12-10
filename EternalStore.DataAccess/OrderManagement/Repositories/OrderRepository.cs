@@ -16,10 +16,27 @@ namespace EternalStore.DataAccess.OrderManagement.Repositories
         public OrderRepository(string connectionString) => dbContext = new OrdersDbContext(connectionString);
 
         /// <summary>
-        /// Get all orders.
+        /// Get the specified amount of orders, ordered by Id.
         /// </summary>
+        /// <param name="skip">Values to skip.</param>
+        /// <param name="take">Values to take.</param>
+        /// <param name="ascending">Default: true</param>
         /// <returns>IEnumerable collection of Orders.</returns>
-        public async Task<IEnumerable<Order>> GetAllAsync() => await dbContext.Orders.ToListAsync();
+        public async Task<IEnumerable<Order>> GetAllAsync(int? skip = null, int? take = null, bool? ascending = null)
+        {
+            var query = dbContext.Set<Order>().AsQueryable();
+
+            if (ascending != null)
+                query = (bool)ascending ? query.OrderBy(o => o.Id) : query.OrderByDescending(o => o.Id);
+
+            if (skip != null)
+                query = query.Skip(skip.Value);
+
+            if (take != null)
+                query = query.Take(take.Value);
+
+            return await query.ToListAsync();
+        }
 
         /// <summary>
         /// Get by predicate.

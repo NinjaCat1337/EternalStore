@@ -1,4 +1,5 @@
 ﻿using EternalStore.Api.Contracts.Order.Requests;
+using EternalStore.Api.Contracts.Order.Responses;
 using EternalStore.ApplicationLogic.OrderManagement.DTO;
 using EternalStore.ApplicationLogic.OrderManagement.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,22 @@ namespace EternalStore.Api.Controllers
         public OrderController(IOrderManager orderManager) => this.orderManager = orderManager;
 
         [HttpGet("orders", Name = "GetOrders")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(int count, int page, bool ascending)
         {
-            var orders = await orderManager.GetAllOrdersAsync();
-            return Ok(orders);
+            var allOrders = await orderManager.GetAllOrdersAsync(null, null, null);
+            var ordersToSkip = (page - 1) * count;
+            var selectedOrders = await orderManager.GetAllOrdersAsync(ordersToSkip, count, ascending);
+
+            var ordersForResponse = selectedOrders.ToList();
+            var allOrdersCount = allOrders.Count();
+
+            var response = new GetOrdersResponse
+            {
+                Orders = ordersForResponse,
+                OrdersCount = allOrdersCount
+            };
+
+            return Ok(response);
         }
 
         [HttpGet("orders/{idOrder}", Name = "GetOrder")]
