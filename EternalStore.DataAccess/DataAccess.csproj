@@ -13,6 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\UsersDb\20191122151253_UserFirstCommit.cs" />
+    <Compile Remove="Migrations\UsersDb\20191122151253_UserFirstCommit.Designer.cs" />
+    <Compile Remove="Migrations\UsersDb\20191210181553_AddUserRoles.cs" />
+    <Compile Remove="Migrations\UsersDb\20191210181553_AddUserRoles.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>

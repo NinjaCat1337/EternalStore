@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EternalStore.DataAccess.Migrations.UsersDb
 {
-    public partial class UserFirstCommit : Migration
+    public partial class UsersCommit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,8 @@ namespace EternalStore.DataAccess.Migrations.UsersDb
                         .Annotation("SqlServer:Identity", "1, 1"),
                     login = table.Column<string>(type: "varchar(50)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    registrationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    registrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    role = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

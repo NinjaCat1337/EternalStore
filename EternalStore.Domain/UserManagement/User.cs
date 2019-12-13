@@ -11,6 +11,7 @@ namespace EternalStore.Domain.UserManagement
         public string Password { get; protected set; }
         public DateTime RegistrationDate { get; protected set; }
         public UserInformation UserInformation { get; protected set; }
+        public Roles Role { get; protected set; }
 
         public IEnumerable<UserNumber> UserNumbers => userNumbers?.AsEnumerable();
         private readonly List<UserNumber> userNumbers = new List<UserNumber>();
@@ -20,7 +21,7 @@ namespace EternalStore.Domain.UserManagement
 
         protected User() { }
 
-        public static User Insert(string login, string password, string firstName, string lastName, string email)
+        public static User Insert(string login, string password, string firstName, string lastName, string email, Roles role)
         {
             Validate(login);
 
@@ -29,11 +30,12 @@ namespace EternalStore.Domain.UserManagement
                 Login = login,
                 Password = password,
                 RegistrationDate = DateTime.Now,
-                UserInformation = UserInformation.Insert(firstName, lastName, email)
+                UserInformation = UserInformation.Insert(firstName, lastName, email),
+                Role = role
             };
         }
 
-        public void Rename(string login)
+        public void Modify(string login)
         {
             Validate(login);
 
@@ -45,9 +47,21 @@ namespace EternalStore.Domain.UserManagement
         public void ModifyUserInformation(string firstName, string lastName, string email) =>
             UserInformation.Modify(firstName, lastName, email);
 
-        public void AddAddress(string address) => userAddresses.Add(UserAddress.Insert(this, address));
+        public UserAddress AddAddress(string address)
+        {
+            var userAddress = UserAddress.Insert(this, address);
+            userAddresses.Add(userAddress);
 
-        public void AddNumber(string number) => userNumbers.Add(UserNumber.Insert(this, number));
+            return userAddress;
+        }
+
+        public UserNumber AddNumber(string number)
+        {
+            var userNumber = UserNumber.Insert(this, number);
+            userNumbers.Add(userNumber);
+
+            return userNumber;
+        }
 
         private static void Validate(string login)
         {

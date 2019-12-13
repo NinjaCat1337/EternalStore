@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EternalStore.DataAccess.Migrations.UsersDb
 {
     [DbContext(typeof(UsersDbContext))]
-    [Migration("20191122151253_UserFirstCommit")]
-    partial class UserFirstCommit
+    [Migration("20191210182656_UsersCommit")]
+    partial class UsersCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,6 +42,10 @@ namespace EternalStore.DataAccess.Migrations.UsersDb
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnName("registrationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Role")
+                        .HasColumnName("role")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

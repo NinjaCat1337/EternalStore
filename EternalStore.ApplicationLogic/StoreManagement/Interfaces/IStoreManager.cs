@@ -12,7 +12,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement.Interfaces
         Task UpdateCategoryAsync(int idCategory, string name);
         Task DisableCategoryAsync(int idCategory);
         Task EnableCategoryAsync(int idCategory);
-        Task AddProductAsync(int idCategory, string name, string description, decimal price);
+        Task<int> AddProductAsync(int idCategory, string name, string description, decimal price);
         Task EditProductAsync(int idCategory, int idProduct, string name, string description, decimal price);
         Task RemoveProductAsync(int idCategory, int idProduct);
         Task<IEnumerable<CategoryDTO>> GetCategoriesAsync();

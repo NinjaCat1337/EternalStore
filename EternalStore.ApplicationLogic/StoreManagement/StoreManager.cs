@@ -63,13 +63,15 @@ namespace EternalStore.ApplicationLogic.StoreManagement
             await storeRepository.SaveChangesAsync();
         }
 
-        public async Task AddProductAsync(int idCategory, string name, string description, decimal price)
+        public async Task<int> AddProductAsync(int idCategory, string name, string description, decimal price)
         {
             var category = await storeRepository.GetAsync(idCategory);
-            category.AddProduct(name, description, price);
+            var product = category.AddProduct(name, description, price);
             storeRepository.Modify(category);
 
             await storeRepository.SaveChangesAsync();
+
+            return product.Id;
         }
 
         public async Task EditProductAsync(int idCategory, int idProduct, string name, string description, decimal price)

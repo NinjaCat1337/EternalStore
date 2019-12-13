@@ -4,7 +4,6 @@ using EternalStore.DataAccess.UserManagement.Repositories;
 using EternalStore.Domain.UserManagement;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -24,7 +23,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
             this.apiKey = apiKey;
         }
 
-        public async Task<RegistrationResult> Register(string login, string password, string firstName, string lastName, string email)
+        public async Task<RegistrationResult> RegisterAsync(string login, string password, string firstName, string lastName, string email)
         {
             if (userRepository.GetByAsync(u => u.Login == login).Result.Any())
                 return new RegistrationResult
@@ -40,23 +39,15 @@ namespace EternalStore.ApplicationLogic.UserManagement
                     Error = "Password should contains more than 6 symbols."
                 };
 
-            try
-            {
-                var user = User.Insert(login, PasswordHashing.GetMd5Hash(password), firstName, lastName, email);
-
-                await userRepository.InsertAsync(user);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            var user = User.Insert(login, PasswordHashing.GetMd5Hash(password), firstName, lastName, email, Roles.User);
+            await userRepository.InsertAsync(user);
 
             await userRepository.SaveChangesAsync();
 
             return new RegistrationResult { Success = true };
         }
 
-        public async Task<AuthenticationResult> Login(string login, string password)
+        public async Task<AuthenticationResult> LoginAsync(string login, string password)
         {
             var findUserByLogin = await userRepository.GetByAsync(u => u.Login == login);
             var user = findUserByLogin.FirstOrDefault();
@@ -77,24 +68,27 @@ namespace EternalStore.ApplicationLogic.UserManagement
                 };
             }
 
-            return GenerateAuthenticationResultForUser(login);
+            return GenerateAuthenticationResultForUser(user.Id, login, user.Role);
         }
 
-        public async Task AddAddresses(int idUser, IEnumerable<UserAddressDTO> userAddressesDTO)
+        public async Task<UserDTO> GetUserAsync(int idUser)
         {
             var user = await userRepository.GetAsync(idUser);
+            return UserMapper.FromUserToUserDTO(user);
+        }
 
-            foreach (var userAddress in userAddressesDTO)
-            {
-                user.AddAddress(userAddress.Address);
-            }
-
+        public async Task<int> AddAddressAsync(int idUser, string userAddress)
+        {
+            var user = await userRepository.GetAsync(idUser);
+            var address = user.AddAddress(userAddress);
             userRepository.Modify(user);
 
             await userRepository.SaveChangesAsync();
+
+            return address.Id;
         }
 
-        public async Task RemoveAddress(int idUser, int idUserAddress)
+        public async Task RemoveAddressAsync(int idUser, int idUserAddress)
         {
             var user = await userRepository.GetAsync(idUser);
             userRepository.Eliminate(user.UserAddresses.FirstOrDefault(ua => ua.Id == idUserAddress));
@@ -102,21 +96,18 @@ namespace EternalStore.ApplicationLogic.UserManagement
             await userRepository.SaveChangesAsync();
         }
 
-        public async Task AddNumbers(int idUser, IEnumerable<UserNumberDTO> userNumbersDTO)
+        public async Task<int> AddNumberAsync(int idUser, string userNumber)
         {
             var user = await userRepository.GetAsync(idUser);
-
-            foreach (var userNumber in userNumbersDTO)
-            {
-                user.AddNumber(userNumber.Number);
-            }
-
+            var number = user.AddNumber(userNumber);
             userRepository.Modify(user);
 
             await userRepository.SaveChangesAsync();
+
+            return number.Id;
         }
 
-        public async Task RemoveNumber(int idUser, int idUserNumber)
+        public async Task RemoveNumberAsync(int idUser, int idUserNumber)
         {
             var user = await userRepository.GetAsync(idUser);
             userRepository.Eliminate(user.UserNumbers.FirstOrDefault(un => un.Id == idUserNumber));
@@ -124,25 +115,29 @@ namespace EternalStore.ApplicationLogic.UserManagement
             await userRepository.SaveChangesAsync();
         }
 
-        public async Task Rename(int idUser, string login)
+        public async Task ModifyUserAsync(int idUser, string login)
         {
             var user = await userRepository.GetAsync(idUser);
-            user.Rename(login);
+            user.Modify(login);
             userRepository.Modify(user);
 
             await userRepository.SaveChangesAsync();
         }
 
-        public async Task ChangePassword(int idUser, string password)
+        public async Task ChangePasswordAsync(int idUser, string oldPassword, string newPassword)
         {
             var user = await userRepository.GetAsync(idUser);
-            user.ModifyPassword(PasswordHashing.GetMd5Hash(password));
+
+            if (user.Password != PasswordHashing.GetMd5Hash(oldPassword))
+                throw new Exception("Wrong password.");
+
+            user.ModifyPassword(PasswordHashing.GetMd5Hash(newPassword));
             userRepository.Modify(user);
 
             await userRepository.SaveChangesAsync();
         }
 
-        public async Task ModifyUserInformation(int idUser, string firstName, string lastName, string email)
+        public async Task ModifyUserInformationAsync(int idUser, string firstName, string lastName, string email)
         {
             var user = await userRepository.GetAsync(idUser);
             user.ModifyUserInformation(firstName, lastName, email);
@@ -155,7 +150,7 @@ namespace EternalStore.ApplicationLogic.UserManagement
 
         #region Private Methods
 
-        private AuthenticationResult GenerateAuthenticationResultForUser(string login)
+        private AuthenticationResult GenerateAuthenticationResultForUser(int idUser, string login, Roles role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(apiKey);
@@ -164,7 +159,8 @@ namespace EternalStore.ApplicationLogic.UserManagement
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, login),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Role, $"{(int)role}")
                 }),
                 Expires = DateTime.Now.AddHours(4),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -173,8 +169,10 @@ namespace EternalStore.ApplicationLogic.UserManagement
 
             return new AuthenticationResult
             {
+                IdUser = idUser,
                 Success = true,
                 Token = tokenHandler.WriteToken(token),
+                Role = (int)role,
                 ExpiresInMinutes = 240
             };
         }

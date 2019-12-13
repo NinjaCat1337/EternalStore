@@ -1,5 +1,7 @@
 ﻿using EternalStore.Api.Contracts.Store.Requests;
 using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -27,6 +29,7 @@ namespace EternalStore.Api.Controllers
             return Ok(category);
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpPost("categories", Name = "AddCategory")]
         public async Task<IActionResult> Post([FromBody] CategoryCreationRequest request)
         {
@@ -34,6 +37,7 @@ namespace EternalStore.Api.Controllers
             return Ok();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpPut("categories/{idCategory}", Name = "EditCategory")]
         public async Task<IActionResult> Put([FromBody] CategoryModificationRequest request)
         {
@@ -41,6 +45,7 @@ namespace EternalStore.Api.Controllers
             return Ok();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpDelete("categories/{idCategory}", Name = "EnableDisableCategory")]
         public async Task<IActionResult> Delete(int idCategory)
         {
@@ -69,6 +74,7 @@ namespace EternalStore.Api.Controllers
             return Ok(product);
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpPost("categories/{idCategory}/products", Name = "AddProduct")]
         public async Task<IActionResult> Post([FromBody] ProductCreationRequest request)
         {
@@ -76,6 +82,7 @@ namespace EternalStore.Api.Controllers
             return Ok();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpPut("categories/{idCategory}/products/{idProduct}", Name = "EditProduct")]
         public async Task<IActionResult> Put([FromBody] ProductModificationRequest request)
         {
@@ -83,6 +90,7 @@ namespace EternalStore.Api.Controllers
             return Ok();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpDelete("categories/{idCategory}/products/{idProduct}", Name = "RemoveProduct")]
         public async Task<IActionResult> Delete(int idCategory, int idProduct)
         {

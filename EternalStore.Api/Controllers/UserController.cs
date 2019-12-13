@@ -17,7 +17,7 @@ namespace EternalStore.Api.Controllers
         public async Task<IActionResult> Register([FromBody]UserRegistrationRequest request)
         {
             var registrationResponse = await userManager
-                .Register(request.Login, request.Password, request.FirstName, request.LastName, request.Email);
+                .RegisterAsync(request.Login, request.Password, request.FirstName, request.LastName, request.Email);
 
             if (!registrationResponse.Success)
             {
@@ -37,7 +37,7 @@ namespace EternalStore.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]UserLoginRequest request)
         {
-            var authResponse = await userManager.Login(request.Login, request.Password);
+            var authResponse = await userManager.LoginAsync(request.Login, request.Password);
 
             if (!authResponse.Success)
             {
@@ -49,10 +49,76 @@ namespace EternalStore.Api.Controllers
 
             return Ok(new AuthorizationSuccessResponse
             {
+                IdUser = authResponse.IdUser,
                 Success = true,
                 Token = authResponse.Token,
+                Role = authResponse.Role,
                 ExpiresInMinutes = authResponse.ExpiresInMinutes
             });
+        }
+
+        [HttpGet("{idUser}", Name = "GetUser")]
+        public async Task<IActionResult> Get(int idUser)
+        {
+            var user = await userManager.GetUserAsync(idUser);
+
+            return Ok(user);
+        }
+
+        [HttpPut("{idUser}", Name = "ModifyUser")]
+        public async Task<IActionResult> Put([FromBody]UserModificationRequest request)
+        {
+            await userManager.ModifyUserAsync(request.IdUser, request.Login);
+
+            return Ok();
+        }
+
+        [HttpPut("{idUser}/information", Name = "ModifyUserInformation")]
+        public async Task<IActionResult> Put([FromBody]UserInformationModificationRequest request)
+        {
+            await userManager.ModifyUserInformationAsync(request.IdUser, request.FirstName, request.LastName, request.Email);
+
+            return Ok();
+        }
+
+        [HttpPost("{idUser}/password", Name = "ModifyUserPassword")]
+        public async Task<IActionResult> Post([FromBody]UserPasswordModificationRequest request)
+        {
+            await userManager.ChangePasswordAsync(request.IdUser, request.OldPassword, request.NewPassword);
+
+            return Ok();
+        }
+
+        [HttpPost("{idUser}/address", Name = "AddUserAddress")]
+        public async Task<IActionResult> Post([FromBody]UserAddressAdditionRequest request)
+        {
+            var idUserAddress = await userManager.AddAddressAsync(request.IdUser, request.UserAddress);
+
+            return Ok(idUserAddress);
+        }
+
+        [HttpPost("{idUser}/number", Name = "AddUserNumber")]
+        public async Task<IActionResult> Post([FromBody]UserNumberAdditionRequest request)
+        {
+            var idUserNumber = await userManager.AddNumberAsync(request.IdUser, request.UserNumber);
+
+            return Ok(idUserNumber);
+        }
+
+        [HttpDelete("{idUser}/address", Name = "RemoveUserAddress")]
+        public async Task<IActionResult> DeleteAddress(int idUser, int idUserAddress)
+        {
+            await userManager.RemoveAddressAsync(idUser, idUserAddress);
+
+            return Ok();
+        }
+
+        [HttpDelete("{idUser}/number", Name = "RemoveUserNumber")]
+        public async Task<IActionResult> DeleteNumber(int idUser, int idUserNumber)
+        {
+            await userManager.RemoveNumberAsync(idUser, idUserNumber);
+
+            return Ok();
         }
     }
 }

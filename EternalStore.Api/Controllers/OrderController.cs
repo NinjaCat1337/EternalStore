@@ -2,6 +2,8 @@
 using EternalStore.Api.Contracts.Order.Responses;
 using EternalStore.ApplicationLogic.OrderManagement.DTO;
 using EternalStore.ApplicationLogic.OrderManagement.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +18,7 @@ namespace EternalStore.Api.Controllers
 
         public OrderController(IOrderManager orderManager) => this.orderManager = orderManager;
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpGet("orders", Name = "GetOrders")]
         public async Task<IActionResult> Get(int count, int page, bool ascending)
         {
@@ -35,6 +38,7 @@ namespace EternalStore.Api.Controllers
             return Ok(response);
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpGet("orders/{idOrder}", Name = "GetOrder")]
         public async Task<IActionResult> Get(int idOrder)
         {
@@ -65,6 +69,7 @@ namespace EternalStore.Api.Controllers
             return Ok();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpPut("orders/{idOrder}", Name = "EditOrder")]
         public async Task<IActionResult> Put([FromBody] OrderModificationRequest request)
         {
@@ -81,6 +86,7 @@ namespace EternalStore.Api.Controllers
             return Ok();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpDelete("order/{idOrder}", Name = "DeleteOrder")]
         public async Task<IActionResult> Delete(int idOrder)
         {
@@ -88,6 +94,7 @@ namespace EternalStore.Api.Controllers
             return Ok();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpPatch("orders/{idOrder}/approved", Name = "Approved")]
         public async Task<IActionResult> SetApproved(int idOrder)
         {
@@ -95,6 +102,7 @@ namespace EternalStore.Api.Controllers
             return Ok();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpPatch("orders/{idOrder}/delivered", Name = "Delivered")]
         public async Task<IActionResult> SetDelivered(int idOrder)
         {
@@ -102,6 +110,7 @@ namespace EternalStore.Api.Controllers
             return Ok();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpPost("orders/{idOrder}/items", Name = "AddOrderItem")]
         public async Task<IActionResult> Post([FromBody] OrderItemAdditionRequest request)
         {
@@ -109,6 +118,7 @@ namespace EternalStore.Api.Controllers
             return Ok();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
         [HttpDelete("orders/{idOrder}/items/{idOrderItem}", Name = "RemoveOrderItem")]
         public async Task<IActionResult> Delete([FromBody] OrderItemDeletionRequest request)
         {

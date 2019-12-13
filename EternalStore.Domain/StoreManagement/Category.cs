@@ -33,8 +33,13 @@ namespace EternalStore.Domain.StoreManagement
 
         public void Disable() => IsEnabled = false;
 
-        public void AddProduct(string name, string description, decimal price) =>
-            products.Add(Product.Insert(this, name, description, price));
+        public Product AddProduct(string name, string description, decimal price)
+        {
+            var product = Product.Insert(this, name, description, price);
+            products.Add(product);
+
+            return product;
+        }
 
         public void EditProduct(int idProduct, string name, string description, decimal price)
         {

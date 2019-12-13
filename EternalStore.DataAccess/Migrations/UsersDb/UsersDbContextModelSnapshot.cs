@@ -41,6 +41,10 @@ namespace EternalStore.DataAccess.Migrations.UsersDb
                         .HasColumnName("registrationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Role")
+                        .HasColumnName("role")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("users_tb");

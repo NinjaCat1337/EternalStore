@@ -30,6 +30,11 @@ namespace EternalStore.DataAccess.UserManagement.Configurations
                 .HasColumnType("datetime2")
                 .IsRequired();
 
+            builder.Property(p => p.Role)
+                .HasColumnName("role")
+                .HasColumnType("int")
+                .IsRequired();
+
             builder.Metadata.FindNavigation(nameof(User.UserAddresses))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
 
