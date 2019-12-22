@@ -89,6 +89,22 @@ namespace EternalStore.Api.Controllers
             return Ok();
         }
 
+        [HttpGet("{idUser}/address", Name = "GetUserAddresses")]
+        public async Task<IActionResult> GetUserAddresses(int idUser)
+        {
+            var userAddresses = await userManager.GetUserAddressesAsync(idUser);
+
+            return Ok(userAddresses);
+        }
+
+        [HttpGet("{idUser}/number", Name = "GetUserNumbers")]
+        public async Task<IActionResult> GetUserNumbers(int idUser)
+        {
+            var userNumbers = await userManager.GetUserNumbersAsync(idUser);
+
+            return Ok(userNumbers);
+        }
+
         [HttpPost("{idUser}/address", Name = "AddUserAddress")]
         public async Task<IActionResult> Post([FromBody]UserAddressAdditionRequest request)
         {

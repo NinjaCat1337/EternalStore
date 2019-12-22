@@ -1,5 +1,6 @@
 ﻿using EternalStore.ApplicationLogic.UserManagement.DTO;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EternalStore.ApplicationLogic.UserManagement.Interfaces
@@ -9,8 +10,10 @@ namespace EternalStore.ApplicationLogic.UserManagement.Interfaces
         Task<RegistrationResult> RegisterAsync(string login, string password, string firstName, string lastName, string email);
         Task<AuthenticationResult> LoginAsync(string login, string password);
         Task<UserDTO> GetUserAsync(int idUser);
+        Task<IEnumerable<UserAddressDTO>> GetUserAddressesAsync(int idUser);
         Task<int> AddAddressAsync(int idUser, string address);
         Task RemoveAddressAsync(int idUser, int idUserAddress);
+        Task<IEnumerable<UserNumberDTO>> GetUserNumbersAsync(int idUser);
         Task<int> AddNumberAsync(int idUser, string number);
         Task RemoveNumberAsync(int idUser, int idUserNumber);
         Task ModifyUserAsync(int id, string login);

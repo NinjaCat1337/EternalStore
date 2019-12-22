@@ -4,6 +4,7 @@ using EternalStore.DataAccess.UserManagement.Repositories;
 using EternalStore.Domain.UserManagement;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -77,6 +78,13 @@ namespace EternalStore.ApplicationLogic.UserManagement
             return UserMapper.FromUserToUserDTO(user);
         }
 
+        public async Task<IEnumerable<UserAddressDTO>> GetUserAddressesAsync (int idUser)
+        {
+            var user = await userRepository.GetAsync(idUser);
+
+            return UserMapper.FromUserAddressesToUserAddressesDTO(user.UserAddresses);
+        }
+
         public async Task<int> AddAddressAsync(int idUser, string userAddress)
         {
             var user = await userRepository.GetAsync(idUser);
@@ -94,6 +102,13 @@ namespace EternalStore.ApplicationLogic.UserManagement
             userRepository.Eliminate(user.UserAddresses.FirstOrDefault(ua => ua.Id == idUserAddress));
 
             await userRepository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<UserNumberDTO>> GetUserNumbersAsync(int idUser)
+        {
+            var user = await userRepository.GetAsync(idUser);
+
+            return UserMapper.FromUserNumbersToUserNumbersDTO(user.UserNumbers);
         }
 
         public async Task<int> AddNumberAsync(int idUser, string userNumber)
