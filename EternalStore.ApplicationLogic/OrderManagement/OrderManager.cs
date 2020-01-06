@@ -29,7 +29,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement
             return OrderMapper.FromOrderToOrderDTO(order);
         }
 
-        public async Task<IEnumerable<OrderDTO>> GetAllOrdersAsync(int? skip = null, int? take = null, bool? ascending = null)
+        public async Task<(IEnumerable<OrderDTO> OrdersForResponse, int AllOrdersCount)> GetAllOrdersAsync(int? skip = null, int? take = null, bool? ascending = null)
         {
             var query = orderRepository.GetAll();
 
@@ -44,7 +44,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement
 
             var orders = await query.ToListAsync();
 
-            return OrderMapper.FromOrdersToOrdersDTO(orders);
+            return (OrderMapper.FromOrdersToOrdersDTO(orders), orders.Count);
         }
 
         public async Task<(IEnumerable<OrderDTO> OrdersForResponse, int FilteredOrdersCount)> SearchOrdersAsync(int? skip = null, int? take = null, bool? ascending = null, DateTime? orderDateFrom = null,

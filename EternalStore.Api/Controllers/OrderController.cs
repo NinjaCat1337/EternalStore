@@ -22,16 +22,12 @@ namespace EternalStore.Api.Controllers
         [HttpGet("orders", Name = "GetOrders")]
         public async Task<IActionResult> Get(int count, int page, bool ascending)
         {
-            var allOrders = await orderManager.GetAllOrdersAsync(null, null, null);
             var ordersToSkip = (page - 1) * count;
-            var selectedOrders = await orderManager.GetAllOrdersAsync(ordersToSkip, count, ascending);
-
-            var ordersForResponse = selectedOrders.ToList();
-            var allOrdersCount = allOrders.Count();
+            var (responseOrders, allOrdersCount) = await orderManager.GetAllOrdersAsync(ordersToSkip, count, ascending);
 
             var response = new GetOrdersResponse
             {
-                Orders = ordersForResponse,
+                Orders = responseOrders.ToList(),
                 OrdersCount = allOrdersCount
             };
 
