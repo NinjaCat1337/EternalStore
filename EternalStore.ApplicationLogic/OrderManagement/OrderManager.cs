@@ -3,6 +3,8 @@ using EternalStore.ApplicationLogic.OrderManagement.Interfaces;
 using EternalStore.DataAccess.OrderManagement.Repositories;
 using EternalStore.DataAccess.StoreManagement.Repositories;
 using EternalStore.Domain.OrderManagement;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,11 +29,61 @@ namespace EternalStore.ApplicationLogic.OrderManagement
             return OrderMapper.FromOrderToOrderDTO(order);
         }
 
-        public async Task<IEnumerable<OrderDTO>> GetAllOrdersAsync(int? skip, int? take, bool? ascending)
+        public async Task<IEnumerable<OrderDTO>> GetAllOrdersAsync(int? skip = null, int? take = null, bool? ascending = null)
         {
-            var orders = await orderRepository.GetAllAsync(skip, take, ascending);
+            var query = orderRepository.GetAll();
+
+            if (ascending != null)
+                query = (bool)ascending ? query.OrderBy(o => o.Id) : query.OrderByDescending(o => o.Id);
+
+            if (skip != null)
+                query = query.Skip(skip.Value);
+
+            if (take != null)
+                query = query.Take(take.Value);
+
+            var orders = await query.ToListAsync();
 
             return OrderMapper.FromOrdersToOrdersDTO(orders);
+        }
+
+        public async Task<(IEnumerable<OrderDTO> OrdersForResponse, int FilteredOrdersCount)> SearchOrdersAsync(int? skip = null, int? take = null, bool? ascending = null, DateTime? orderDateFrom = null,
+            DateTime? orderDateTo = null, DateTime? deliveryDateFrom = null, DateTime? deliveryDateTo = null, bool? isApproved = null, bool? isDelivered = null)
+        {
+            var query = orderRepository.GetAll();
+
+            if (ascending != null)
+                query = (bool)ascending ? query.OrderBy(o => o.Id) : query.OrderByDescending(o => o.Id);
+
+            if (orderDateFrom != null)
+                query = query.Where(o => o.OrderDate >= orderDateFrom);
+
+            if (orderDateTo != null)
+                query = query.Where(o => o.OrderDate <= orderDateTo);
+
+            if (deliveryDateFrom != null)
+                query = query.Where(o => o.DeliveryDate >= deliveryDateFrom);
+
+            if (deliveryDateTo != null)
+                query = query.Where(o => o.DeliveryDate <= deliveryDateTo);
+
+            if (isApproved != null)
+                query = query.Where(o => o.IsApproved);
+
+            if (isDelivered != null)
+                query = query.Where(o => o.IsDelivered);
+
+            var filteredOrdersCount = query.Count();
+
+            if (skip != null)
+                query = query.Skip(skip.Value);
+
+            if (take != null)
+                query = query.Take(take.Value);
+
+            var orders = await query.ToListAsync();
+
+            return (OrderMapper.FromOrdersToOrdersDTO(orders), filteredOrdersCount);
         }
 
         public async Task<int> CreateOrderAsync(OrderDTO orderDTO)

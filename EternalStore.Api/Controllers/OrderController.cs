@@ -46,6 +46,25 @@ namespace EternalStore.Api.Controllers
             return Ok(order);
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
+        [HttpPost("orders/search", Name = "Search")]
+        public async Task<IActionResult> Search([FromBody]OrderSearchRequest request)
+        {
+            var ordersToSkip = (request.Page - 1) * request.Count;
+            var (responseOrders, filteredOrdersCount) = await orderManager.SearchOrdersAsync(ordersToSkip, request.Count, request.Ascending,
+                request.OrderDateFrom, request.OrderDateTo, request.DeliveryDateFrom, request.DeliveryDateTo, request.IsApproved, request.IsDelivered);
+
+            var ordersForResponse = responseOrders.ToList();
+
+            var response = new GetOrdersResponse
+            {
+                Orders = ordersForResponse,
+                OrdersCount = filteredOrdersCount
+            };
+
+            return Ok(response);
+        }
+
         [HttpPost("orders", Name = "AddOrder")]
         public async Task<IActionResult> Post([FromBody] OrderCreationRequest request)
         {

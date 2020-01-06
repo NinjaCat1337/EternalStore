@@ -2,6 +2,7 @@
 using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
 using EternalStore.DataAccess.StoreManagement.Repositories;
 using EternalStore.Domain.StoreManagement;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,7 +100,8 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public async Task<IEnumerable<CategoryDTO>> GetCategoriesAsync()
         {
-            var categories = await storeRepository.GetAllAsync();
+            var categoriesQuery = storeRepository.GetAll();
+            var categories = await categoriesQuery.ToListAsync();
             return StoreMapper.FromCategoriesToCategoriesDTO(categories);
         }
 

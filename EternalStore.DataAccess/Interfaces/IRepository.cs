@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EternalStore.DataAccess.Interfaces
 {
     public interface IRepository<T> where T : class
     {
-        Task<IEnumerable<T>> GetAllAsync(int? skip, int? take, bool? ascending);
+        IQueryable<T> GetAll();
         Task InsertAsync(T item);
         void Modify(object item);
         void Eliminate(object item);

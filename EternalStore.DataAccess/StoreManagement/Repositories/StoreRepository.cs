@@ -16,27 +16,10 @@ namespace EternalStore.DataAccess.StoreManagement.Repositories
         public StoreRepository(string connectionString) => dbContext = new StoreDbContext(connectionString);
 
         /// <summary>
-        /// Get the specified amount of categories, ordered by Id.
+        /// Get all categories from database.
         /// </summary>
-        /// <param name="skip">Values to skip.</param>
-        /// <param name="take">Values to take.</param>
-        /// <param name="ascending">Default: true</param>
-        /// <returns>IEnumerable collection of Categories.</returns>
-        public async Task<IEnumerable<Category>> GetAllAsync(int? skip = null, int? take = null, bool? ascending = null)
-        {
-            var query = dbContext.Set<Category>().AsQueryable();
-
-            if (ascending != null)
-                query = (bool)ascending ? query.OrderBy(o => o.Id) : query.OrderByDescending(o => o.Id);
-
-            if (skip != null)
-                query = query.Skip(skip.Value);
-
-            if (take != null)
-                query = query.Take(take.Value);
-
-            return await query.ToListAsync();
-        }
+        /// <returns>IQueryable collection of Categories.</returns>
+        public IQueryable<Category> GetAll() => dbContext.Set<Category>().AsQueryable();
 
         /// <summary>
         /// Get Categories by predicate from database.

@@ -9,6 +9,9 @@ namespace EternalStore.ApplicationLogic.OrderManagement.Interfaces
     {
         Task<OrderDTO> GetOrderAsync(int idOrder);
         Task<IEnumerable<OrderDTO>> GetAllOrdersAsync(int? skip, int? take, bool? ascending);
+
+        Task<(IEnumerable<OrderDTO> OrdersForResponse, int FilteredOrdersCount)> SearchOrdersAsync(int? skip, int? take, bool? ascending, DateTime? orderDateFrom,
+            DateTime? orderDateTo, DateTime? deliveryDateFrom, DateTime? deliveryDateTo, bool? isApproved, bool? isDelivered);
         Task<int> CreateOrderAsync(OrderDTO orderDTO);
         Task UpdateOrderAsync(OrderDTO orderDTO);
         Task DeleteOrderAsync(int idOrder);
