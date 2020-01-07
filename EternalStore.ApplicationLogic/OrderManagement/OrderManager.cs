@@ -33,6 +33,8 @@ namespace EternalStore.ApplicationLogic.OrderManagement
         {
             var query = orderRepository.GetAll();
 
+            var allOrdersCount = query.Count();
+
             if (ascending != null)
                 query = (bool)ascending ? query.OrderBy(o => o.Id) : query.OrderByDescending(o => o.Id);
 
@@ -44,7 +46,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement
 
             var orders = await query.ToListAsync();
 
-            return (OrderMapper.FromOrdersToOrdersDTO(orders), orders.Count);
+            return (OrderMapper.FromOrdersToOrdersDTO(orders), allOrdersCount);
         }
 
         public async Task<(IEnumerable<OrderDTO> OrdersForResponse, int FilteredOrdersCount)> SearchOrdersAsync(int? skip = null, int? take = null, bool? ascending = null, DateTime? orderDateFrom = null,
