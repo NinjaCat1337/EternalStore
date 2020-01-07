@@ -70,10 +70,10 @@ namespace EternalStore.ApplicationLogic.OrderManagement
                 query = query.Where(o => o.DeliveryDate <= deliveryDateTo);
 
             if (isApproved != null)
-                query = query.Where(o => o.IsApproved);
+                query = query.Where(o => o.IsApproved == isApproved);
 
             if (isDelivered != null)
-                query = query.Where(o => o.IsDelivered);
+                query = query.Where(o => o.IsDelivered == isDelivered);
 
             var filteredOrdersCount = query.Count();
 
