@@ -13,12 +13,12 @@ namespace EternalStore.ApplicationLogic.StoreManagement
     public class OrderManager : IOrderManager
     {
         private readonly OrderRepository orderRepository;
-        private readonly StoreRepository storeRepository;
+        private readonly GoodsRepository storeRepository;
 
         public OrderManager(string connectionString)
         {
             orderRepository ??= new OrderRepository(connectionString);
-            storeRepository ??= new StoreRepository(connectionString);
+            storeRepository ??= new GoodsRepository(connectionString);
         }
 
         public async Task<OrderDTO> GetOrderAsync(int idOrder)

@@ -12,10 +12,10 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 {
     public class GoodsManager : IGoodsManager
     {
-        private readonly StoreRepository storeRepository;
+        private readonly GoodsRepository storeRepository;
 
         public GoodsManager(string connectionString) =>
-            storeRepository ??= new StoreRepository(connectionString);
+            storeRepository ??= new GoodsRepository(connectionString);
 
         public async Task<CategoryDTO> GetCategoryAsync(int idCategory)
         {

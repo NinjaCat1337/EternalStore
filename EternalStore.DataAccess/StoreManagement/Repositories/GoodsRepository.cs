@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace EternalStore.DataAccess.StoreManagement.Repositories
 {
-    public class StoreRepository : IRepository<Category>, IDisposable
+    public class GoodsRepository : IRepository<Category>, IDisposable
     {
         private readonly StoreDbContext dbContext;
         private bool disposed;
 
-        public StoreRepository(string connectionString) => dbContext = new StoreDbContext(connectionString);
+        public GoodsRepository(string connectionString) => dbContext = new StoreDbContext(connectionString);
 
         /// <summary>
         /// Get all categories from database.
@@ -26,8 +26,11 @@ namespace EternalStore.DataAccess.StoreManagement.Repositories
         /// </summary>
         /// <param name="predicate">Predicate.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Category>> GetByAsync(Func<Category, bool> predicate) =>
-            await dbContext.Categories.Where(predicate).AsQueryable().ToListAsync();
+        public async Task<IEnumerable<Category>> GetByAsync(Func<Category, bool> predicate)
+        {
+            var allCategories = await dbContext.Categories.ToListAsync();
+            return allCategories.Where(predicate);
+        }
 
         /// <summary>
         /// Add Category to database.
@@ -55,7 +58,8 @@ namespace EternalStore.DataAccess.StoreManagement.Repositories
         /// <returns></returns>
         public async Task<Category> GetAsync(int id)
         {
-            var category = await dbContext.Categories.Include(c => c.Products).FirstOrDefaultAsync(c => c.Id == id);
+            var category = await dbContext.Categories
+                .Include(c => c.Products).FirstOrDefaultAsync(c => c.Id == id);
 
             if (category == null)
                 throw new Exception("Category not found.");
@@ -98,8 +102,6 @@ namespace EternalStore.DataAccess.StoreManagement.Repositories
             disposed = true;
         }
 
-
-
-        ~StoreRepository() => Dispose(false);
+        ~GoodsRepository() => Dispose(false);
     }
 }

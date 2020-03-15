@@ -26,8 +26,11 @@ namespace EternalStore.DataAccess.StoreManagement.Repositories
         /// </summary>
         /// <param name="predicate">Predicate.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Order>> GetByAsync(Func<Order, bool> predicate) =>
-            await dbContext.Orders.Where(predicate).AsQueryable().ToListAsync();
+        public async Task<IEnumerable<Order>> GetByAsync(Func<Order, bool> predicate)
+        {
+            var allOrders = await dbContext.Orders.ToListAsync();
+            return allOrders.Where(predicate);
+        }
 
         /// <summary>
         /// Create Order in database.
