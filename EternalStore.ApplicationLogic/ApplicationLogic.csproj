@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>EternalStore.ApplicationLogic</AssemblyName>
     <RootNamespace>EternalStore.ApplicationLogic</RootNamespace>
   </PropertyGroup>
@@ -13,6 +13,11 @@
   <ItemGroup>
     <ProjectReference Include="..\EternalStore.DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\EternalStore.Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="OrderManagement\DTO\" />
+    <Folder Include="OrderManagement\Interfaces\" />
   </ItemGroup>
 
 </Project>

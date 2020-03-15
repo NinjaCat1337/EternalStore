@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>EternalStore.DataAccess</AssemblyName>
     <RootNamespace>EternalStore.DataAccess</RootNamespace>
   </PropertyGroup>
@@ -10,13 +10,6 @@
     <Compile Remove="Entities\**" />
     <EmbeddedResource Remove="Entities\**" />
     <None Remove="Entities\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Migrations\UsersDb\20191122151253_UserFirstCommit.cs" />
-    <Compile Remove="Migrations\UsersDb\20191122151253_UserFirstCommit.Designer.cs" />
-    <Compile Remove="Migrations\UsersDb\20191210181553_AddUserRoles.cs" />
-    <Compile Remove="Migrations\UsersDb\20191210181553_AddUserRoles.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
