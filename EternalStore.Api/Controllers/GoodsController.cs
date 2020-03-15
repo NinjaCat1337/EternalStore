@@ -1,31 +1,31 @@
-﻿using EternalStore.Api.Contracts.Store.Requests;
-using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
+﻿using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using EternalStore.Api.Contracts.Goods.Requests;
 
 namespace EternalStore.Api.Controllers
 {
-    [Route("api/[controller]/")]
+    [Route("api/store/")]
     [ApiController]
-    public class StoreController : ControllerBase
+    public class GoodsController : ControllerBase
     {
-        private readonly IStoreManager storeManager;
+        private readonly IGoodsManager goodsManager;
 
-        public StoreController(IStoreManager storeManager) => this.storeManager = storeManager;
+        public GoodsController(IGoodsManager goodsManager) => this.goodsManager = goodsManager;
 
         [HttpGet("categories", Name = "GetCategories")]
         public async Task<IActionResult> Get()
         {
-            var categories = await storeManager.GetCategoriesAsync();
+            var categories = await goodsManager.GetCategoriesAsync();
             return Ok(categories);
         }
 
         [HttpGet("categories/{idCategory}", Name = "GetCategory")]
         public async Task<IActionResult> Get(int idCategory)
         {
-            var category = await storeManager.GetCategoryAsync(idCategory);
+            var category = await goodsManager.GetCategoryAsync(idCategory);
             return Ok(category);
         }
 
@@ -33,7 +33,7 @@ namespace EternalStore.Api.Controllers
         [HttpPost("categories", Name = "AddCategory")]
         public async Task<IActionResult> Post([FromBody] CategoryCreationRequest request)
         {
-            await storeManager.CreateCategoryAsync(request.Name);
+            await goodsManager.CreateCategoryAsync(request.Name);
             return Ok();
         }
 
@@ -41,7 +41,7 @@ namespace EternalStore.Api.Controllers
         [HttpPut("categories/{idCategory}", Name = "EditCategory")]
         public async Task<IActionResult> Put([FromBody] CategoryModificationRequest request)
         {
-            await storeManager.UpdateCategoryAsync(request.IdCategory, request.Name);
+            await goodsManager.UpdateCategoryAsync(request.IdCategory, request.Name);
             return Ok();
         }
 
@@ -49,13 +49,13 @@ namespace EternalStore.Api.Controllers
         [HttpDelete("categories/{idCategory}", Name = "EnableDisableCategory")]
         public async Task<IActionResult> Delete(int idCategory)
         {
-            var category = await storeManager.GetCategoryAsync(idCategory);
+            var category = await goodsManager.GetCategoryAsync(idCategory);
 
             if (category.IsEnabled)
-                await storeManager.DisableCategoryAsync(idCategory);
+                await goodsManager.DisableCategoryAsync(idCategory);
 
             if (!category.IsEnabled)
-                await storeManager.EnableCategoryAsync(idCategory);
+                await goodsManager.EnableCategoryAsync(idCategory);
 
             return Ok();
         }
@@ -63,14 +63,14 @@ namespace EternalStore.Api.Controllers
         [HttpGet("categories/{idCategory}/products", Name = "GetProductsForCategory")]
         public async Task<IActionResult> GetProductsForCategory(int idCategory)
         {
-            var productsForCategory = await storeManager.GetProductsForCategoryAsync(idCategory);
+            var productsForCategory = await goodsManager.GetProductsForCategoryAsync(idCategory);
             return Ok(productsForCategory);
         }
 
         [HttpGet("categories/{idCategory}/products/{idProduct}", Name = "GetProduct")]
         public async Task<IActionResult> Get(int idCategory, int idProduct)
         {
-            var product = await storeManager.GetProductAsync(idCategory, idProduct);
+            var product = await goodsManager.GetProductAsync(idCategory, idProduct);
             return Ok(product);
         }
 
@@ -78,7 +78,7 @@ namespace EternalStore.Api.Controllers
         [HttpPost("categories/{idCategory}/products", Name = "AddProduct")]
         public async Task<IActionResult> Post([FromBody] ProductCreationRequest request)
         {
-            await storeManager.AddProductAsync(request.IdCategory, request.Name, request.Description, request.Price);
+            await goodsManager.AddProductAsync(request.IdCategory, request.Name, request.Description, request.Price);
             return Ok();
         }
 
@@ -86,7 +86,7 @@ namespace EternalStore.Api.Controllers
         [HttpPut("categories/{idCategory}/products/{idProduct}", Name = "EditProduct")]
         public async Task<IActionResult> Put([FromBody] ProductModificationRequest request)
         {
-            await storeManager.EditProductAsync(request.IdCategory, request.IdProduct, request.Name, request.Description, request.Price);
+            await goodsManager.EditProductAsync(request.IdCategory, request.IdProduct, request.Name, request.Description, request.Price);
             return Ok();
         }
 
@@ -94,7 +94,7 @@ namespace EternalStore.Api.Controllers
         [HttpDelete("categories/{idCategory}/products/{idProduct}", Name = "RemoveProduct")]
         public async Task<IActionResult> Delete(int idCategory, int idProduct)
         {
-            await storeManager.RemoveProductAsync(idCategory, idProduct);
+            await goodsManager.RemoveProductAsync(idCategory, idProduct);
             return Ok();
         }
     }

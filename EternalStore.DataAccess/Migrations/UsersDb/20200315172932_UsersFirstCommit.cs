@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EternalStore.DataAccess.Migrations.UsersDb
 {
-    public partial class UsersCommit : Migration
+    public partial class UsersFirstCommit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

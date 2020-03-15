@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EternalStore.ApplicationLogic.OrderManagement.DTO
+namespace EternalStore.ApplicationLogic.StoreManagement.DTO
 {
     public class OrderDTO
     {
@@ -12,7 +12,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement.DTO
         public DateTime DeliveryDate { get; set; }
         public string CustomerNumber { get; set; }
         public string CustomerAddress { get; set; }
-        public List<OrderItemDTO> OrderItems { get; set; }
+        public IEnumerable<OrderItemDTO> OrderItems { get; set; }
         public string AdditionalInformation { get; set; }
         public bool IsDelivered { get; set; }
     }

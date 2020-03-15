@@ -1,19 +1,19 @@
 ﻿using EternalStore.DataAccess.Interfaces;
-using EternalStore.Domain.OrderManagement;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EternalStore.Domain.StoreManagement;
 
-namespace EternalStore.DataAccess.OrderManagement.Repositories
+namespace EternalStore.DataAccess.StoreManagement.Repositories
 {
     public class OrderRepository : IRepository<Order>, IDisposable
     {
-        private readonly OrdersDbContext dbContext;
+        private readonly StoreDbContext dbContext;
         private bool disposed;
 
-        public OrderRepository(string connectionString) => dbContext = new OrdersDbContext(connectionString);
+        public OrderRepository(string connectionString) => dbContext = new StoreDbContext(connectionString);
 
         /// <summary>
         /// Get all orders from database.

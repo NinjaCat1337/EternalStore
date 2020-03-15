@@ -1,4 +1,4 @@
-﻿namespace EternalStore.Api.Contracts.Store.Requests
+﻿namespace EternalStore.Api.Contracts.Goods.Requests
 {
     public class CategoryModificationRequest
     {

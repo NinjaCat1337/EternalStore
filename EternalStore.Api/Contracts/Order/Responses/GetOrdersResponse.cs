@@ -1,5 +1,5 @@
-﻿using EternalStore.ApplicationLogic.OrderManagement.DTO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using EternalStore.ApplicationLogic.StoreManagement.DTO;
 
 namespace EternalStore.Api.Contracts.Order.Responses
 {

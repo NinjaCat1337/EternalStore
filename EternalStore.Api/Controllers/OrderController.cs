@@ -1,16 +1,16 @@
 ﻿using EternalStore.Api.Contracts.Order.Requests;
 using EternalStore.Api.Contracts.Order.Responses;
-using EternalStore.ApplicationLogic.OrderManagement.DTO;
-using EternalStore.ApplicationLogic.OrderManagement.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+using EternalStore.ApplicationLogic.StoreManagement.DTO;
+using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
 
 namespace EternalStore.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/store/")]
     [ApiController]
     public class OrderController : ControllerBase
     {

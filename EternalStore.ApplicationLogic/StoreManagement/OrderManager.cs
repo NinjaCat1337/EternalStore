@@ -1,15 +1,14 @@
-﻿using EternalStore.ApplicationLogic.OrderManagement.DTO;
-using EternalStore.ApplicationLogic.OrderManagement.Interfaces;
-using EternalStore.DataAccess.OrderManagement.Repositories;
-using EternalStore.DataAccess.StoreManagement.Repositories;
-using EternalStore.Domain.OrderManagement;
+﻿using EternalStore.DataAccess.StoreManagement.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EternalStore.ApplicationLogic.StoreManagement.DTO;
+using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
+using EternalStore.Domain.StoreManagement;
 
-namespace EternalStore.ApplicationLogic.OrderManagement
+namespace EternalStore.ApplicationLogic.StoreManagement
 {
     public class OrderManager : IOrderManager
     {
@@ -26,7 +25,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement
         {
             var order = await orderRepository.GetAsync(idOrder);
 
-            return OrderMapper.FromOrderToOrderDTO(order);
+            return StoreMapper.FromOrderToOrderDTO(order);
         }
 
         public async Task<(IEnumerable<OrderDTO> OrdersForResponse, int AllOrdersCount)> GetAllOrdersAsync(int? skip = null, int? take = null, bool? ascending = null)
@@ -46,7 +45,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement
 
             var orders = await query.ToListAsync();
 
-            return (OrderMapper.FromOrdersToOrdersDTO(orders), allOrdersCount);
+            return (StoreMapper.FromOrdersToOrdersDTO(orders), allOrdersCount);
         }
 
         public async Task<(IEnumerable<OrderDTO> OrdersForResponse, int FilteredOrdersCount)> SearchOrdersAsync(int? skip = null, int? take = null, bool? ascending = null, DateTime? orderDateFrom = null,
@@ -85,7 +84,7 @@ namespace EternalStore.ApplicationLogic.OrderManagement
 
             var orders = await query.ToListAsync();
 
-            return (OrderMapper.FromOrdersToOrdersDTO(orders), filteredOrdersCount);
+            return (StoreMapper.FromOrdersToOrdersDTO(orders), filteredOrdersCount);
         }
 
         public async Task<int> CreateOrderAsync(OrderDTO orderDTO)

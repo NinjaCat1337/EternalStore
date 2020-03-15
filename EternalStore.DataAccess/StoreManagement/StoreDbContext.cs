@@ -9,6 +9,7 @@ namespace EternalStore.DataAccess.StoreManagement
         private readonly string connectionString;
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public StoreDbContext(string connectionString)
         {
@@ -23,6 +24,8 @@ namespace EternalStore.DataAccess.StoreManagement
         {
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
         }
     }
 }

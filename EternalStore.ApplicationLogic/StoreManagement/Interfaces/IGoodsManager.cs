@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EternalStore.ApplicationLogic.StoreManagement.Interfaces
 {
-    public interface IStoreManager : IDisposable
+    public interface IGoodsManager : IDisposable
     {
         Task<CategoryDTO> GetCategoryAsync(int idCategory);
         Task<int> CreateCategoryAsync(string name);

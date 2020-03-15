@@ -41,6 +41,81 @@ namespace EternalStore.DataAccess.Migrations
                     b.ToTable("categories_tb");
                 });
 
+            modelBuilder.Entity("EternalStore.Domain.StoreManagement.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("idOrder")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AdditionalInformation")
+                        .HasColumnName("additionalInformation")
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("CustomerAddress")
+                        .IsRequired()
+                        .HasColumnName("customerAddress")
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnName("customerName")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CustomerNumber")
+                        .IsRequired()
+                        .HasColumnName("customerNumber")
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime>("DeliveryDate")
+                        .HasColumnName("deliveryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnName("isApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelivered")
+                        .HasColumnName("isDelivered")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnName("orderDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("orders_tb");
+                });
+
+            modelBuilder.Entity("EternalStore.Domain.StoreManagement.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("idOrderItem")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Qty")
+                        .HasColumnName("qty")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("idOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("idProduct")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("idOrder");
+
+                    b.HasIndex("idProduct");
+
+                    b.ToTable("orderItems_tb");
+                });
+
             modelBuilder.Entity("EternalStore.Domain.StoreManagement.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -71,6 +146,19 @@ namespace EternalStore.DataAccess.Migrations
                     b.HasIndex("idCategory");
 
                     b.ToTable("products_tb");
+                });
+
+            modelBuilder.Entity("EternalStore.Domain.StoreManagement.OrderItem", b =>
+                {
+                    b.HasOne("EternalStore.Domain.StoreManagement.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("idOrder")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EternalStore.Domain.StoreManagement.Product", "Product")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("idProduct")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("EternalStore.Domain.StoreManagement.Product", b =>

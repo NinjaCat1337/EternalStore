@@ -1,4 +1,4 @@
-﻿namespace EternalStore.ApplicationLogic.OrderManagement.DTO
+﻿namespace EternalStore.ApplicationLogic.StoreManagement.DTO
 {
     public class OrderItemDTO
     {

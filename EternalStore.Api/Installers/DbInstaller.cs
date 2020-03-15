@@ -1,6 +1,4 @@
-﻿using EternalStore.ApplicationLogic.OrderManagement;
-using EternalStore.ApplicationLogic.OrderManagement.Interfaces;
-using EternalStore.ApplicationLogic.StoreManagement;
+﻿using EternalStore.ApplicationLogic.StoreManagement;
 using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
 using EternalStore.ApplicationLogic.UserManagement;
 using EternalStore.ApplicationLogic.UserManagement.Interfaces;
@@ -16,7 +14,7 @@ namespace EternalStore.Api.Installers
             var connection = configuration.GetConnectionString("DefaultConnection");
             var apiKey = configuration["JwtSettings:ApiKey"];
 
-            services.AddTransient<IStoreManager>(sm => new StoreManager(connection));
+            services.AddTransient<IGoodsManager>(sm => new GoodsManager(connection));
             services.AddTransient<IUserManager>(um => new UserManager(connection, apiKey));
             services.AddTransient<IOrderManager>(om => new OrderManager(connection));
         }

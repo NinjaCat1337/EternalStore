@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EternalStore.Api.Controllers
 {
-    [Route("api/[controller]/")]
+    [Route("api/user/")]
     public class UserController : Controller
     {
         private readonly IUserManager userManager;

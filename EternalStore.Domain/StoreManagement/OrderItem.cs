@@ -1,8 +1,7 @@
 ﻿using EternalStore.Domain.Models;
-using EternalStore.Domain.StoreManagement;
 using System;
 
-namespace EternalStore.Domain.OrderManagement
+namespace EternalStore.Domain.StoreManagement
 {
     public class OrderItem : Entity
     {

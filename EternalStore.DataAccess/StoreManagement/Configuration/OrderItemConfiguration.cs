@@ -1,8 +1,8 @@
-﻿using EternalStore.Domain.OrderManagement;
+﻿using EternalStore.Domain.StoreManagement;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EternalStore.DataAccess.OrderManagement.Configuration
+namespace EternalStore.DataAccess.StoreManagement.Configuration
 {
     internal class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
     {

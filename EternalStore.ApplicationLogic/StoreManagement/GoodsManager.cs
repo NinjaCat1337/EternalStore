@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace EternalStore.ApplicationLogic.StoreManagement
 {
-    public class StoreManager : IStoreManager
+    public class GoodsManager : IGoodsManager
     {
         private readonly StoreRepository storeRepository;
 
-        public StoreManager(string connectionString) =>
+        public GoodsManager(string connectionString) =>
             storeRepository ??= new StoreRepository(connectionString);
 
         public async Task<CategoryDTO> GetCategoryAsync(int idCategory)

@@ -1,6 +1,6 @@
-﻿using EternalStore.ApplicationLogic.OrderManagement.DTO;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using EternalStore.ApplicationLogic.StoreManagement.DTO;
 
 namespace EternalStore.Api.Contracts.Order.Requests
 {

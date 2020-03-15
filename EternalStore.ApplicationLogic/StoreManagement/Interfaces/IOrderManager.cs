@@ -1,9 +1,9 @@
-﻿using EternalStore.ApplicationLogic.OrderManagement.DTO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using EternalStore.ApplicationLogic.StoreManagement.DTO;
 
-namespace EternalStore.ApplicationLogic.OrderManagement.Interfaces
+namespace EternalStore.ApplicationLogic.StoreManagement.Interfaces
 {
     public interface IOrderManager : IDisposable
     {

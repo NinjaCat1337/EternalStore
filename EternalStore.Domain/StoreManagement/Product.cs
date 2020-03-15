@@ -1,5 +1,4 @@
 ﻿using EternalStore.Domain.Models;
-using EternalStore.Domain.OrderManagement;
 using System;
 using System.Collections.Generic;
 

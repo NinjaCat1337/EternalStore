@@ -1,10 +1,9 @@
 ﻿using EternalStore.Domain.Models;
-using EternalStore.Domain.StoreManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EternalStore.Domain.OrderManagement
+namespace EternalStore.Domain.StoreManagement
 {
     public class Order : Entity
     {
