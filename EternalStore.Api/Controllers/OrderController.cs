@@ -81,7 +81,9 @@ namespace EternalStore.Api.Controllers
                 await orderManager.AddOrderItemAsync(idOrder, orderItem.IdCategory, orderItem.IdProduct, orderItem.Qty);
             }
 
-            return Ok();
+            var response = new OrderCreationResponse { IdOrder = idOrder };
+
+            return Ok(response);
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
