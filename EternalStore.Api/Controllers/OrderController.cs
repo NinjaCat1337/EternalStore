@@ -19,35 +19,11 @@ namespace EternalStore.Api.Controllers
         public OrderController(IOrderManager orderManager) => this.orderManager = orderManager;
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
-        [HttpGet("orders", Name = "GetOrders")]
-        public async Task<IActionResult> Get(int count, int page, bool ascending)
-        {
-            var ordersToSkip = (page - 1) * count;
-            var (responseOrders, allOrdersCount) = await orderManager.GetAllOrdersAsync(ordersToSkip, count, ascending);
-
-            var response = new GetOrdersResponse
-            {
-                Orders = responseOrders.ToList(),
-                OrdersCount = allOrdersCount
-            };
-
-            return Ok(response);
-        }
-
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
-        [HttpGet("orders/{idOrder}", Name = "GetOrder")]
-        public async Task<IActionResult> Get(int idOrder)
-        {
-            var order = await orderManager.GetOrderAsync(idOrder);
-            return Ok(order);
-        }
-
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
-        [HttpPost("orders/search", Name = "Search")]
-        public async Task<IActionResult> Search([FromBody]OrderSearchRequest request)
+        [HttpPost("orders/filter", Name = "GetOrders")]
+        public async Task<IActionResult> GetOrders([FromBody]GetOrdersRequest request)
         {
             var ordersToSkip = (request.Page - 1) * request.Count;
-            var (responseOrders, filteredOrdersCount) = await orderManager.SearchOrdersAsync(ordersToSkip, request.Count, request.Ascending,
+            var (responseOrders, filteredOrdersCount) = await orderManager.GetOrdersAsync(ordersToSkip, request.Count, request.Ascending,
                 request.OrderDateFrom, request.OrderDateTo, request.DeliveryDateFrom, request.DeliveryDateTo, request.IsApproved, request.IsDelivered);
 
             var ordersForResponse = responseOrders.ToList();
@@ -59,6 +35,14 @@ namespace EternalStore.Api.Controllers
             };
 
             return Ok(response);
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
+        [HttpGet("orders/{idOrder}", Name = "GetOrder")]
+        public async Task<IActionResult> Get(int idOrder)
+        {
+            var order = await orderManager.GetOrderAsync(idOrder);
+            return Ok(order);
         }
 
         [HttpPost("orders", Name = "AddOrder")]
@@ -104,7 +88,7 @@ namespace EternalStore.Api.Controllers
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
-        [HttpDelete("order/{idOrder}", Name = "DeleteOrder")]
+        [HttpDelete("orders/{idOrder}", Name = "DeleteOrder")]
         public async Task<IActionResult> Delete(int idOrder)
         {
             await orderManager.DeleteOrderAsync(idOrder);

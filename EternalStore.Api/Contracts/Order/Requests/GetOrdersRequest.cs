@@ -2,7 +2,7 @@
 
 namespace EternalStore.Api.Contracts.Order.Requests
 {
-    public class OrderSearchRequest
+    public class GetOrdersRequest
     {
         public int? Count { get; set; }
         public int? Page { get; set; }

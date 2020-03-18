@@ -28,27 +28,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
             return StoreMapper.FromOrderToOrderDTO(order);
         }
 
-        public async Task<(IEnumerable<OrderDTO> OrdersForResponse, int AllOrdersCount)> GetAllOrdersAsync(int? skip = null, int? take = null, bool? ascending = null)
-        {
-            var query = orderRepository.GetAll();
-
-            var allOrdersCount = query.Count();
-
-            if (ascending != null)
-                query = (bool)ascending ? query.OrderBy(o => o.Id) : query.OrderByDescending(o => o.Id);
-
-            if (skip != null)
-                query = query.Skip(skip.Value);
-
-            if (take != null)
-                query = query.Take(take.Value);
-
-            var orders = await query.ToListAsync();
-
-            return (StoreMapper.FromOrdersToOrdersDTO(orders), allOrdersCount);
-        }
-
-        public async Task<(IEnumerable<OrderDTO> OrdersForResponse, int FilteredOrdersCount)> SearchOrdersAsync(int? skip = null, int? take = null, bool? ascending = null, DateTime? orderDateFrom = null,
+        public async Task<(IEnumerable<OrderDTO> OrdersForResponse, int FilteredOrdersCount)> GetOrdersAsync(int? skip = null, int? take = null, bool? ascending = null, DateTime? orderDateFrom = null,
             DateTime? orderDateTo = null, DateTime? deliveryDateFrom = null, DateTime? deliveryDateTo = null, bool? isApproved = null, bool? isDelivered = null)
         {
             var query = orderRepository.GetAll();

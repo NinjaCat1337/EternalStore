@@ -8,9 +8,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement.Interfaces
     public interface IOrderManager : IDisposable
     {
         Task<OrderDTO> GetOrderAsync(int idOrder);
-        Task<(IEnumerable<OrderDTO> OrdersForResponse, int AllOrdersCount)> GetAllOrdersAsync(int? skip, int? take, bool? ascending);
-
-        Task<(IEnumerable<OrderDTO> OrdersForResponse, int FilteredOrdersCount)> SearchOrdersAsync(int? skip, int? take, bool? ascending, DateTime? orderDateFrom,
+        Task<(IEnumerable<OrderDTO> OrdersForResponse, int FilteredOrdersCount)> GetOrdersAsync(int? skip, int? take, bool? ascending, DateTime? orderDateFrom,
             DateTime? orderDateTo, DateTime? deliveryDateFrom, DateTime? deliveryDateTo, bool? isApproved, bool? isDelivered);
         Task<int> CreateOrderAsync(OrderDTO orderDTO);
         Task UpdateOrderAsync(OrderDTO orderDTO);
