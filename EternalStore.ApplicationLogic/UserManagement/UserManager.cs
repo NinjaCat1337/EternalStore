@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace EternalStore.ApplicationLogic.UserManagement
 {
@@ -19,10 +20,10 @@ namespace EternalStore.ApplicationLogic.UserManagement
         private readonly UserRepository userRepository;
         private readonly string apiKey;
 
-        public UserManager(string connectionString, string apiKey)
+        public UserManager(IConfiguration configuration)
         {
-            userRepository ??= new UserRepository(connectionString);
-            this.apiKey = apiKey;
+            userRepository ??= new UserRepository(configuration.GetConnectionString("DefaultConnection"));
+            apiKey = configuration["JwtSettings:ApiKey"];
         }
 
         public async Task<RegistrationResult> RegisterAsync(string login, string password, string firstName, string lastName, string email)

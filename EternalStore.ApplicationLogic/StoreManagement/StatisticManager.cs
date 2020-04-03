@@ -7,6 +7,7 @@ using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
 using EternalStore.DataAccess.StoreManagement.Repositories;
 using EternalStore.Domain.StoreManagement;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace EternalStore.ApplicationLogic.StoreManagement
 {
@@ -15,10 +16,10 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         private readonly GoodsRepository storeRepository;
         private readonly OrderRepository orderRepository;
 
-        public StatisticManager(string connectionString)
+        public StatisticManager(IConfiguration configuration)
         {
-            storeRepository ??= new GoodsRepository(connectionString);
-            orderRepository ??= new OrderRepository(connectionString);
+            storeRepository ??= new GoodsRepository(configuration.GetConnectionString("DefaultConnection"));
+            orderRepository ??= new OrderRepository(configuration.GetConnectionString("DefaultConnection"));
         }
 
         public async Task<IEnumerable<ProductStatisticDTO>> GetProductsStatistic(DateTime dateFrom, DateTime dateTo)

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EternalStore.ApplicationLogic.StoreManagement.DTO;
 using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
 using EternalStore.Domain.StoreManagement;
+using Microsoft.Extensions.Configuration;
 
 namespace EternalStore.ApplicationLogic.StoreManagement
 {
@@ -15,10 +16,10 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         private readonly OrderRepository orderRepository;
         private readonly GoodsRepository storeRepository;
 
-        public OrderManager(string connectionString)
+        public OrderManager(IConfiguration configuration)
         {
-            orderRepository ??= new OrderRepository(connectionString);
-            storeRepository ??= new GoodsRepository(connectionString);
+            orderRepository ??= new OrderRepository(configuration.GetConnectionString("DefaultConnection"));
+            storeRepository ??= new GoodsRepository(configuration.GetConnectionString("DefaultConnection"));
         }
 
         public async Task<OrderDTO> GetOrderAsync(int idOrder)

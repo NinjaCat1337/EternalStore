@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace EternalStore.ApplicationLogic.StoreManagement
 {
@@ -14,8 +15,8 @@ namespace EternalStore.ApplicationLogic.StoreManagement
     {
         private readonly GoodsRepository storeRepository;
 
-        public GoodsManager(string connectionString) =>
-            storeRepository ??= new GoodsRepository(connectionString);
+        public GoodsManager(IConfiguration configuration) =>
+            storeRepository ??= new GoodsRepository(configuration.GetConnectionString("DefaultConnection"));
 
         public async Task<CategoryDTO> GetCategoryAsync(int idCategory)
         {

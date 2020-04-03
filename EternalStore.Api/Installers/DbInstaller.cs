@@ -13,13 +13,10 @@ namespace EternalStore.Api.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-            var apiKey = configuration["JwtSettings:ApiKey"];
-
-            services.AddTransient<IGoodsManager>(sm => new GoodsManager(connectionString));
-            services.AddTransient<IUserManager>(um => new UserManager(connectionString, apiKey));
-            services.AddTransient<IOrderManager>(om => new OrderManager(connectionString));
-            services.AddTransient<IStatisticManager>(sm => new StatisticManager(connectionString));
+            services.AddTransient<IGoodsManager>(sm => new GoodsManager(configuration));
+            services.AddTransient<IUserManager>(um => new UserManager(configuration));
+            services.AddTransient<IOrderManager>(om => new OrderManager(configuration));
+            services.AddTransient<IStatisticManager>(sm => new StatisticManager(configuration));
             services.AddTransient<IMailManager>(mm => new MailManager(configuration));
             services.AddTransient<IScheduleManager>(sm => new ScheduleManager(configuration));
         }
