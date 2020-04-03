@@ -118,6 +118,7 @@ namespace EternalStore.ApplicationLogic.StoreManagement
             var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
             order.AddOrderItem(product, qty);
             orderRepository.Modify(order);
+
             await orderRepository.SaveChangesAsync();
         }
 

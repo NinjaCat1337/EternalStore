@@ -19,7 +19,10 @@ namespace EternalStore.DataAccess.StoreManagement.Repositories
         /// Get all orders from database.
         /// </summary>
         /// <returns>IQueryable collection of Orders.</returns>
-        public IQueryable<Order> GetAll() => dbContext.Set<Order>().AsQueryable();
+        public IQueryable<Order> GetAll() => dbContext.Set<Order>()
+            .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.Product)
+            .AsQueryable();
 
         /// <summary>
         /// Get by predicate.

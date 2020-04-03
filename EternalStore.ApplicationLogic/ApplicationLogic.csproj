@@ -7,17 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.5.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EternalStore.DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\EternalStore.Domain\Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="OrderManagement\DTO\" />
-    <Folder Include="OrderManagement\Interfaces\" />
   </ItemGroup>
 
 </Project>

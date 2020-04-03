@@ -9,6 +9,7 @@ namespace EternalStore.ApplicationLogic.UserManagement.Interfaces
     {
         Task<RegistrationResult> RegisterAsync(string login, string password, string firstName, string lastName, string email);
         Task<AuthenticationResult> LoginAsync(string login, string password);
+        Task<IEnumerable<UserDTO>> GetAllUsersAsync();
         Task<UserDTO> GetUserAsync(int idUser);
         Task<IEnumerable<UserAddressDTO>> GetUserAddressesAsync(int idUser);
         Task<int> AddAddressAsync(int idUser, string address);

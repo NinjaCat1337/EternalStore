@@ -19,7 +19,7 @@ namespace EternalStore.DataAccess.StoreManagement.Repositories
         /// Get all categories from database.
         /// </summary>
         /// <returns>IQueryable collection of Categories.</returns>
-        public IQueryable<Category> GetAll() => dbContext.Set<Category>().AsQueryable();
+        public IQueryable<Category> GetAll() => dbContext.Set<Category>().Include(c => c.Products).AsQueryable();
 
         /// <summary>
         /// Get Categories by predicate from database.
@@ -28,7 +28,8 @@ namespace EternalStore.DataAccess.StoreManagement.Repositories
         /// <returns></returns>
         public async Task<IEnumerable<Category>> GetByAsync(Func<Category, bool> predicate)
         {
-            var allCategories = await dbContext.Categories.ToListAsync();
+            var allCategories = await dbContext.Categories.Include(c => c.Products).ToListAsync();
+
             return allCategories.Where(predicate);
         }
 
@@ -97,6 +98,7 @@ namespace EternalStore.DataAccess.StoreManagement.Repositories
         private void Dispose(bool disposing)
         {
             if (disposed) return;
+
             if (disposing) dbContext.Dispose();
 
             disposed = true;

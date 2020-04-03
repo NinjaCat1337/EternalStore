@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace EternalStore.ApplicationLogic.UserManagement
 {
@@ -72,13 +73,20 @@ namespace EternalStore.ApplicationLogic.UserManagement
             return GenerateAuthenticationResultForUser(user.Id, login, user.Role);
         }
 
+        public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
+        {
+            var allUsers = await userRepository.GetAll().ToListAsync();
+
+            return allUsers.Select(UserMapper.FromUserToUserDTO);
+        }
+
         public async Task<UserDTO> GetUserAsync(int idUser)
         {
             var user = await userRepository.GetAsync(idUser);
             return UserMapper.FromUserToUserDTO(user);
         }
 
-        public async Task<IEnumerable<UserAddressDTO>> GetUserAddressesAsync (int idUser)
+        public async Task<IEnumerable<UserAddressDTO>> GetUserAddressesAsync(int idUser)
         {
             var user = await userRepository.GetAsync(idUser);
 
