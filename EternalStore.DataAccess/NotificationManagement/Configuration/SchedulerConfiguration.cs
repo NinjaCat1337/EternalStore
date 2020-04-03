@@ -27,12 +27,12 @@ namespace EternalStore.DataAccess.NotificationManagement.Configuration
 
             builder.HasOne(s => s.Message)
                 .WithOne(sm => sm.Scheduler)
-                .HasForeignKey("idScheduler")
+                .HasForeignKey<SchedulerMessage>("idScheduler")
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(s => s.Settings)
                 .WithOne(ss => ss.Scheduler)
-                .HasForeignKey("idScheduler")
+                .HasForeignKey<SchedulerSettings>("idScheduler")
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
