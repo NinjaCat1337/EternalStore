@@ -98,7 +98,6 @@ namespace EternalStore.ApplicationLogic.UserManagement
         {
             var user = await userRepository.GetAsync(idUser);
             var address = user.AddAddress(userAddress);
-            userRepository.Modify(user);
 
             await userRepository.SaveChangesAsync();
 
@@ -124,7 +123,6 @@ namespace EternalStore.ApplicationLogic.UserManagement
         {
             var user = await userRepository.GetAsync(idUser);
             var number = user.AddNumber(userNumber);
-            userRepository.Modify(user);
 
             await userRepository.SaveChangesAsync();
 
@@ -143,7 +141,6 @@ namespace EternalStore.ApplicationLogic.UserManagement
         {
             var user = await userRepository.GetAsync(idUser);
             user.Modify(login);
-            userRepository.Modify(user);
 
             await userRepository.SaveChangesAsync();
         }
@@ -156,7 +153,6 @@ namespace EternalStore.ApplicationLogic.UserManagement
                 throw new Exception("Wrong password.");
 
             user.ModifyPassword(PasswordHashing.GetMd5Hash(newPassword));
-            userRepository.Modify(user);
 
             await userRepository.SaveChangesAsync();
         }
@@ -165,7 +161,6 @@ namespace EternalStore.ApplicationLogic.UserManagement
         {
             var user = await userRepository.GetAsync(idUser);
             user.ModifyUserInformation(firstName, lastName, email);
-            userRepository.Modify(user.UserInformation);
 
             await userRepository.SaveChangesAsync();
         }

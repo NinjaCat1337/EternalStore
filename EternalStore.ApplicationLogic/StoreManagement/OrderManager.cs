@@ -81,7 +81,6 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         {
             var order = await orderRepository.GetAsync(orderDTO.IdOrder);
             order.Modify(orderDTO.DeliveryDate, orderDTO.CustomerName, orderDTO.CustomerAddress, orderDTO.CustomerNumber, orderDTO.AdditionalInformation);
-            orderRepository.Modify(order);
 
             await orderRepository.SaveChangesAsync();
         }
@@ -98,7 +97,6 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         {
             var order = await orderRepository.GetAsync(id);
             order.SetApproved();
-            orderRepository.Modify(order);
 
             await orderRepository.SaveChangesAsync();
         }
@@ -107,7 +105,6 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         {
             var order = await orderRepository.GetAsync(id);
             order.SetDelivered();
-            orderRepository.Modify(order);
 
             await orderRepository.SaveChangesAsync();
         }
@@ -118,7 +115,6 @@ namespace EternalStore.ApplicationLogic.StoreManagement
             var category = await storeRepository.GetAsync(idCategory);
             var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
             order.AddOrderItem(product, qty);
-            orderRepository.Modify(order);
 
             await orderRepository.SaveChangesAsync();
         }

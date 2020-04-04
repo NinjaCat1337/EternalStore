@@ -43,7 +43,6 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         {
             var category = await storeRepository.GetAsync(id);
             category.Modify(name);
-            storeRepository.Modify(category);
 
             await storeRepository.SaveChangesAsync();
         }
@@ -52,7 +51,6 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         {
             var category = await storeRepository.GetAsync(id);
             category.Disable();
-            storeRepository.Modify(category);
 
             await storeRepository.SaveChangesAsync();
         }
@@ -61,7 +59,6 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         {
             var category = await storeRepository.GetAsync(id);
             category.Enable();
-            storeRepository.Modify(category);
 
             await storeRepository.SaveChangesAsync();
         }
@@ -70,7 +67,6 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         {
             var category = await storeRepository.GetAsync(idCategory);
             var product = category.AddProduct(name, description, price);
-            storeRepository.Modify(category);
 
             await storeRepository.SaveChangesAsync();
 
@@ -81,8 +77,6 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         {
             var category = await storeRepository.GetAsync(idCategory);
             category.EditProduct(idProduct, name, description, price);
-            var product = category.Products.FirstOrDefault(p => p.Id == idProduct);
-            storeRepository.Modify(product);
 
             await storeRepository.SaveChangesAsync();
         }
