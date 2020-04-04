@@ -39,7 +39,7 @@ namespace EternalStore.DataAccess.NotificationManagement.Repositories
 
         public async Task<EmailMessage> GetAsync(int id)
         {
-            var email = await dbContext.EmailMessages.Include(em => em.Message).ThenInclude(sm => sm.Scheduler)
+            var email = await dbContext.EmailMessages.Include(em => em.Message).ThenInclude(sm => sm.SchedulerItem)
                 .FirstOrDefaultAsync(em => em.Id == id);
 
             if (email == null)

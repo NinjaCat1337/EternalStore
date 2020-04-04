@@ -20,7 +20,7 @@ namespace EternalStore.Api.Services
         private readonly IScheduleManager scheduleManager;
         private readonly IUserManager userManager;
 
-        private IEnumerable<Scheduler> schedulers;
+        private IEnumerable<SchedulerItem> schedulers;
         private IEnumerable<UserDTO> recipients;
 
         public NotificationService(IStatisticManager statisticManager, IMailManager mailManager, IScheduleManager scheduleManager, IUserManager userManager)
@@ -52,10 +52,10 @@ namespace EternalStore.Api.Services
         private async void LoadData()
         {
             recipients = await userManager.GetAllUsersAsync();
-            schedulers = await scheduleManager.GetAllSchedulers();
+            schedulers = await scheduleManager.GetAllSchedulerItems();
         }
 
-        private Action SendStatisticSchedulerAction(Scheduler scheduler) => () =>
+        private Action SendStatisticSchedulerAction(SchedulerItem scheduler) => () =>
         {
             foreach (var recipient in recipients)
             {

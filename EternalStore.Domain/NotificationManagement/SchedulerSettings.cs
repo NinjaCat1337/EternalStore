@@ -9,7 +9,7 @@ namespace EternalStore.Domain.NotificationManagement
         public int ExecutionHours { get; protected set; }
         public int ExecutionMinutes { get; protected set; }
         public DayOfWeek? ExecutionDayOfWeek { get; protected set; }
-        public Scheduler Scheduler { get; protected set; }
+        public SchedulerItem SchedulerItem { get; protected set; }
 
         protected SchedulerSettings() { }
 

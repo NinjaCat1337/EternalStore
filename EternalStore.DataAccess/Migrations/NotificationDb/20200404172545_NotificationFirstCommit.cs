@@ -8,7 +8,7 @@ namespace EternalStore.DataAccess.Migrations.NotificationDb
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "schedulers_tb",
+                name: "schedulerItems_tb",
                 columns: table => new
                 {
                     idScheduler = table.Column<int>(type: "int", nullable: false)
@@ -18,7 +18,7 @@ namespace EternalStore.DataAccess.Migrations.NotificationDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_schedulers_tb", x => x.idScheduler);
+                    table.PrimaryKey("PK_schedulerItems_tb", x => x.idScheduler);
                 });
 
             migrationBuilder.CreateTable(
@@ -29,15 +29,15 @@ namespace EternalStore.DataAccess.Migrations.NotificationDb
                         .Annotation("SqlServer:Identity", "1, 1"),
                     subject = table.Column<string>(type: "nvarchar(150)", nullable: false),
                     body = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    idScheduler = table.Column<int>(nullable: true)
+                    idSchedulerItem = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_schedulerMessages_tb", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_schedulerMessages_tb_schedulers_tb_idScheduler",
-                        column: x => x.idScheduler,
-                        principalTable: "schedulers_tb",
+                        name: "FK_schedulerMessages_tb_schedulerItems_tb_idSchedulerItem",
+                        column: x => x.idSchedulerItem,
+                        principalTable: "schedulerItems_tb",
                         principalColumn: "idScheduler",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -52,15 +52,15 @@ namespace EternalStore.DataAccess.Migrations.NotificationDb
                     executionHours = table.Column<int>(type: "int", nullable: false),
                     executionMinutes = table.Column<int>(type: "int", nullable: false),
                     executionDayOfWeek = table.Column<int>(type: "int", nullable: true),
-                    idScheduler = table.Column<int>(nullable: true)
+                    idSchedulerItem = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_schedulerSettings_tb", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_schedulerSettings_tb_schedulers_tb_idScheduler",
-                        column: x => x.idScheduler,
-                        principalTable: "schedulers_tb",
+                        name: "FK_schedulerSettings_tb_schedulerItems_tb_idSchedulerItem",
+                        column: x => x.idSchedulerItem,
+                        principalTable: "schedulerItems_tb",
                         principalColumn: "idScheduler",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -93,18 +93,18 @@ namespace EternalStore.DataAccess.Migrations.NotificationDb
                 column: "idSchedulerMessage");
 
             migrationBuilder.CreateIndex(
-                name: "IX_schedulerMessages_tb_idScheduler",
+                name: "IX_schedulerMessages_tb_idSchedulerItem",
                 table: "schedulerMessages_tb",
-                column: "idScheduler",
+                column: "idSchedulerItem",
                 unique: true,
-                filter: "[idScheduler] IS NOT NULL");
+                filter: "[idSchedulerItem] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_schedulerSettings_tb_idScheduler",
+                name: "IX_schedulerSettings_tb_idSchedulerItem",
                 table: "schedulerSettings_tb",
-                column: "idScheduler",
+                column: "idSchedulerItem",
                 unique: true,
-                filter: "[idScheduler] IS NOT NULL");
+                filter: "[idSchedulerItem] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -119,7 +119,7 @@ namespace EternalStore.DataAccess.Migrations.NotificationDb
                 name: "schedulerMessages_tb");
 
             migrationBuilder.DropTable(
-                name: "schedulers_tb");
+                name: "schedulerItems_tb");
         }
     }
 }

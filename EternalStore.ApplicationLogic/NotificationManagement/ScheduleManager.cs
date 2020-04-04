@@ -12,54 +12,54 @@ namespace EternalStore.ApplicationLogic.NotificationManagement
 {
     public class ScheduleManager : IScheduleManager
     {
-        private readonly SchedulerRepository schedulerRepository;
+        private readonly SchedulerItemRepository schedulerItemRepository;
         public ScheduleManager(IConfiguration configuration)
         {
-            schedulerRepository = new SchedulerRepository(configuration.GetConnectionString("DefaultConnection"));
+            schedulerItemRepository = new SchedulerItemRepository(configuration.GetConnectionString("DefaultConnection"));
         }
 
-        public async Task<IEnumerable<Scheduler>> GetAllSchedulers() => await schedulerRepository.GetAll().ToListAsync();
+        public async Task<IEnumerable<SchedulerItem>> GetAllSchedulerItems() => await schedulerItemRepository.GetAll().ToListAsync();
 
         public async Task<int> CreateSchedulerAsync(string name, string messageHeader, string messageBody, ExecutionFrequency executionFrequency, int executionHours, int executionMinutes,
             DayOfWeek? dayOfWeek = null)
         {
-            var schedulersWithSameName = await schedulerRepository.GetByAsync(s => s.Name == name);
+            var schedulerItemsWithSameName = await schedulerItemRepository.GetByAsync(s => s.Name == name);
 
-            if (schedulersWithSameName.Any())
+            if (schedulerItemsWithSameName.Any())
                 throw new Exception("Scheduler with same name already exists.");
 
-            var scheduler = Scheduler.Insert(name, messageHeader, messageBody, executionFrequency, executionHours, executionMinutes, dayOfWeek);
+            var schedulerItem = SchedulerItem.Insert(name, messageHeader, messageBody, executionFrequency, executionHours, executionMinutes, dayOfWeek);
 
-            await schedulerRepository.InsertAsync(scheduler);
-            await schedulerRepository.SaveChangesAsync();
+            await schedulerItemRepository.InsertAsync(schedulerItem);
+            await schedulerItemRepository.SaveChangesAsync();
 
-            return scheduler.Id;
+            return schedulerItem.Id;
         }
 
         public async Task UpdateSchedulerAsync(int idScheduler, string name, string messageHeader, string messageBody, ExecutionFrequency executionFrequency, int executionHours, int executionMinutes, DayOfWeek? executionDayOfWeek = null)
         {
-            var scheduler = await schedulerRepository.GetAsync(idScheduler);
-            scheduler.Modify(name);
-            scheduler.Settings.Modify(executionFrequency, executionHours, executionMinutes, executionDayOfWeek);
-            scheduler.Message.Modify(messageHeader, messageBody);
+            var schedulerItem = await schedulerItemRepository.GetAsync(idScheduler);
+            schedulerItem.Modify(name);
+            schedulerItem.Settings.Modify(executionFrequency, executionHours, executionMinutes, executionDayOfWeek);
+            schedulerItem.Message.Modify(messageHeader, messageBody);
 
-            await schedulerRepository.SaveChangesAsync();
+            await schedulerItemRepository.SaveChangesAsync();
         }
 
         public async Task SchedulerSetExecutionTime(int idScheduler)
         {
-            var scheduler = await schedulerRepository.GetAsync(idScheduler);
-            scheduler.SetExecutionDateTime();
+            var schedulerItem = await schedulerItemRepository.GetAsync(idScheduler);
+            schedulerItem.SetExecutionDateTime();
 
-            await schedulerRepository.SaveChangesAsync();
+            await schedulerItemRepository.SaveChangesAsync();
         }
 
         public async Task SchedulerRefreshTime(int idScheduler)
         {
-            var scheduler = await schedulerRepository.GetAsync(idScheduler);
-            scheduler.RefreshExecutionDateTime();
+            var schedulerItem = await schedulerItemRepository.GetAsync(idScheduler);
+            schedulerItem.RefreshExecutionDateTime();
 
-            await schedulerRepository.SaveChangesAsync();
+            await schedulerItemRepository.SaveChangesAsync();
         }
     }
 }

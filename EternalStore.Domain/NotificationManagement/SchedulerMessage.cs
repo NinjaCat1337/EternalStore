@@ -8,7 +8,7 @@ namespace EternalStore.Domain.NotificationManagement
     {
         public string Subject { get; protected set; }
         public string Body { get; protected set; }
-        public Scheduler Scheduler { get; protected set; }
+        public SchedulerItem SchedulerItem { get; protected set; }
 
         public IEnumerable<EmailMessage> EmailMessages { get; protected set; }
 

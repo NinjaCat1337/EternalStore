@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EternalStore.DataAccess.NotificationManagement.Configuration
 {
-    public class SchedulerConfiguration : IEntityTypeConfiguration<Scheduler>
+    public class SchedulerItemConfiguration : IEntityTypeConfiguration<SchedulerItem>
     {
-        public void Configure(EntityTypeBuilder<Scheduler> builder)
+        public void Configure(EntityTypeBuilder<SchedulerItem> builder)
         {
-            builder.ToTable("schedulers_tb")
+            builder.ToTable("schedulerItems_tb")
                 .HasKey(s => s.Id);
 
             builder.Property(p => p.Id)
@@ -26,13 +26,13 @@ namespace EternalStore.DataAccess.NotificationManagement.Configuration
                 .HasColumnType("datetime2");
 
             builder.HasOne(s => s.Message)
-                .WithOne(sm => sm.Scheduler)
-                .HasForeignKey<SchedulerMessage>("idScheduler")
+                .WithOne(sm => sm.SchedulerItem)
+                .HasForeignKey<SchedulerMessage>("idSchedulerItem")
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(s => s.Settings)
-                .WithOne(ss => ss.Scheduler)
-                .HasForeignKey<SchedulerSettings>("idScheduler")
+                .WithOne(ss => ss.SchedulerItem)
+                .HasForeignKey<SchedulerSettings>("idSchedulerItem")
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

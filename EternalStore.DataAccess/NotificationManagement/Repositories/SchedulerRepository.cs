@@ -8,20 +8,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EternalStore.DataAccess.NotificationManagement.Repositories
 {
-    public class SchedulerRepository : IRepository<Scheduler>
+    public class SchedulerItemRepository : IRepository<SchedulerItem>
     {
         private readonly NotificationDbContext dbContext;
         private bool disposed;
 
-        public SchedulerRepository(string connectionString) => dbContext = new NotificationDbContext(connectionString);
+        public SchedulerItemRepository(string connectionString) => dbContext = new NotificationDbContext(connectionString);
 
-        public IQueryable<Scheduler> GetAll() => dbContext.Schedulers.AsQueryable();
+        public IQueryable<SchedulerItem> GetAll() => dbContext.Schedulers.AsQueryable();
 
-        public async Task InsertAsync(Scheduler item) => await dbContext.AddAsync(item);
+        public async Task InsertAsync(SchedulerItem item) => await dbContext.AddAsync(item);
 
         public void Modify(object item)
         {
-            if (item as Scheduler != null || item as SchedulerMessage != null || item as SchedulerSettings != null)
+            if (item as SchedulerItem != null || item as SchedulerMessage != null || item as SchedulerSettings != null)
                 dbContext.Entry(item).State = EntityState.Modified;
 
             else
@@ -30,34 +30,34 @@ namespace EternalStore.DataAccess.NotificationManagement.Repositories
 
         public void Eliminate(object item)
         {
-            if (item as Scheduler != null || item as SchedulerMessage != null || item as SchedulerSettings != null)
+            if (item as SchedulerItem != null || item as SchedulerMessage != null || item as SchedulerSettings != null)
                 dbContext.Entry(item).State = EntityState.Deleted;
 
             else
                 throw new Exception("Wrong type.");
         }
 
-        public async Task<Scheduler> GetAsync(int id)
+        public async Task<SchedulerItem> GetAsync(int id)
         {
-            var scheduler = await dbContext.Schedulers
+            var schedulerItem = await dbContext.Schedulers
                 .Include(s => s.Message)
                 .Include(s => s.Settings)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
-            if (scheduler == null)
+            if (schedulerItem == null)
                 throw new Exception("Scheduler not found.");
 
-            return scheduler;
+            return schedulerItem;
         }
 
-        public async Task<IEnumerable<Scheduler>> GetByAsync(Func<Scheduler, bool> predicate)
+        public async Task<IEnumerable<SchedulerItem>> GetByAsync(Func<SchedulerItem, bool> predicate)
         {
-            var schedulers = await dbContext.Schedulers
+            var schedulerItems = await dbContext.Schedulers
                 .Include(s => s.Settings)
                 .Include(s => s.Message)
                 .ToListAsync();
 
-            return schedulers.Where(predicate);
+            return schedulerItems.Where(predicate);
         }
 
         public async Task SaveChangesAsync() => await dbContext.SaveChangesAsync();
@@ -77,6 +77,6 @@ namespace EternalStore.DataAccess.NotificationManagement.Repositories
             disposed = true;
         }
 
-        ~SchedulerRepository() => Dispose(false);
+        ~SchedulerItemRepository() => Dispose(false);
     }
 }

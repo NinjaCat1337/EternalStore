@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EternalStore.DataAccess.Migrations.NotificationDb
 {
     [DbContext(typeof(NotificationDbContext))]
-    [Migration("20200403203057_NotificationFirstCommit")]
+    [Migration("20200404172545_NotificationFirstCommit")]
     partial class NotificationFirstCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,7 +52,7 @@ namespace EternalStore.DataAccess.Migrations.NotificationDb
                     b.ToTable("emailMessages_tb");
                 });
 
-            modelBuilder.Entity("EternalStore.Domain.NotificationManagement.Scheduler", b =>
+            modelBuilder.Entity("EternalStore.Domain.NotificationManagement.SchedulerItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,7 +71,7 @@ namespace EternalStore.DataAccess.Migrations.NotificationDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("schedulers_tb");
+                    b.ToTable("schedulerItems_tb");
                 });
 
             modelBuilder.Entity("EternalStore.Domain.NotificationManagement.SchedulerMessage", b =>
@@ -91,14 +91,14 @@ namespace EternalStore.DataAccess.Migrations.NotificationDb
                         .HasColumnName("subject")
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int?>("idScheduler")
+                    b.Property<int?>("idSchedulerItem")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("idScheduler")
+                    b.HasIndex("idSchedulerItem")
                         .IsUnique()
-                        .HasFilter("[idScheduler] IS NOT NULL");
+                        .HasFilter("[idSchedulerItem] IS NOT NULL");
 
                     b.ToTable("schedulerMessages_tb");
                 });
@@ -126,14 +126,14 @@ namespace EternalStore.DataAccess.Migrations.NotificationDb
                         .HasColumnName("executionMinutes")
                         .HasColumnType("int");
 
-                    b.Property<int?>("idScheduler")
+                    b.Property<int?>("idSchedulerItem")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("idScheduler")
+                    b.HasIndex("idSchedulerItem")
                         .IsUnique()
-                        .HasFilter("[idScheduler] IS NOT NULL");
+                        .HasFilter("[idSchedulerItem] IS NOT NULL");
 
                     b.ToTable("schedulerSettings_tb");
                 });
@@ -147,17 +147,17 @@ namespace EternalStore.DataAccess.Migrations.NotificationDb
 
             modelBuilder.Entity("EternalStore.Domain.NotificationManagement.SchedulerMessage", b =>
                 {
-                    b.HasOne("EternalStore.Domain.NotificationManagement.Scheduler", "Scheduler")
+                    b.HasOne("EternalStore.Domain.NotificationManagement.SchedulerItem", "SchedulerItem")
                         .WithOne("Message")
-                        .HasForeignKey("EternalStore.Domain.NotificationManagement.SchedulerMessage", "idScheduler")
+                        .HasForeignKey("EternalStore.Domain.NotificationManagement.SchedulerMessage", "idSchedulerItem")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("EternalStore.Domain.NotificationManagement.SchedulerSettings", b =>
                 {
-                    b.HasOne("EternalStore.Domain.NotificationManagement.Scheduler", "Scheduler")
+                    b.HasOne("EternalStore.Domain.NotificationManagement.SchedulerItem", "SchedulerItem")
                         .WithOne("Settings")
-                        .HasForeignKey("EternalStore.Domain.NotificationManagement.SchedulerSettings", "idScheduler")
+                        .HasForeignKey("EternalStore.Domain.NotificationManagement.SchedulerSettings", "idSchedulerItem")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

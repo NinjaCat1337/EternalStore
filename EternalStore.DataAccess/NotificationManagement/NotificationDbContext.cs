@@ -8,7 +8,7 @@ namespace EternalStore.DataAccess.NotificationManagement
     {
         private readonly string connectionString;
 
-        public DbSet<Scheduler> Schedulers { get; set; }
+        public DbSet<SchedulerItem> Schedulers { get; set; }
         public DbSet<EmailMessage> EmailMessages { get; set; }
 
         public NotificationDbContext(string connectionString)
@@ -22,7 +22,7 @@ namespace EternalStore.DataAccess.NotificationManagement
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new SchedulerConfiguration());
+            modelBuilder.ApplyConfiguration(new SchedulerItemConfiguration());
             modelBuilder.ApplyConfiguration(new SchedulerSettingsConfiguration());
             modelBuilder.ApplyConfiguration(new SchedulerMessageConfiguration());
             modelBuilder.ApplyConfiguration(new EmailMessageConfiguration());
