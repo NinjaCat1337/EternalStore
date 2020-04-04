@@ -9,14 +9,14 @@ namespace EternalStore.ApplicationLogic.NotificationManagement.Interfaces
     {
         Task<IEnumerable<SchedulerItem>> GetAllSchedulerItems();
 
-        Task<int> CreateSchedulerAsync(string name, string messageHeader, string messageBody,
+        Task<int> CreateSchedulerItemAsync(string name, string messageHeader, string messageBody,
             ExecutionFrequency executionFrequency, int executionHours, int executionMinutes, DayOfWeek? dayOfWeek = null);
 
-        Task UpdateSchedulerAsync(int idScheduler, string name, string messageHeader, string messageBody,
+        Task UpdateSchedulerItemAsync(int idScheduler, string name, string messageHeader, string messageBody,
             ExecutionFrequency executionFrequency, int executionHours, int executionMinutes, DayOfWeek? executionDayOfWeek = null);
 
-        Task SchedulerSetExecutionTime(int idScheduler);
+        Task SchedulerItemSetExecutionTime(int idScheduler);
 
-        Task SchedulerRefreshTime(int idScheduler);
+        Task SchedulerItemRefreshTime(int idScheduler);
     }
 }

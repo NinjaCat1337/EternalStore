@@ -20,7 +20,7 @@ namespace EternalStore.ApplicationLogic.NotificationManagement
 
         public async Task<IEnumerable<SchedulerItem>> GetAllSchedulerItems() => await schedulerItemRepository.GetAll().ToListAsync();
 
-        public async Task<int> CreateSchedulerAsync(string name, string messageHeader, string messageBody, ExecutionFrequency executionFrequency, int executionHours, int executionMinutes,
+        public async Task<int> CreateSchedulerItemAsync(string name, string messageHeader, string messageBody, ExecutionFrequency executionFrequency, int executionHours, int executionMinutes,
             DayOfWeek? dayOfWeek = null)
         {
             var schedulerItemsWithSameName = await schedulerItemRepository.GetByAsync(s => s.Name == name);
@@ -36,7 +36,7 @@ namespace EternalStore.ApplicationLogic.NotificationManagement
             return schedulerItem.Id;
         }
 
-        public async Task UpdateSchedulerAsync(int idScheduler, string name, string messageHeader, string messageBody, ExecutionFrequency executionFrequency, int executionHours, int executionMinutes, DayOfWeek? executionDayOfWeek = null)
+        public async Task UpdateSchedulerItemAsync(int idScheduler, string name, string messageHeader, string messageBody, ExecutionFrequency executionFrequency, int executionHours, int executionMinutes, DayOfWeek? executionDayOfWeek = null)
         {
             var schedulerItem = await schedulerItemRepository.GetAsync(idScheduler);
             schedulerItem.Modify(name);
@@ -46,7 +46,7 @@ namespace EternalStore.ApplicationLogic.NotificationManagement
             await schedulerItemRepository.SaveChangesAsync();
         }
 
-        public async Task SchedulerSetExecutionTime(int idScheduler)
+        public async Task SchedulerItemSetExecutionTime(int idScheduler)
         {
             var schedulerItem = await schedulerItemRepository.GetAsync(idScheduler);
             schedulerItem.SetExecutionDateTime();
@@ -54,7 +54,7 @@ namespace EternalStore.ApplicationLogic.NotificationManagement
             await schedulerItemRepository.SaveChangesAsync();
         }
 
-        public async Task SchedulerRefreshTime(int idScheduler)
+        public async Task SchedulerItemRefreshTime(int idScheduler)
         {
             var schedulerItem = await schedulerItemRepository.GetAsync(idScheduler);
             schedulerItem.RefreshExecutionDateTime();
