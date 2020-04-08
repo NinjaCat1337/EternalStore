@@ -15,7 +15,10 @@ namespace EternalStore.DataAccess.NotificationManagement.Repositories
 
         public SchedulerItemRepository(string connectionString) => dbContext = new NotificationDbContext(connectionString);
 
-        public IQueryable<SchedulerItem> GetAll() => dbContext.Schedulers.AsQueryable();
+        public IQueryable<SchedulerItem> GetAll() => dbContext.Schedulers
+            .Include(si => si.Message)
+            .Include(si => si.Settings)
+            .AsQueryable();
 
         public async Task InsertAsync(SchedulerItem item) => await dbContext.AddAsync(item);
 

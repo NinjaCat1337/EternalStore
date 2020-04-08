@@ -20,7 +20,9 @@ namespace EternalStore.ApplicationLogic.NotificationManagement
 
         public async Task<IEnumerable<SchedulerItem>> GetAllSchedulerItems() => await schedulerItemRepository.GetAll().ToListAsync();
 
-        public async Task<int> CreateSchedulerItemAsync(string name, string messageHeader, string messageBody, ExecutionFrequency executionFrequency, int executionHours, int executionMinutes,
+        public async Task<SchedulerItem> GetSchedulerItem(int idSchedulerItem) => await schedulerItemRepository.GetAsync(idSchedulerItem);
+
+        public async Task<int> CreateSchedulerItemAsync(string name, string messageSubject, string messageBody, ExecutionFrequency executionFrequency, int executionHours, int executionMinutes,
             DayOfWeek? dayOfWeek = null)
         {
             var schedulerItemsWithSameName = await schedulerItemRepository.GetByAsync(s => s.Name == name);
@@ -28,7 +30,7 @@ namespace EternalStore.ApplicationLogic.NotificationManagement
             if (schedulerItemsWithSameName.Any())
                 throw new Exception("Scheduler with same name already exists.");
 
-            var schedulerItem = SchedulerItem.Insert(name, messageHeader, messageBody, executionFrequency, executionHours, executionMinutes, dayOfWeek);
+            var schedulerItem = SchedulerItem.Insert(name, messageSubject, messageBody, executionFrequency, executionHours, executionMinutes, dayOfWeek);
 
             await schedulerItemRepository.InsertAsync(schedulerItem);
             await schedulerItemRepository.SaveChangesAsync();

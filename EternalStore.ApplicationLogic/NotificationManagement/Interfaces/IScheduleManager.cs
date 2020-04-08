@@ -9,6 +9,8 @@ namespace EternalStore.ApplicationLogic.NotificationManagement.Interfaces
     {
         Task<IEnumerable<SchedulerItem>> GetAllSchedulerItems();
 
+        Task<SchedulerItem> GetSchedulerItem(int idSchedulerItem);
+
         Task<int> CreateSchedulerItemAsync(string name, string messageHeader, string messageBody,
             ExecutionFrequency executionFrequency, int executionHours, int executionMinutes, DayOfWeek? dayOfWeek = null);
 

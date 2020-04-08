@@ -14,13 +14,13 @@ namespace EternalStore.Domain.NotificationManagement
 
         protected SchedulerMessage() { }
 
-        public static SchedulerMessage Insert(string header, string body)
+        public static SchedulerMessage Insert(string subject, string body)
         {
-            Validate(header, body);
+            Validate(subject, body);
 
             return new SchedulerMessage
             {
-                Subject = header,
+                Subject = subject,
                 Body = body
             };
         }

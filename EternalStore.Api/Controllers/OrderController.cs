@@ -1,12 +1,10 @@
-﻿using System;
-using EternalStore.Api.Contracts.Order.Requests;
+﻿using EternalStore.Api.Contracts.Order.Requests;
 using EternalStore.Api.Contracts.Order.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
-using EternalStore.ApplicationLogic.NotificationManagement.Interfaces;
 using EternalStore.ApplicationLogic.StoreManagement.DTO;
 using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
 
@@ -17,14 +15,10 @@ namespace EternalStore.Api.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderManager orderManager;
-        private readonly IStatisticManager statisticManager;
-        private readonly IMailManager mailManager;
 
-        public OrderController(IOrderManager orderManager, IStatisticManager statisticManager, IMailManager mailManager)
+        public OrderController(IOrderManager orderManager)
         {
             this.orderManager = orderManager;
-            this.statisticManager = statisticManager;
-            this.mailManager = mailManager;
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
@@ -134,13 +128,6 @@ namespace EternalStore.Api.Controllers
         {
             await orderManager.RemoveOrderItemAsync(request.IdOrder, request.IdOrderItem);
             return Ok();
-        }
-
-        [HttpGet("orders/statistic", Name = "StatisticTest")]
-        public async Task<IActionResult> StatisticTest()
-        {
-            var result = await statisticManager.GetProductsStatistic(DateTime.Now.AddMonths(-1), DateTime.Now);
-            return Ok(result);
         }
     }
 }

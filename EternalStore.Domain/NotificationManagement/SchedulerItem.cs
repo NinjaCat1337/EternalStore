@@ -13,9 +13,9 @@ namespace EternalStore.Domain.NotificationManagement
         protected SchedulerItem() { }
 
         //TODO Validation
-        public static SchedulerItem Insert(string name, string messageHeader, string messageBody, ExecutionFrequency executionFrequency, int executionHours, int executionMinutes, DayOfWeek? executionDayOfWeek = null)
+        public static SchedulerItem Insert(string name, string messageSubject, string messageBody, ExecutionFrequency executionFrequency, int executionHours, int executionMinutes, DayOfWeek? executionDayOfWeek = null)
         {
-            var schedulerMessage = SchedulerMessage.Insert(messageHeader, messageBody);
+            var schedulerMessage = SchedulerMessage.Insert(messageSubject, messageBody);
             var schedulerSettings = SchedulerSettings.Insert(executionFrequency, executionHours, executionMinutes, executionDayOfWeek);
 
             return new SchedulerItem

@@ -43,7 +43,7 @@ namespace EternalStore.Api.Services
                         {
                             Thread.Sleep((int)scheduler.ExecutionDateTime.Subtract(DateTime.Now).TotalMilliseconds);
                             SendStatisticSchedulerAction(scheduler);
-                            scheduleManager.SchedulerRefreshTime(scheduler.Id);
+                            scheduleManager.SchedulerItemRefreshTime(scheduler.Id);
                         });
                     }
                 }
