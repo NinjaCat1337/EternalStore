@@ -7,6 +7,8 @@ namespace EternalStore.Domain.NotificationManagement
     {
         public string Name { get; protected set; }
         public DateTime ExecutionDateTime { get; protected set; }
+        public bool IsActive { get; protected set; }
+        public bool IsDeleted { get; protected set; }
         public SchedulerSettings Settings { get; protected set; }
         public SchedulerMessage Message { get; protected set; }
 
@@ -21,6 +23,8 @@ namespace EternalStore.Domain.NotificationManagement
             return new SchedulerItem
             {
                 Name = name,
+                IsActive = false,
+                IsDeleted = false,
                 Settings = schedulerSettings,
                 Message = schedulerMessage
             };
@@ -28,7 +32,11 @@ namespace EternalStore.Domain.NotificationManagement
 
         public void Modify(string name) => Name = name;
 
-        public void ModifySchedulerMessage(string subject, string body) => Message.Modify(subject, body);
+        public void Run() => IsActive = true;
+
+        public void Stop() => IsActive = false;
+
+        public void Delete() => IsDeleted = true;
 
         /// <summary>
         /// This method sets the execution DateTime depending on the SchedulerSettings.

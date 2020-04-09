@@ -25,6 +25,14 @@ namespace EternalStore.DataAccess.NotificationManagement.Configuration
                 .HasColumnName("executionDateTime")
                 .HasColumnType("datetime2");
 
+            builder.Property(p => p.IsActive)
+                .HasColumnName("isActive")
+                .HasColumnType("bit");
+
+            builder.Property(p => p.IsDeleted)
+                .HasColumnName("isDeleted")
+                .HasColumnType("bit");
+
             builder.HasOne(s => s.Message)
                 .WithOne(sm => sm.SchedulerItem)
                 .HasForeignKey<SchedulerMessage>("idSchedulerItem")

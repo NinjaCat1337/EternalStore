@@ -23,7 +23,6 @@ namespace EternalStore.Api.Controllers
         public async Task<IActionResult> GetAll()
         {
             var schedulerItems = await scheduleManager.GetAllSchedulerItems();
-
             return Ok(schedulerItems);
         }
 
@@ -32,7 +31,6 @@ namespace EternalStore.Api.Controllers
         public async Task<IActionResult> Get(int idSchedulerItem)
         {
             var schedulerItem = await scheduleManager.GetSchedulerItem(idSchedulerItem);
-
             return Ok(schedulerItem);
         }
 
@@ -41,7 +39,6 @@ namespace EternalStore.Api.Controllers
         public async Task<IActionResult> Post(SchedulerItemAdditionRequest request)
         {
             var idSchedulerItem = await scheduleManager.CreateSchedulerItemAsync(request.Name, request.Subject, request.Body, request.ExecutionFrequency, request.ExecutionHours, request.ExecutionMinutes, request.ExecutionDayOfWeek);
-
             return Ok(idSchedulerItem);
         }
 
@@ -50,7 +47,28 @@ namespace EternalStore.Api.Controllers
         public async Task<IActionResult> Put(SchedulerItemModificationRequest request)
         {
             await scheduleManager.UpdateSchedulerItemAsync(request.IdSchedulerItem, request.Name, request.Subject, request.Body, request.ExecutionFrequency, request.ExecutionHours, request.ExecutionMinutes, request.ExecutionDayOfWeek);
+            return Ok();
+        }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
+        [HttpPatch("items/{idSchedulerItem}/isActive", Name = "RunStopSchedulerItem")]
+        public async Task<IActionResult> RunStop(int idSchedulerItem)
+        {
+            var scheduler = await scheduleManager.GetSchedulerItem(idSchedulerItem);
+
+            if (scheduler.IsActive)
+                await scheduleManager.StopSchedulerItemAsync(idSchedulerItem);
+            else
+                await scheduleManager.RunSchedulerItemAsync(idSchedulerItem);
+
+            return Ok();
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "1")]
+        [HttpDelete("items/{idSchedulerItem}", Name = "DeleteSchedulerItem")]
+        public async Task<IActionResult> Delete(int idSchedulerItem)
+        {
+            await scheduleManager.DeleteSchedulerItemAsync(idSchedulerItem);
             return Ok();
         }
     }

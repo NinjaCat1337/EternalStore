@@ -20,7 +20,7 @@ namespace EternalStore.Api.Services
         private readonly IScheduleManager scheduleManager;
         private readonly IUserManager userManager;
 
-        private IEnumerable<SchedulerItem> schedulers;
+        private IEnumerable<SchedulerItem> schedulerItems;
         private IEnumerable<UserDTO> recipients;
 
         public NotificationService(IStatisticManager statisticManager, IMailManager mailManager, IScheduleManager scheduleManager, IUserManager userManager)
@@ -37,7 +37,7 @@ namespace EternalStore.Api.Services
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     LoadData();
-                    foreach (var scheduler in schedulers)
+                    foreach (var scheduler in schedulerItems)
                     {
                         Task.Run(() =>
                         {
@@ -51,8 +51,9 @@ namespace EternalStore.Api.Services
 
         private async void LoadData()
         {
+            var allSchedulers = await scheduleManager.GetAllSchedulerItems();
+            schedulerItems = allSchedulers.Where(si => si.IsActive);
             recipients = await userManager.GetAllUsersAsync();
-            schedulers = await scheduleManager.GetAllSchedulerItems();
         }
 
         private Action SendStatisticSchedulerAction(SchedulerItem scheduler) => () =>
