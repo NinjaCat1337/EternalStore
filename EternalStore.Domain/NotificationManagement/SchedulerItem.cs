@@ -47,7 +47,7 @@ namespace EternalStore.Domain.NotificationManagement
             ExecutionDateTime = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day,
                 Settings.ExecutionHours, Settings.ExecutionMinutes, 0);
 
-            if (ExecutionDateTime <= currentDate)
+            if (ExecutionDateTime < currentDate)
                 ExecutionDateTime = ExecutionDateTime.AddDays(1);
         }
 

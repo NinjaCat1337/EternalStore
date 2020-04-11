@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -31,25 +30,30 @@ namespace EternalStore.Api.Services
             this.userManager = userManager;
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken) =>
-            Task.Run(() =>
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            while (!stoppingToken.IsCancellationRequested)
             {
-                while (!stoppingToken.IsCancellationRequested)
+                RefreshData();
+
+                if (schedulerItems.Any())
                 {
-                    LoadData();
                     foreach (var scheduler in schedulerItems)
                     {
-                        Task.Run(() =>
-                        {
-                            Thread.Sleep((int)scheduler.ExecutionDateTime.Subtract(DateTime.Now).TotalMilliseconds);
-                            SendStatisticSchedulerAction(scheduler);
-                            scheduleManager.SchedulerItemRefreshTime(scheduler.Id);
-                        });
+                        scheduler.SetExecutionDateTime();
+                        if (scheduler.ExecutionDateTime >= DateTime.Now.AddMinutes(1)) continue;
+
+                        Task.Run(() => SendStatisticSchedulerAction(scheduler));
+
+                        await scheduleManager.SchedulerItemRefreshTime(scheduler.Id);
                     }
                 }
-            });
 
-        private async void LoadData()
+                await Task.Delay(60000, stoppingToken);
+            }
+        }
+
+        private async void RefreshData()
         {
             var allSchedulers = await scheduleManager.GetAllSchedulerItems();
             schedulerItems = allSchedulers.Where(si => si.IsActive);

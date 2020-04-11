@@ -1,5 +1,6 @@
 ﻿using EternalStore.Api.Installers;
 using EternalStore.Api.Options;
+using EternalStore.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,7 @@ namespace EternalStore.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.InstallServicesInAssembly(Configuration);
+            services.AddHostedService<NotificationService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
