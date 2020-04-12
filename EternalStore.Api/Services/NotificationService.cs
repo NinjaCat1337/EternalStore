@@ -34,7 +34,7 @@ namespace EternalStore.Api.Services
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                RefreshData();
+                await RefreshData();
 
                 if (schedulerItems.Any())
                 {
@@ -53,10 +53,11 @@ namespace EternalStore.Api.Services
             }
         }
 
-        private async void RefreshData()
+        private async Task RefreshData()
         {
             var allSchedulers = await scheduleManager.GetAllSchedulerItems();
             schedulerItems = allSchedulers.Where(si => si.IsActive);
+
             recipients = await userManager.GetAllUsersAsync();
         }
 
@@ -64,7 +65,7 @@ namespace EternalStore.Api.Services
         {
             foreach (var recipient in recipients)
             {
-                mailManager.SendEmailAsync(recipient.UserInformation.FirstName, recipient.UserInformation.Email, scheduler.Message);
+                //mailManager.SendEmailAsync(recipient.UserInformation.FirstName, recipient.UserInformation.Email, scheduler.Message);
             }
         };
     }
