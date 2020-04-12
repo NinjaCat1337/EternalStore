@@ -13,12 +13,12 @@ namespace EternalStore.Api.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IGoodsManager>(sm => new GoodsManager(configuration));
-            services.AddTransient<IUserManager>(um => new UserManager(configuration));
-            services.AddTransient<IOrderManager>(om => new OrderManager(configuration));
-            services.AddTransient<IStatisticManager>(sm => new StatisticManager(configuration));
-            services.AddTransient<IMailManager>(mm => new MailManager(configuration));
-            services.AddTransient<IScheduleManager>(sm => new ScheduleManager(configuration));
+            services.AddSingleton<IGoodsManager>(sm => new GoodsManager(configuration));
+            services.AddSingleton<IUserManager>(um => new UserManager(configuration));
+            services.AddSingleton<IOrderManager>(om => new OrderManager(configuration));
+            services.AddSingleton<IStatisticManager>(sm => new StatisticManager(configuration));
+            services.AddSingleton<IMailManager>(mm => new MailManager(configuration));
+            services.AddSingleton<IScheduleManager>(sm => new ScheduleManager(configuration));
         }
     }
 }
