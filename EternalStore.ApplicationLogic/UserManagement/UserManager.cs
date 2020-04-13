@@ -44,7 +44,6 @@ namespace EternalStore.ApplicationLogic.UserManagement
 
             var user = User.Insert(login, PasswordHashing.GetMd5Hash(password), firstName, lastName, email, Roles.User);
             await userRepository.InsertAsync(user);
-
             await userRepository.SaveChangesAsync();
 
             return new RegistrationResult { Success = true };

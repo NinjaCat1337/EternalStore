@@ -70,7 +70,12 @@ namespace EternalStore.ApplicationLogic.StoreManagement
 
         public async Task<int> CreateOrderAsync(OrderDTO orderDTO)
         {
-            var order = Order.Insert(orderDTO.DeliveryDate, orderDTO.CustomerName, orderDTO.CustomerNumber, orderDTO.CustomerAddress, orderDTO.AdditionalInformation);
+            var order = Order.Insert(orderDTO.DeliveryDate,
+                orderDTO.CustomerName,
+                orderDTO.CustomerNumber,
+                orderDTO.CustomerAddress,
+                orderDTO.AdditionalInformation);
+
             await orderRepository.InsertAsync(order);
             await orderRepository.SaveChangesAsync();
 
@@ -80,7 +85,11 @@ namespace EternalStore.ApplicationLogic.StoreManagement
         public async Task UpdateOrderAsync(OrderDTO orderDTO)
         {
             var order = await orderRepository.GetAsync(orderDTO.IdOrder);
-            order.Modify(orderDTO.DeliveryDate, orderDTO.CustomerName, orderDTO.CustomerAddress, orderDTO.CustomerNumber, orderDTO.AdditionalInformation);
+            order.Modify(orderDTO.DeliveryDate,
+                orderDTO.CustomerName,
+                orderDTO.CustomerAddress,
+                orderDTO.CustomerNumber,
+                orderDTO.AdditionalInformation);
 
             await orderRepository.SaveChangesAsync();
         }

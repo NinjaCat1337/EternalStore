@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EternalStore.ApplicationLogic.NotificationManagement.DTO;
 using EternalStore.ApplicationLogic.NotificationManagement.Interfaces;
 using EternalStore.DataAccess.NotificationManagement.Repositories;
 using EternalStore.Domain.NotificationManagement;
@@ -23,15 +24,20 @@ namespace EternalStore.ApplicationLogic.NotificationManagement
 
         public async Task<SchedulerItem> GetSchedulerItem(int idSchedulerItemItem) => await schedulerItemRepository.GetAsync(idSchedulerItemItem);
 
-        public async Task<int> CreateSchedulerItemAsync(string name, string messageSubject, string messageBody, ExecutionFrequency executionFrequency, int executionHours, int executionMinutes,
-            DayOfWeek? dayOfWeek = null)
+        public async Task<int> CreateSchedulerItemAsync(SchedulerItemDTO schedulerItemDTO)
         {
-            var schedulerItemsWithSameName = await schedulerItemRepository.GetByAsync(s => s.Name == name);
+            var schedulerItemsWithSameName = await schedulerItemRepository.GetByAsync(s => s.Name == schedulerItemDTO.Name);
 
             if (schedulerItemsWithSameName.Any())
                 throw new Exception("Scheduler with same name already exists.");
 
-            var schedulerItem = SchedulerItem.Insert(name, messageSubject, messageBody, executionFrequency, executionHours, executionMinutes, dayOfWeek);
+            var schedulerItem = SchedulerItem.Insert(schedulerItemDTO.Name,
+                schedulerItemDTO.MessageSubject,
+                schedulerItemDTO.MessageBody,
+                schedulerItemDTO.ExecutionFrequency,
+                schedulerItemDTO.ExecutionHours,
+                schedulerItemDTO.ExecutionMinutes,
+                schedulerItemDTO.ExecutionDayOfWeek);
 
             await schedulerItemRepository.InsertAsync(schedulerItem);
             await schedulerItemRepository.SaveChangesAsync();
@@ -39,12 +45,16 @@ namespace EternalStore.ApplicationLogic.NotificationManagement
             return schedulerItem.Id;
         }
 
-        public async Task UpdateSchedulerItemAsync(int idSchedulerItem, string name, string messageHeader, string messageBody, ExecutionFrequency executionFrequency, int executionHours, int executionMinutes, DayOfWeek? executionDayOfWeek = null)
+        public async Task UpdateSchedulerItemAsync(SchedulerItemDTO schedulerItemDTO)
         {
-            var schedulerItem = await schedulerItemRepository.GetAsync(idSchedulerItem);
-            schedulerItem.Modify(name);
-            schedulerItem.Settings.Modify(executionFrequency, executionHours, executionMinutes, executionDayOfWeek);
-            schedulerItem.Message.Modify(messageHeader, messageBody);
+            var schedulerItem = await schedulerItemRepository.GetAsync(schedulerItemDTO.IdSchedulerItem);
+
+            schedulerItem.Modify(schedulerItemDTO.Name);
+            schedulerItem.Settings.Modify(schedulerItemDTO.ExecutionFrequency,
+                schedulerItemDTO.ExecutionHours,
+                schedulerItemDTO.ExecutionMinutes,
+                schedulerItemDTO.ExecutionDayOfWeek);
+            schedulerItem.Message.Modify(schedulerItemDTO.MessageSubject, schedulerItemDTO.MessageBody);
 
             await schedulerItemRepository.SaveChangesAsync();
         }

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using EternalStore.Api.Contracts.Scheduler.Requests;
+using EternalStore.ApplicationLogic.NotificationManagement.DTO;
 using EternalStore.ApplicationLogic.NotificationManagement.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -38,7 +39,18 @@ namespace EternalStore.Api.Controllers
         [HttpPost("items", Name = "CreateSchedulerItem")]
         public async Task<IActionResult> Post(SchedulerItemAdditionRequest request)
         {
-            var idSchedulerItem = await scheduleManager.CreateSchedulerItemAsync(request.Name, request.Subject, request.Body, request.ExecutionFrequency, request.ExecutionHours, request.ExecutionMinutes, request.ExecutionDayOfWeek);
+            var schedulerItem = new SchedulerItemDTO
+            {
+                Name = request.Name,
+                MessageSubject = request.Subject,
+                MessageBody = request.Body,
+                ExecutionFrequency = request.ExecutionFrequency,
+                ExecutionHours = request.ExecutionHours,
+                ExecutionMinutes = request.ExecutionMinutes,
+                ExecutionDayOfWeek = request.ExecutionDayOfWeek
+            };
+            var idSchedulerItem = await scheduleManager.CreateSchedulerItemAsync(schedulerItem);
+
             return Ok(idSchedulerItem);
         }
 
@@ -46,7 +58,19 @@ namespace EternalStore.Api.Controllers
         [HttpPut("items", Name = "ModifySchedulerItem")]
         public async Task<IActionResult> Put(SchedulerItemModificationRequest request)
         {
-            await scheduleManager.UpdateSchedulerItemAsync(request.IdSchedulerItem, request.Name, request.Subject, request.Body, request.ExecutionFrequency, request.ExecutionHours, request.ExecutionMinutes, request.ExecutionDayOfWeek);
+            var schedulerItem = new SchedulerItemDTO
+            {
+                IdSchedulerItem = request.IdSchedulerItem,
+                Name = request.Name,
+                MessageSubject = request.Subject,
+                MessageBody = request.Body,
+                ExecutionFrequency = request.ExecutionFrequency,
+                ExecutionHours = request.ExecutionHours,
+                ExecutionMinutes = request.ExecutionMinutes,
+                ExecutionDayOfWeek = request.ExecutionDayOfWeek
+            };
+            await scheduleManager.UpdateSchedulerItemAsync(schedulerItem);
+
             return Ok();
         }
 
