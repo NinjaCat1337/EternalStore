@@ -40,7 +40,7 @@ namespace EternalStore.Api.Services
                 {
                     foreach (var scheduler in schedulerItems)
                     {
-                        scheduler.SetExecutionDateTime();
+                        await scheduleManager.SchedulerItemSetExecutionTime(scheduler.Id);
                         if (scheduler.ExecutionDateTime >= DateTime.Now.AddMinutes(1)) continue;
 
                         Task.Run(() => SendStatisticSchedulerAction(scheduler));
