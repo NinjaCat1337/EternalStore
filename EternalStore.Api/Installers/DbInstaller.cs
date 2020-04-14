@@ -13,7 +13,7 @@ namespace EternalStore.Api.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<IGoodsManager>(sm => new GoodsManager(configuration));
+            services.AddTransient<IGoodsManager>(sm => new GoodsManager(configuration));
             services.AddSingleton<IUserManager>(um => new UserManager(configuration));
             services.AddSingleton<IOrderManager>(om => new OrderManager(configuration));
             services.AddSingleton<IStatisticManager>(sm => new StatisticManager(configuration));
