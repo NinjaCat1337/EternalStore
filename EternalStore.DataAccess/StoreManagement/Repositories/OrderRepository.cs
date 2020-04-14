@@ -8,7 +8,7 @@ using EternalStore.Domain.StoreManagement;
 
 namespace EternalStore.DataAccess.StoreManagement.Repositories
 {
-    public class OrderRepository : IRepository<Order>, IDisposable
+    public class OrderRepository : IRepository<Order>
     {
         private readonly StoreDbContext dbContext;
         private bool disposed;

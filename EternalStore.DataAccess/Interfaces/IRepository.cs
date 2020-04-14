@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EternalStore.DataAccess.Interfaces
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> : IDisposable where T : class
     {
         IQueryable<T> GetAll();
         Task InsertAsync(T item);

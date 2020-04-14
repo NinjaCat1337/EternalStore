@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EternalStore.DataAccess.UserManagement.Repositories
 {
-    public class UserRepository : IRepository<User>, IDisposable
+    public class UserRepository : IRepository<User>
     {
         private readonly UsersDbContext dbContext;
         private bool disposed;
