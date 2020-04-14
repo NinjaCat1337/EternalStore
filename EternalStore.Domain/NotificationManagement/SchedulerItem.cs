@@ -14,9 +14,10 @@ namespace EternalStore.Domain.NotificationManagement
 
         protected SchedulerItem() { }
 
-        //TODO Validation
         public static SchedulerItem Insert(string name, string messageSubject, string messageBody, ExecutionFrequency executionFrequency, int executionHours, int executionMinutes, DayOfWeek? executionDayOfWeek = null)
         {
+            Validate(name);
+
             var schedulerMessage = SchedulerMessage.Insert(messageSubject, messageBody);
             var schedulerSettings = SchedulerSettings.Insert(executionFrequency, executionHours, executionMinutes, executionDayOfWeek);
 
@@ -30,7 +31,11 @@ namespace EternalStore.Domain.NotificationManagement
             };
         }
 
-        public void Modify(string name) => Name = name;
+        public void Modify(string name)
+        {
+            Validate(name);
+            Name = name;
+        }
 
         public void Run() => IsActive = true;
 
@@ -66,6 +71,15 @@ namespace EternalStore.Domain.NotificationManagement
                     ExecutionDateTime = ExecutionDateTime.AddDays(7);
                     break;
             }
+        }
+
+        private static void Validate(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new Exception("Name can't be empty.");
+
+            if (name.Length > 100)
+                throw new Exception("Name is too long.");
         }
     }
 }
