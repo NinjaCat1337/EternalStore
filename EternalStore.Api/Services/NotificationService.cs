@@ -14,18 +14,14 @@ namespace EternalStore.Api.Services
 {
     public class NotificationService : BackgroundService
     {
-        private readonly IStatisticManager statisticManager;
-        private readonly IMailManager mailManager;
         private readonly IScheduleManager scheduleManager;
         private readonly IUserManager userManager;
 
         private IEnumerable<SchedulerItem> schedulerItems;
         private IEnumerable<UserDTO> recipients;
 
-        public NotificationService(IStatisticManager statisticManager, IMailManager mailManager, IScheduleManager scheduleManager, IUserManager userManager)
+        public NotificationService(IScheduleManager scheduleManager, IUserManager userManager)
         {
-            this.statisticManager = statisticManager;
-            this.mailManager = mailManager;
             this.scheduleManager = scheduleManager;
             this.userManager = userManager;
         }
