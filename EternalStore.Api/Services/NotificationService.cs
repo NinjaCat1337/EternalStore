@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EternalStore.ApplicationLogic.NotificationManagement.Interfaces;
-using EternalStore.ApplicationLogic.StoreManagement.Interfaces;
 using EternalStore.ApplicationLogic.UserManagement.DTO;
 using EternalStore.ApplicationLogic.UserManagement.Interfaces;
 using EternalStore.Domain.NotificationManagement;
